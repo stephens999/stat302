@@ -1,0 +1,209 @@
+\documentclass[12pt]{article}
+\def \baselinestretch{1.2}
+\usepackage{amsmath}
+\def\ni{\noindent}
+\def\A{\mathcal A}
+\def\X{\mathcal X}
+
+\textwidth=18.0cm
+\topmargin=-1.2cm
+\columnsep=1.0cm
+\textheight=21.8cm
+\hoffset=-1.9cm
+
+\setcounter{secnumdepth}{2}
+\renewcommand{\baselinestretch}{1.2}
+\setlength{\parindent}{0.3in}
+\setlength{\parskip}{0.1in}
+
+\setcounter{section}{4}
+
+
+\begin{document}
+%\twocolumn
+\normalsize
+
+\section{Decision Theory}
+
+\subsection{Notation}
+
+Here we introduce the basic notation.
+\begin{itemize}
+\item $\theta \in \Theta$: an unknown quantity affecting decision process.
+\item $a \in \A$: action to be taken.
+\item $x \in \X$: data
+\item $L(\theta_0, a): \Theta \times \A \rightarrow R$: loss for performing action $a$ if ``true" value of $\theta$ is $\theta_0$. 
+\item $p(x | \theta)$: density of $X$.
+\item $\pi(\theta)$: (``prior") distribution for $\theta$.
+\end{itemize}
+
+In statistics we usually want to explicitly consider 
+data that we are using in deciding
+to make a decision. However, decision theory also can be
+applied to problems where there are no ``data", and actions are taken directly
+on the basis of $\pi(\theta)$.
+
+Note that statistical inference is one special case of
+a decision problem. Suppose we want to estimate a parameter $\theta$.
+The ``action" we want to take is to report our estimate. 
+Thus the action space consists of the possible estimates we might report,
+and so $\A=\Theta$.
+
+\subsection{Choosing an action: the conditional Bayesian Principle}
+
+Here we just state the principle, which should seem natural.
+Then we will see some examples before taking another look
+at motivation for the principle.
+
+This principle says you should ``Choose action $a$ to minimize the posterior expected loss, which is given by
+$$\int L(\theta, a) p(\theta | x) d\theta.$$
+
+Note that this principle tells us how we (rational decision makers)
+``should" behave, and is
+not always a good description of how people actually behave
+in practice!
+
+\subsection{Examples}
+
+\bigskip
+\begin{enumerate}
+
+\item {\it You are a competitor on a quiz show. So far, you have won five thousand dollars, and are given the choice between i) leaving with the five thousand dollars; ii) attempting a bonus question, which, if you answer correctly, will give you a Toyota Prius car. Which do you choose?}
+
+{\bf Answer 1:} You have seen the quiz show before, and the bonus questions are quite hard: you think
+you are able to answer them correctly about half the time. That is, your personal probability that
+you will answer the bonus question correctly is 0.5. On the other hand, you have always wanted
+a Prius, and your current car is on its last legs so you are going to buy a new one soon
+anyway. The Prius costs more than 20,000 dollars. So, treating dollars as utility, the expected utility
+for i) is 5,000 dollars, and for ii) is 10,000 dollars, so you choose ii).
+
+{\bf Answer 2:} You are happy with your car, and don't really like the Prius. Of course, you could always
+sell the Prius. Perhaps you would get 18,500 for it. But it would be a bit of work, so maybe
+the Prius is worth 18,000 to you when you've accounted for that. Also,
+although you think you could answer previous bonus questions right about half the time, you
+are feeling unlucky today, so your probability that you will get today's question right is more like 0.25.
+So your utility for i) is still 5,000 dollars, but for ii) it is 0.25*18,000 = 4,500. You choose i).
+
+\medskip
+
+\item {\it (Purchasing Insurance) You are buying a new Ipod at Best Buy. It costs 300 dollars,
+and comes with a 1 year warranty.
+They ask you if you would like to purchase the extended 3-year warranty for 30 dollars. Do you?}
+
+{\bf Possible Answer: } You know that they must be expecting to make money on the warranty, so you figure
+that it is used by fewer than one person in ten. If you buy the warranty, that will cost you 30 dollars.
+If you do not buy the warranty, then if your ipod breaks during years 2 or 3 you will have to replace
+it. But costs are dropping, and things always get better, so you will presumably spend less than 300
+to replace it for something better. So you figure your utility for buying it is -30, and your
+utility for not buying it is more than (-300)*0.1 = -30. So you don't buy it.
+
+\medskip
+
+\item {\it (Purchasing Insurance 2). You have just bought a new house, for 500,000 dollars.
+To insure the house against fire for one year costs 1,000 dollars. Do you do it?}
+
+{\bf Possible Answer:}  Fire is pretty unlikely. Indeed, you know that they expect to make
+money on insurance, so presumably it affects less than 1 in 500 houses per year. On the other
+hand, if your house burned down you would lose everything, and, to you, 
+losing your house is unthinkable: much more than 500 times worse than losing 1,000 dollars.
+So you buy the insurance. (Note: Of course, in most cases the people lending you money to buy a house
+insist you insure it!)
+
+\item {\it Classification with 2 classes (e.g. hypothesis testing, $H_0$ vs $H_1$).} Let $c_{i|j}$ denote the loss for choosing $H_i$ if $H_j$ is true.
+Assume that if you make the right choice then you lose zero:
+$c_{0|0}=c_{1|1}=0$.
+
+The action space and the space of unknowns is the same: we
+don't know which hypothesis is true, and we wish to select one.
+ Thus $\Theta=\A=\{H_0,H_1\}$.
+
+Posterior expected loss($H_0$) = $p(H_1 | x) c_{1|0}$
+
+Posterior expected loss($H_1$) = $p(H_0 | x) c_{0|1}$
+
+Choose $H_1$ if $p(H_1 | x) c_{1|0} > p(H_0 | x) c_{0|1}$.
+That is if $p(H_1 | x) > p(H_0 | x) c_{0|1}/c_{1|0}$.
+
+If costs are equal, then threshold is 0.5.
+If cost of wrongly rejecting $H_0$ is higher 
+then threshold is higher.
+
+
+\item {\it (Point Estimation). In current genetic studies, the most commonly-used type of marker is called a SNP (Single Nucleotide Polymorphism). Each SNP is a single position in the genome, where different copies of the genome carry one of two different bases. For example, at a C/G SNP, some genome copies carry the C, and others have a G. Since we each have two copies of our genome (one from mother,
+or one from father), at a C/G SNP each of us will have either 0, 1 or 2 Cs. That is our "genotype" can be thought of as a 0, 1 or 2 variable.
+
+Suppose now that we have a method for measuring genotypes. This method acknowledges
+that the measurement may have errors, so instead of just giving a genotype for each individual,
+it instead gives probabilities $p_0,p_1$ and $p_2$ for the genotype to be 0,1 or 2.
+Given these probabilities, what would you report to be the genotype?}
+
+{\bf Answer 1 (0-1 loss; mode):} You decide that if the genotype is incorrect, you will lose 1 unit, whereas
+if it is correct, you lose 0. This is referred to as 0-1 loss, and can be written as
+$$L(g; \hat{g}) = I(\hat{g} \neq g),$$
+where $L(g; \hat{g})$ denotes the loss (``consequence") you suffer if you report $\hat{g}$ (``action")
+when the truth is $g$ (``Event"). 
+Note that 0-1 loss assumes that, when you are wrong, it does not matter
+{\it how} wrong you are. 
+
+If you report anything but 0, 1 or 2 as your genotype you are certain
+to be wrong, so your expected loss would be 1. If you report $g \in \{0,1,2\}$ then your expected
+loss is $1-p_g$. To minimize your expected loss you report $\hat{g} = \arg \max p_g$. That
+is, you report the modal genotype.
+
+{\bf Answer 2 (quadratic loss; mean):} You decide that, when a mistake is made, some mistakes
+are worse than others. For example, if the truth is 0, and you guess 2, then this is worse than
+guessing 1, even though both guesses are wrong. A common way to quantify this is via
+quadratic loss, which penalizes big mistakes quite harshly:
+$$L(g; \hat{g} ) = (g - \hat{g})^2.$$
+
+Now you want to choose $\hat{g}$ to minimize your expected loss
+$$E[L(\hat{g};g)] = \sum_g p_g (g-\hat{g})^2.$$
+Differentiating with respect to $\hat{g}$, and setting the derivative to zero, yields
+$\hat{g} = \sum_g p_g g$. That is, you estimate the genotype by the mean, averaging over the
+uncertainty.
+
+Note: The results regarding 0-1 loss and quadratic loss are quite general, and are not limited
+only to this example, or to discrete outcomes. That is, reporting a mode of a distribution as
+the point estimate is to implicitly adopt 0-1 loss; reporting the mean as a point estimate
+is to implicitly adopt quadratic loss.
+
+\item {\it (Proper scoring rules). Assume now that you are asked to report the probability that
+the genotypes are 0, 1 or 2. Naively it would appear to make sense to report the probabilities
+$p_0, p_1$ and $p_2$. Consider a formal decision-theoretic approach to this problem, with
+the following loss functions: i) $L(\hat{p}; g) = 1-\hat{p}_g$; ii) $L(\hat{p};g) = \sum_{i=0}^2 (\hat{p}_i - I(g=i))^2$;
+iii) $L(\hat{p};g) = -\log(\hat{p}_g)$.}
+
+Note: loss functions that lead to your reporting your actual probability distribution are referred
+to as "proper scoring rules". Which of the above are proper scoring rules? 
+\end{enumerate}
+
+\subsection{Frequentist decision theory, Risk and Admissibility}
+
+Definitions (Following Berger, Statistical Decision Theory and Bayesian Analysis, p9):
+
+\subsubsection{Risk Function}
+
+The {\it risk function} of a decision rule $\delta(x)$ is defined to be the expected loss, with expectation taken over repetitions of the experiment/data.
+\begin{equation}
+R(\theta,\delta) = E_\theta^X[L(\theta,\delta(X))] = \int L(\theta,\delta(x)) p(x|\theta) \, dx 
+\end{equation}
+
+Note that $R(\theta,\delta)$ measures how badly the decision rule $\delta$ would do on average, if the true value of $\theta$ were $\theta$, and the rule
+was applied repeatedly to a large number of datasets.
+Ideally we'd like to choose a $\delta$ with a small risk. The problem is
+that risk depends on $\theta$ which is unknown, and risk functions of different $\delta$ will often cross: that is, for two decision rules $\delta_1$ and $\delta_2$, $\delta_1$ may be better for one value of
+$\theta$ and worse for another.
+
+\subsubsection{Admissibility}
+
+What if one rule is always riskier than another? Then intuitively we would
+never want to use it. That is the idea behind {\it admissibility}.
+
+\medskip
+Definition:  A decision rule $\delta_1$ is {\it $R$-better} (``Risk-better") than
+a decision rule $\delta_2$ if $R(\theta,\delta_1) \leq R(\theta,\delta_2)$ for all $\theta$, with strict inequality for some $\theta$.
+
+\medskip
+Definition: A decision rule $\delta$ is {\it admissible} if there is no $R$-better decision rule. Otherwise it is {\it inadmissible}.
+
+\end{document}

@@ -1,0 +1,209 @@
+\documentclass[times,11pt]{article}
+\def\E{\mbox{E}}
+\def\P{\mbox{P}}
+\def\ni{\noindent}
+\def\s{\mbox{savannah}}
+\def\f{\mbox{forest}}
+\def\ffA{f_F}
+\def\fsA{f_S}
+\def\fsa{f_s^a}
+\def\ffa{f_f^a}
+\def\nsA{{n_s}}
+\def\nfA{{n_f}}
+\def\pif{\pi_F}
+\def\pis{\pi_S}
+\def\Hf{H_F}
+\def\Hs{H_S}
+\def\ta{T_A}
+\def\be{\text{Beta}}
+
+\usepackage{amsmath}
+\usepackage{natbib}
+\bibliographystyle{chicago}
+
+\textwidth=14.0cm
+%\topmargin=-1.2cm
+%\columnsep=1.0cm
+%\textheight=21.8cm
+%\hoffset=-3.2cm
+\begin{document}
+%\twocolumn
+%\baselinestretch{1.2}
+
+\begin{center}
+\Large\bf Bayesian Inference: Introductory Motivating Example
+\end{center}
+\normalsize
+
+\section*{Preamble}
+
+In Bayesian statistics, we treat all unknown quantities (including quantities that might generally be referred to as ``parameters")
+as random variables, and represent our uncertainty regarding these quantities using probability distributions. 
+
+To describe the inference process at a generic level, let $\theta$ denote unknown quantities of interest, and $D$ denote observed data. Then inference proceeds as follows:
+\begin{enumerate}
+\item Specify a {\it prior distribution} $p(\theta)$ for $\theta$, which reflects our knowledge or uncertainty about
+$\theta$ prior to observing the data $D$;
+\item Specify a {\it probability model} $p(D|\theta)$; 
+\item Compute a {\it posterior distribution} for $\theta$, using Bayes Theorem: $p(\theta |D) = p(D|\theta) p(\theta)/p(D)$. The posterior distribution reflects our knowledge of $\theta$ after observing the data $D$.
+\end{enumerate}
+
+Note that, when considered as a function of $\theta$, $p(D|\theta)$ is the likelihood function for $\theta$. This leads to a convenient way to verbalize Bayes theorem:  ``posterior $\propto$ likelihood $\times$ prior". This verbalization also emphasizes that the posterior distribution results from combining the information in the data (likelihood) with external information (prior).
+
+The following examples illustrate these basic ideas, terminologies and mechanics of inference.
+
+\section*{Example: classification into two groups from binary data}
+
+The following classification problem arises quite generally, but for concreteness we consider a 
+specific example from genetics, where
+the goal is to identify the origin of a sample based on its DNA.
+
+
+There are two subspecies of African Elephant: savannah and forest elephants, which differ slightly in their genes. Consider measuring them at a single marker (point in their genome) where there are two alleles (types), $A$ and $a$. We will assume that allele $A$ occurs at frequency $\fsA$ in savannah elephants 
+and at frequency $\ffA$ in forest elephants (and that the allele $a$ occurs at frequencies $1-\fsA$ and $1-\ffA$). Now assume that Interpol have seized an illegally-smuggled tusk, and they measure this marker in DNA from the tusk and find that it carried the $A$ allele. The question before us is: Which subspecies of elephant did the tusk come from, and how confident should we be in this conclusion? (This is simplified version of a real problem: Interpol and other authorities want to know the origin of poached tusks to help focus efforts on curbing this illegal activity; in practice they are interested in much finer-level discrimination, and measure many genetic markers to get more information. See
+\cite{wasser.etal.07} and \cite{wasser.etal.08}
+for more details.)
+
+
+\subsection*{Solution}
+
+In this problem the main ``unknown" of interest is the subspecies from which the tusk arose. We'll use $S$ to denote this unknown, so $S \in \{\s,\f\}$. The ``data" are that the tusk has allele $A$.
+
+First we need to specify a prior distribution for $S$, which reflects our knowledge about $S$ before collecting the genetic data. If we had no prior reason to believe that the tusk was more or less likely from a savannah elephant that a forest elephant then we would use the prior distribution $p(S=\s) = p(S=\f) = 0.5$\footnote{Throughout I use $p(\cdot)$ to denote both probabilities and densities. Although such sloppiness can sometimes get you into trouble, usually there is no problem.}. If we had prior experience that poaching tended to occur more often from one subspecies than another then we might modify this prior to reflect this. We will talk a lot more about prior specification later. For now we assume that the prior is specified, with $p(S=\s)= \pis = 1-\pif$.
+
+Next we specify a model for the observed data, $p(D|S)$.
+If the tusk came from a savannah elephant then we know that allele $A$ occurs at frequency $\fsA$ so $p(D | S=\s) = \fsA$. Similarly $p(D | S=\f) = \ffA$. This completes the specification of the probability model, and hence the likelihood.
+
+Now we apply Bayes Theorem to obtain the posterior distribution for S. For example: 
+\begin{align}
+p(S=\s | D) & = p(D|S=\s) p(S=\s)/ p(D) \label{bayes} \\ 
+&= \fsA \pis / (\fsA \pis + \ffA \pif),  \label{final}
+\intertext{and similarly}
+p(S=\f | D) &=  \ffA \pif / (\fsA \pis + \ffA \pif).
+\end{align}
+
+To make this more concrete, let's try some numbers. Let's assume both subspecies are a priori equally likely, so $\pif=\pis = 0.5$. And assume that the $A$ is twice as common in savannah elephants as forest elephants, say $\fsA = 0.3$ and $\ffA = 0.15$. Then $p(S=\s | D) = 0.3/(0.15+0.3) = 2/3$.
+
+\subsubsection*{An alternative solution, and the posterior odds}
+
+Here it is helpful to note an alternative (but equivalent) way of solving this kind of problem, which can simplify algebraic manipulation. 
+First, to simplify notation we introduce $\Hs$ and $\Hf$ to denote the events ``S=\s" and ``S=\f" respectively. Note that (\ref{bayes}) gives an expression for the
+posterior probability $p(\Hs | D)$. Now, the idea is to avoid
+computing the denominator $p(D)$ in (\ref{bayes}) by considering the ratio $p(\Hs | D)/p(\Hf | D)$, so that $p(D)$ cancels out. This ratio is known as the ``posterior odds" for $\Hs$ vs $\Hf$. Applying Bayes theorem to the numerator and denominator, and cancelling out the $p(D)$ that occurs in each,  we get
+\begin{equation}
+\frac{p(\Hs | D)}{p(\Hf | D)}  = \frac{p(D|\Hs)}{p(D|\Hf)} \frac{p(\Hs)}{p(\Hf)}.
+\end{equation}
+This equation, which applies quite generally for any two events $\Hs$ and $\Hf$ (but is usually used for mutually exclusive events), also has a convenient verbalization: 
+\begin{equation}
+\text{Posterior Odds} = \text{Bayes Factor} \times  \text{Prior Odds}
+\end{equation}
+where the Bayes Factor for $\Hs$ vs $\Hf$ is defined to be the ratio $p(D|\Hs)/p(D|\Hf)$, and quantifies the {\it information in the data regarding the relative plausibility of $\Hs$ and $\Hf$}. Note that this equation really emphasizes the way that the prior information (prior odds) are combined with the information in the data (Bayes Factor) to give the posterior.
+
+In our case, the Bayes factor is $\fsA/\ffA$ and the prior odds is $\pis/\pif$, and we obtain
+\begin{equation}
+\frac{p(\Hs | D)}{p(\Hf | D)} = \frac{\fsA\pis}{\ffA \pif}.
+\end{equation}
+Noting that $p(\Hf|D) = 1-p(\Hs|D)$, and solving for $p(\Hs |D)$ gives (\ref{final}).
+
+\subsection*{Could we do this any other way?}
+
+The above example serves to illustrate many of the fundamental aspects of Bayesian statistical inference, and in particular how data are combined with prior information to come to a conclusion, including measures of uncertainty in that conclusion. The example was chosen both because it is simple, and because
+I know of no other satisfactory way to tackle this problem. One could treat $S$ as a ``parameter" and estimate it by ``maximum likelihood" (choose $S$ to maximise $p(D|S)$), but this would not give an estimate of uncertainty in the conclusion. Getting a confidence interval for $S$ would be of little help: either the confidence interval would contain both $\s$ and $\f$, or just one of them, suggesting either complete confidence or no confidence, with no room for gradations of uncertainty. And if one tries to treat this as a hypthesis test, comparing $\Hs$ vs $\Hf$, which is the null hypothesis? 
+
+Thus understanding this example is a key first step to appreciating
+the fundamental ideas behind Bayesian inference and why it is useful and important. 
+
+
+\section*{Alternative Inference Paradigms: Frequentist Inference}
+
+The main alternative paradigm to Bayesian inference is Frequentist Inference.
+In broad terms the paradigm proceeds as follows:
+\begin{itemize}
+\item Define a procedure for making some kind of inference about an unknown, $\theta$, from data $x$.
+\item Study how this procedure performs {\it on average} for $x$ sampled from $p(x|\theta)$. (Note that this may depend on $\theta$, so one can consider performance characteristics for different values of $\theta$).
+\end{itemize}
+
+There are two important ideas I hope you will take away from this class regarding frequentist inference. 
+\begin{enumerate}
+\item There is an important general {\it philosophical} or {\it foundational} problem with frequentist thinking. This can be summarized as follows: just because
+a procedure performs well {\it on average}, doesn't mean it performs well for that particular $x$.  Indeed,  one can easily construct examples of procedures that perform well {\it on average}
+but seem silly for particular values of $x$.
+In practice
+you have usually just observed a particular value of $x$: wouldn't you want to choose a procedure that works well for that $x$, rather than one that works well on average (for other $x$!)
+\item Regarding $p$ values specifically, which
+are one of the most widely used frequentist tools,
+it is difficult to decide what an appropriate $p$ value threshold should be for rejecting a null hypothesis. This is sometimes referred to as the problem of {\it calibrating} $p$ values. For example, if $p=0.05$, does this represent strong or weak evidence against the null hypothesis? Should I reject at $p=0.05$? or $p=0.01$? or ...?
+In practice $p=0.05$ has been widely adopted as
+a threshold, but this is an arbitrary convention, and certainly not appropriate for all settings.
+\end{enumerate}
+
+
+Example: this example is a modification of Berger (p 25). Suppose $x \in \{1,2,3\}$ and $\theta \in \{0,1\}$
+with 
+\begin{table}[h!]
+\center
+\begin{tabular}{c|c|c|c}
+$x$ & 1 & 2 & 3 \\ \hline
+$p(x|\theta=0)$ & 0.005 & 0.005 & 0.99 \\
+$p(x|\theta=1)$ & 0.0049 & 0.9851 & 0.01 
+\end{tabular}
+\end{table}
+
+Now consider the procedure ``Infer $\theta=0$ if $x=3$, otherwise infer $\theta=1$."
+
+Note that, {\it on average} this procedure performs
+well, whatever the value of $\theta$. Indeed
+the probability of making a mistake is 0.01,
+whatever the value of $\theta$ (and it is
+the most powerful test of size 0.01). But
+if $x=1$ is it really sensible to infer $\theta=1$?
+
+
+
+
+%\subsection*{Example extended: allowing for uncertain frequencies}
+
+%We now extend the example to make it a little more realistic, replacing the unrealistic assumption that we ``know" the frequencies of $A$ in both savannah and forest subspecies with a more realistic assumption. Specifically, we now assume that we have available random samples of $n$ individuals from each subspecies, and observed $\nsA$ and $\nfA$ copies of $A$ in the savannah and forest samples respectively. Based on these data the maximum likelihood estimates
+%for $\fsA$ and $\ffA$ are $\hat{\fsA} = \nsA/n$ and $\hat{\ffA} = \nfA/n$.
+%A naive approach would be to replace the frequencies in the previous example, wherever they occur, with these estimates. (This is sometimes called
+%the ``plug-in" approach to classification.) However, this solution is not always satisfactory because it ignores the fact that these are only {\it estimates} of the frequencies. If $n$ is sufficiently large then this approach will work fine because the estimates will be very accurate. However, if $\ffA$ and $\fsA$ are near 0 (which can happen easily) then the size of $n$ required for the plug-in approach to work may be larger than what is actually available. 
+
+%To show how big a problem this can be, imagine that $n=100$, and that we see no copies of $A$ in the savannah sample, and just one in the forest sample ($\nsA = 0, \nfA=1$). Now the maximum likelihood estimates of $\fsA$ and $\ffA$ are $0$ and $0.01$ respectively, and plugging these into (\ref{final}) gives $p(H_s) = 0$. That is, we would conclude that the tusk was {\it certainly}, with no room for doubt, from a forest elephant, and not a savannah one. Furthermore we would draw this conclusion whatever the prior probabilities $\pis$ and $\pif$ (as long as $\pif \neq 0$), so even if we were {\it a priori} very confident that the tusk arose from a savanna elephant we would reverse this confidence based on the genetic data. Such a conclusion goes against the common sense intuition that, in this case, the amount of information obtained about the tusk origin from the genetic data is rather limited.
+
+%Now let us see how we can take a Bayesian approach to this problem. Now the unknowns include not only $S$, but also $\fsA$ and $\ffA$, and the data $D$ 
+%include not only that the tusk has allele $A$ (an event we now denote $\ta$), but also the observation of $\nsA$ and $\nfA$ copies of $A$ in $n$ savanna and forest elephants. Thus we write $D=(\ta,\nsA,\nfA)$.
+
+%Since $\fsA$ and $\ffA$ are unknown, we must specify a prior distribution for
+%them. A convenient choice here is the Beta distribution (for reasons we will go into in future classes). To follow this example all you need to know is that the Beta distribution with parameters $\alpha, \beta$, written $\be(\alpha,\beta)$, is a distribution on $[0,1]$ with density 
+%$p(f) \propto f^\alpha-1 (1-f)^{\beta-1}$, and expectation $\alpha/(\alpha+\beta)$. It may help to note that $\alpha=\beta=1$ is the uniform distribution on $[0,1]$ (see Wikipedia for more on the beta distribution). We assume that $S$ is {\it a priori} independent of $\fsA$ and $\ffA$.
+
+%Now consider computing $p(D | \Hs)$ and $p(D | \Hf)$ in \ref{}.
+%We have
+%\begin{align}
+%p(D | \Hs) &= p(\ta,\nsA,\nfA | \Hs) \\
+%& = p(\ta | \nsA, \nfA, \Hs) p(\nsA,\nfA | \Hs)
+%\intertext{and similarly}
+%p(D | \Hf) & = p(\ta | \nsA, \nfA, \Hf) p(\nsA,\nfA | \Hf).
+%\end{align}
+%Since $S$ is assumed independent of  $\fsA$ and $\ffA$, $p(\nsA,\nfA | \Hs) = p(\nsA,\nfA | \Hf)$ and these terms will cancel in the ratio $p(D|\Hs)/p(D|\Hf)$.
+%Therefore we are left to compute $p(\ta | \nsA, \nfA, \Hs)$, from
+%\begin{align}
+%p(\ta | \nsA, \nfA, \Hs) &= \int p(\ta, \fsA | \nsA, \nfA, \Hs) d\fsA \\
+%& = \int p(\ta | \fsA,  \nsA, \nfA, \Hs) p(\fsA | \nsA, \nfA, \Hs) d\fsA \\
+%& = \int \fsA p(\fsA | \nsA,\nfA,\Hs). \label{fexpected}
+%\end{align}
+
+%Now the conditional distribution $p(\fsA | \nsA,\nfA,\Hs)$ comes from Bayes theorem:
+%\begin{align}
+%p(\fsA | \nsA,\nfA,\Hs) & \propto p(\nsA, \nfA, \Hs | \fsA) p(\fsA) \\
+%& \propto \fsA^\nsA (1-\fsA)^{n-\nsA} \fsA^{\alpha-1} (1-\fsA)^{\beta-1} \\
+%& \propto \fsA^{\nsA+\alpha-1} (1-\fsA)^{n-\nsA+\beta-1}
+%\end{align}
+%from which we conclude that $\fsA | \nsA,\nfA,\Hs \sim \be(\nsA+\alpha, n-\nsA+\beta)$. Now, recognizing (\ref{fexpected}) as the expectation of this distribution, we get  $p(\ta | \nsA, \nfA, \Hs) = \frac{\nsA+\alpha}{n+\alpha+\beta}$.
+
+
+
+
+\bibliography{/Users/stephens/Documents/mainbib}
+
+\end{document}

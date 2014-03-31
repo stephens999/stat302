@@ -1,0 +1,164 @@
+\documentclass{article}[11pt]
+\def\E{\mbox{E}}
+\def\P{\mbox{P}}
+\def\ni{\noindent}
+\usepackage{amsmath}
+
+\textwidth=15.0cm
+\oddsidemargin 3cm
+\evensidemargin 3cm
+
+\topmargin=-1.2cm
+\columnsep=1.0cm
+\textheight=21.8cm
+\hoffset=-3.2cm
+\renewcommand{\baselinestretch}{1.2}
+\setlength{\parindent}{0.3in}
+\setlength{\parskip}{0.1in}
+
+\setcounter{secnumdepth}{2}
+
+\begin{document}
+%\twocolumn
+
+
+\begin{center}
+\Large\bf The Meaning of Probability
+\end{center}
+\vskip 6mm
+\normalsize
+
+\underline{\Large{\bf Acknowledgments}}
+\bigskip
+
+%TO DO: ADD IN FREQUENCY INTERPRETATION OF BAYESIAN POSTERIOR PROB. NOTE WRONG IF PI WRONG; NOTE USE OF HIERARCHICAL MODELS TO HELP
+%ADD REFS TO AXIOMATIC APPROACHES
+%ADD REF TO DEMPSTER SCHAEFFER THEORY 
+% 
+Some of these notes are based on ones provided to me by Peter Donnelly,
+which he used to teach a similar class at the University of Chicago in the 1990s.
+\vskip 6mm
+
+\underline{\Large{\bf Selected Books}}
+\bigskip
+\begin{itemize}
+\item Berger, J.O.\ {\it Statistical Decision Theory and Bayesian Analysis}, (Second Edition) Springer, New York, 1985
+\item Bernardo, J.M\ and Smith, A.F.M.\ {\it Bayesian Theory}, Wiley, Chichester, 1994.
+\item Lindley, D. {\it Understanding Uncertainty}, Wiley, 2006.
+\item Kreps, D. {\it Notes on the theory of choice}, Westview Press, 1998. (Chapter 8 deals with Subjective Probability).
+%\item O'Hagan, A.\ {\it Kendall's Advanced Theory of Statistics, Volume 2B: Bayesian Inference} Edward Arnold, 1994.
+\item Robert, C.P.\ {\it The Bayesian Choice} (Second Edition), Springer, New York, 1994.
+\end{itemize}
+
+\section{What is Probability?}
+
+In the simple introductory example, we performed a calculation which
+concluded that, conditional on the available information, 
+the probability that the tusk we were considering came from a savannah elephant was 2/3. If we are going to go around drawing conclusions like this, then it seems
+important to ask, what does it mean?
+
+One possible approach to this question is to imagine a hypothetical (infinite) series of tusks ``similar" to the tusk in hand, and say that the probability means that among this series of similar tusks, 2/3 will be from savannah elephants. This approach comes from attempting to define probabilities as long-run frequencies, and so is sometimes referred to as the {\it frequency} interpretation of probability.
+As we discuss below, sometimes it is rather difficult to imagine, even hypothetically, such a series. 
+Further, it is also usually difficult to define exactly what one means by ``similar".
+
+Another possible approach is to treat the probability statement
+as a statement of personal uncertainty in a statement. This is referred to as
+the {\it personal} or {\it subjective} interpretation of probability. 
+Along these lines, there are still many different ways of interpreting what a probability of 2/3 might mean.
+For example, some approaches attempt to define probability in terms of whether you would (or should) be willing to accept certain bets at certain odds; others in terms
+of comparisons with a standard (e.g. 2/3 means that it is ``equally uncertain" as drawing a black ball from an urn containing 3 identical balls, two black and one white). 
+
+We now consider each of these two types of approach in more detail. For more backgrounds
+see Lindley, particularly chapters 1-3.
+
+
+%\section{Subjective Probability and Axiomatic Systems}
+
+\subsection{Frequency Interpretations of Probability}
+
+The probability of an event is often defined (formally or informally)
+as the limiting proportion of times the event occurs in an infinite
+sequence of independent repetitions of the experiment. Note that there are some philisophical problems with this approach. For example, what does it mean for the experiments in the sequence to be
+  independent? (it would be circular to define independence, in the
+  usual way, in terms of probability!)
+
+However, for me, by far the biggest practical (as opposed to philosophical) problem with
+this interpretation of probability is that {\it it is very limiting}, to require that an event be, at least  hypothetically, repeatable in order to use probabilities to talk about uncertainty. I have no
+real problem with thinking about probabilities
+in terms of long run behavior in situations where that seems to be appropriate - for example, tossing a coin. (One could object even to this, for example because repeated tosses cannot be identical - and if they were, then they would always give the same result!). But in many cases where we are uncertain, and where probabilities seem useful (and, indeed, are widely used) to represent uncertainty, the events involved are inherently one-off, and not repeatable.
+Let's take just two examples among many possibilities.
+\begin{itemize}
+\item Weather forecasters use probability to represent their uncertainty about future weather. For example, they might say ``There is a 20\% chance of rain tomorrow." This seems like a useful statement. Intuitively, I (and I hope you, too) feel I understand what they are trying to convey.  And it could help me in planning
+tomorrow's activities:  for example, whether
+I might plan to go for a picnic or a bike ride tomorrow. But what does it mean, since tomorrow
+is not a repeatable event? One could try to 
+make it more repeatable by referring to  ``similar" situations (``Of days like today, in the long run, it will rain on the next day in 20\% of cases.") But then specifying what ``similar" or ``like today" means is also tricky (or impossible).
+\item In playing in a team quiz, you might feel you know the answer to a particular question (e.g. ``Is Monrovia the capital of Liberia?"), although you
+are somewhat uncertain. Perhaps you tell your teammates that you are 80\% sure that your answer is correct. That again seems like a useful statement. If I were your teammate, it would give me some idea of how much weight to give your
+answer - for example, if I thought you were wrong then I might be more inclined to trust myself and argue against you than if you had said you were 99\% sure. But clearly this is not a repeatable event. It is not even a random event in the usual sense! It is simply an event about which we (or many people) are uncertain.
+\end{itemize}
+
+
+
+\subsection{Subjective Probability}
+
+Subjective (or ``personal") probabilities concern the assessments of a given person
+(``You'') about things which are not known with certainty, in the
+presence of partial information.  Think of $\P(A)$, Your personal
+probability of an 'event' $A$, as a numerical measure of the strength of
+Your degree of belief that $A$ will occur, in the light of available
+information.
+
+Personal probabilities may be associated with a much wider class of
+events than those to which the frequency interpretation of probability
+pertains.  This includes:
+\begin{enumerate}
+\item The outcome of a repeatable experiment (e.g.\ a coin toss)
+\item The outcome of a non-repeatable experiment (e.g.\ that the Democrats will have a majority in the Senate after the next election).
+\item Propositions about nature (e.g.\ this surgical procedure results
+  in increased life expectancy over the current procedure for disease
+ $X$).
+\item  The outcome of events that have already occurred, but whose status is uncertain. For example, it makes sense to talk about the (subjective) probability that it rained yesterday in San Francisco, or that someone on trial is guilty. 
+\item The truth of falsity of statements, such as that Monrovia is the capital of Liberia, which might be considered inherently ``non-random". 
+\end{enumerate}
+
+\subsubsection{Interpretation of Subjective Probabilities}
+
+Interpretation of statements about personal probabilities for an event $E$ do not involve
+long-run frequencies of the event $E$ occurring. There are many different
+ways to interpret personal probability statements, 
+but I like Lindley's approach (Lindley, Chapter 3).
+His approach involves defining a ``standard" 
+against which probabilities can be measured.
+The standard he chooses involves urns containing some fraction $f$ of red balls and $(1-f)$ of white balls. Let us call such an urn an $f$-urn. 
+
+Lindley assumes that you can imagine an $f$-urn for any $f$. Then the statement that Your probability for an event $E$ is $p$ means that event $E$ has, for you, the same uncertainty as drawing a red ball from a $p$-urn. Lindley argues that for any event $E$, such a $p$ exists, so for any event $E$ you must have a subjective probability, even if it is hard to decide what it is. Effectively his argument is that, for any event $E$, it must be more certain than the event of drawing a red ball from a $0$ urn, and less certain than the event of drawing a red from a $1$-urn, so if we let $p$ increase continuously from $0$ to $1$ there must be some $p$ where we switch from being more certain of $E$ to being less certain. (The mathematically-inclined might like to ask exactly how mathematically watertight his argument is: for example, in measure theory there are such things as ``unmeasurable sets", which suggests that, at least mathematically, there are events for which we cannot assign probabilities. Here we are content to note that, even if such events do exist, they seem very far removed from any kind of event you might come across in every-day experience.)
+
+\subsubsection{Coherence}
+
+Lindley argues (and here he is building on a considerable history, to which he is one contributor)
+that an important reason to use probability to measure uncertainty (and, in particular, to use
+Bayes Theorem to compute conditional probabilities,
+and hence conditional beliefs) is to make sure that your uncertainties ``cohere", or in other words to be self-consistent. For example, if $A$ is more certain to you than $B$ and $B$ is more certain to you than $C$ then it seems reasonable that you would want $A$ to be more certain to you than $C$. Mathematically, you want the binary relation ``is more certain" to be transitive. Using probability to measure uncertainty guarantees this transitivity property holds.
+
+Here's another slightly more complicated example of coherence: suppose $A$ and $C$ are mutually exclusive events, and $B$ and $C$ are also mutually exclusive. Then it seems reasonable to expect that if $A$ is more certain to you than $B$ then the event ``$A$ or $C$" will be more certain to you than ``$B$ or $C$". Again, using probabilities guarantees this, because probabilities obey $\Pr(A \text{ or } C) = \Pr(A)+\Pr(C) > \Pr(B) + \Pr(C) = \Pr(B \text{ or } C)$.
+
+Indeed, using probabilities to measure uncertainty, and using Bayes Theorem to compute conditional probabilities, effectively ensures that your beliefs obey pretty much any sensible definition of coherence that you might come up with.
+(Try coming up with something that breaks it!)
+
+Note that using probability in this way does not ensure that your beliefs are ``correct"; only that they are ``consistent". It is worth remembering that, in the words of C.A.B.~Smith, ``Consistency is not necessarily a virtue: one can be consistently obnoxious".
+
+\section{Why Probability?}
+
+I think Lindley makes a pretty good case that probability is one sensible way to express (personal) uncertainty. One might wonder whether it is the only way.
+
+Many people have studied this, 
+by postulating ``Axioms" that they feel any quantitative way of expressing degrees of belief ought to obey, and proving from these axioms that the resulting measure of degrees of belief 
+must obey the rules of probability. 
+However, these attempts almost invariably end up with axioms that look more mathematical than one might like, to deal with pathological situations that
+can arise in the mathematical abstraction (e.g. if two sets differ on a set of zero measure, and one set contains the other, do these sets have to be equally uncertain?).
+
+Perhaps a more important observation is that, as
+far as I know, all alternative approaches people have tried to come up with to express subjective uncertainty seem to suffer fatal flaws.
+
+\end{document}

@@ -1,0 +1,225 @@
+\documentclass{article}[11pt]
+\def\E{\mbox{E}}
+\def\P{\mbox{P}}
+\def\ni{\noindent}
+\def\s{\mbox{savannah}}
+\def\f{\mbox{forest}}
+\def\ffA{f_F}
+\def\fsA{f_S}
+\def\fsa{f_s^a}
+\def\ffa{f_f^a}
+\def\nsA{{n_s}}
+\def\nfA{{n_f}}
+\def\pif{\pi_F}
+\def\pis{\pi_S}
+\def\Hf{H_F}
+\def\Hs{H_S}
+\def\ta{T_A}
+\def\be{\text{Beta}}
+\usepackage{amsmath}
+
+\textwidth=14.0cm
+%\oddsidemargin 3cm
+%\evensidemargin 3cm
+
+%\topmargin=-1.2cm
+%\columnsep=1.0cm
+%\textheight=21.8cm
+%\hoffset=-3.2cm
+\renewcommand{\baselinestretch}{1.2}
+\setlength{\parindent}{0.3in}
+\setlength{\parskip}{0.1in}
+
+\setcounter{secnumdepth}{2}
+
+\begin{document}
+%\twocolumn
+
+
+\begin{center}
+\Large\bf Simple Examples of Bayesian Statistics
+\end{center}
+\vskip 6mm
+\normalsize
+
+The following examples are intended to give
+very simple illustrations of the use of Bayes Theorem
+to compute posterior distributions from prior distributions. They also introduce some important
+terminology:
+
+\begin{itemize}
+\item The {\it posterior mean} for $\theta$ is $E(\theta | D)$. It is often used as a point estimate for $\theta$. Another natural point estimate is the {\it posterior median}. Also used is the {\it posterior mode}, sometimes referred to as the MAP (maximum a posteriori) estimate. This is less natural in the continuous case (e.g. it is not parameterization invariant). We will see later how these different estimates can be motivated as attempting to minimize certain loss functions.
+\item A $(1-\alpha)$ {\it Credible Interval} (CI) for the parameter $\theta$ is any interval $[a,b]$ such that $p(\theta \in [a,b])= 1-\alpha$, where here the probability is a statement about $\theta$ (i.e. $\theta$ is considered a random variable; $a$ and $b$ are not).  A more general concept is a ``credible set": a $1-\alpha$ credible set is a set $A$ such that $p(\theta \in A)= 1-\alpha$. Sometimes the term ``credible region" is also used.
+
+There are often many  ways to create a $1-\alpha$ CI for a given posterior distribution (indeed, for continuous parameters, usually an infinite number of ways). Two ways are particularly common. The first is to use the {\it symmetric CI}: that is, choose $a$ and $b$ so that $p(\theta < a) = p(\theta>b) = \alpha/2$. The second is to
+use a Highest Posterior Density (HPD) interval,
+which is any set of the form $\{c:p_{f|D}(c) > T\}$
+for some threshold $T$.
+
+
+
+\item The {\it predictive distribution} for $x_{n+1}$ (given data $x_1,\dots,x_n$) means the conditional distribution $p(x_{n+1} | x_1,\dots,x_n)$. When the $x_i$s are iid given $\theta$ it is given by
+\begin{equation}
+p(x_{n+1} | x_1,\dots,x_n) = \int p(x_{n+1} | \theta) p(\theta | x_1,\dots,x_n) d\theta
+\end{equation}
+\item A particular parametric family $\mathcal{F}$ is said to be {\it conjugate} for a particular inference problem if, when the prior distribution is $\in \mathcal{F}$ then the posterior distribution is also $\in \mathcal{F}$. (See examples below.)
+\end{itemize}
+
+
+\section{Estimate of a Frequency from Binomial Data}
+
+Suppose we sample $n$ alleles from a population
+and observe $n_A$ of type $A$. What is the frequency, $f$,  of the $A$ allele? Can you give a point estimate for $f$? (e.g. posterior mean). An interval estimate? (e.g. 95\% CI). What is the probability that the next allele sampled will be an $A$? (i.e. what is the predictive distribution of the next observation given the previous observations).
+
+Assume a prior distribution for $f$ that is
+Beta$(\alpha,\beta)$. Then by Bayes Theorem
+\begin{align}
+p(f | D) & \propto p(D|f) p(f) \\
+& \propto f^{n_A} (1-f)^{n-n_A} f^{\alpha-1} (1-f)^{\beta-1} \\
+& \propto f^{n_A+\alpha-1} (1-f)^{n-n_A+\beta-1} \\
+& \sim \text{Beta}(n_A+\alpha, n-n_A+\beta). 
+\end{align}
+Note: from this we see that the Beta distribution is the {\it conjugate prior} distribution for the frequency $f$ in a binomial likelihood.
+
+A natural point estimate is the {\it Posterior expectation}, $E(f|D) = (n_A+\alpha)/(n+\alpha+\beta)$.  
+
+A natural interval estimate is the {\it symmetric $1-\alpha$ CI}, which is $[A,B]$ where $A,B$ are chosen such that $p(f<A) = \alpha/2$ and $p(f>B)=\alpha/2$, so that $p(f \in [A,B]) = 1-\alpha)$. Note that these probability statements are about $f$, not about $A$ and $B$! Here a credible interval differs from a confidence interval in its interpretation.
+
+A better (shorter), but harder-to-compute, CI is the Highest Posterior Density $1-\alpha$ credible interval (set), $\text{HPD}(T)=\{c : p_{f|D}(c)> T\}$, where $T$ is chosen so that $p(f \in \text{HPD}(T)) = 1-\alpha$.
+  
+Now to compute the predictive distribution of the next sample. Given $f$, the probability that the next allele is an $A$ is $f$.
+So
+\begin{align}
+p(\text{Next is $A$} | D) & = \int p(\text{Next is A} | f,D ) p(f|D) \, df \\
+& = \int f p(f|D), 
+\end{align} 
+which from the above is $(n_A+\alpha)/(n+\alpha+\beta)$.
+
+
+\section{Inference of normal mean}
+
+See also Robert pp161-162.
+
+Suppose we have a single observation $X=x$.  Model $X$ as a $N(\theta,\phi)$
+given the values of the parameters $\theta$ and $\phi$.  Suppose
+$\phi$ is known and take a prior for $\theta$ which is
+$N(\theta_0,\phi_0)$, for fixed $\theta_0$ and
+$\phi_0$. 
+
+The posterior for $\theta$ is
+\begin{align}
+p(\theta \mid x) & \propto \frac{1}{\sqrt{2\pi
+    \phi_0}}e^{-\frac{1}{2\phi_0}(\theta-\theta_0)^2}
+\frac{1}{\sqrt{2\pi \phi}}e^{-\frac{1}{2\phi}(x-\theta)^2}
+\\
+& \propto \exp\left( -\frac{1}{2} \theta^2 (\frac{1}{\phi_0}+\frac{1}{\phi})+ \theta
+  \left( \frac{\theta_0}{\phi_0}+\frac{x}{\phi} \right) \right)
+  \end{align}
+Now, write
+\begin{equation}
+\phi_1=\frac{1}{\frac{1}{\phi_0}+\frac{1}{\phi}},
+\end{equation}
+and
+\begin{equation}
+\theta_1=\phi_1 \left( \frac{\theta_0}{\phi_0}+\frac{x}{\phi}
+\right),
+\end{equation}
+so that
+\begin{align}
+p(\theta | x) & \propto \exp\left( -\frac{1}{2}
+  \frac{\theta^2}{\phi_1} + \frac{\theta \theta_1}{\phi_1} \right) \\
+  & \propto \exp\left( -\frac{1}{2\phi_1} (\theta-\theta_1)^2 \right).
+  \end{align}
+It follows that the posterior for $\theta$ is $N(\theta_1,\phi_1)$. Note: from this we see that the normal distribution is the conjugate prior distribution for the mean parameter in a normal likelihood with known variance.
+
+\underline{Remarks:}
+\begin{enumerate}
+\item The posterior mean for $\theta$ is:
+\begin{align}
+\theta_1 & =\phi_1 \left(\frac{\theta_0}{\phi_0} + \frac{x}{\phi}
+\right), \\
+&=\theta_0 \frac{\phi_0^{-1}}{\phi_0^{-1}+ \phi^{-1}} + x
+\frac{\phi^{-1}}{\phi_0^{-1}+ \phi^{-1}},
+\end{align}
+a weighted average of the prior mean and the observed value with the
+weights depending on the precision (inverse of the variance) of the
+prior and the model.  For example, if the prior variance is large
+relative to the model variance the posterior mean will be close to the
+observed data $x$.
+\item The posterior variance is half of the harmonic mean of the prior
+  and the model variances.  In particular, since
+$$\frac{1}{\phi_0}+\frac{1}{\phi} > \frac{1}{\phi}, \frac{1}{\phi_0},\
+\phi_1=\frac{1}{\frac{1}{\phi_0}+\frac{1}{\phi}} < \phi, \phi_0,$$
+so the posterior variance is smaller than the prior and model
+variance.
+\item For credible intervals, given $x$,
+$$P\left( -z_{\alpha/2} < \frac{\theta - \theta_1}{\sqrt{\phi_1}} <
+  z_{\alpha/2} \right) = \alpha,$$
+where $z_{\alpha/2}$ is the $(1-\alpha/2) \times$100th percentile of the
+N(0,1) distribution.  In particular as the prior variance $\phi_0
+\rightarrow \infty$, $\phi_1 \rightarrow \phi$, and $\theta_1
+\rightarrow x$.  Thus, as $\phi_0 \rightarrow \infty$,
+$$P\left( x-z_{\alpha/2} \sqrt{\phi} < \theta < x+
+  z_{\alpha/2}\sqrt{\phi} \mid x \right) \rightarrow 1-\alpha.$$
+Thus, $\left( x-z_{\alpha/2} \sqrt{\phi}, x+
+  z_{\alpha/2}\sqrt{\phi} \right)$ is a $\times(1-\alpha)$
+posterior credible interval for $\theta$.  This is the usual $(1-\alpha)$ confidence interval for $\theta$ in
+frequentist statistics.  Note the different interpretations of
+$$P\left( x-z_{\alpha/2} \sqrt{\phi} < \theta <
+  x+z_{\alpha/2}\sqrt{\phi} \right).$$
+
+In the frequency approach, the statement applies before $x$ is observed,
+and the randomness relates to the distribution of $x$.  In the Bayesian
+approach (with a limiting flat prior for $\theta$) the analysis is conditional
+on the observed value of $x$ and the randomness relates to the
+uncertainty over the value of $\theta$.
+
+\end{enumerate}
+
+\section{Classifying a sample, continued: Propogating Uncertainty in estimated frequencies}
+
+We now extend the example from the first handout to make it a little more realistic, replacing the unrealistic assumption that we ``know" the frequencies of $A$ in both savannah and forest subspecies with a more realistic assumption. Specifically, we now assume that we have available random samples of $n$ individuals from each subspecies, and observed $\nsA$ and $\nfA$ copies of $A$ in the savannah and forest samples respectively. Based on these data the maximum likelihood estimates
+for $\fsA$ and $\ffA$ are $\hat{\fsA} = \nsA/n$ and $\hat{\ffA} = \nfA/n$.
+A naive approach would be to replace the frequencies in the previous example, wherever they occur, with these estimates. (This is sometimes called
+the ``plug-in" approach to classification.) However, this solution is not always satisfactory because it ignores the fact that these are only {\it estimates} of the frequencies. If $n$ is sufficiently large then this approach will work fine because the estimates will be very accurate. However, if $\ffA$ and $\fsA$ are near 0 (which can happen easily) then the size of $n$ required for the plug-in approach to work may be larger than what is actually available. 
+
+To show how big a problem this can be, imagine that $n=100$, and that we see no copies of $A$ in the savannah sample, and just one in the forest sample ($\nsA = 0, \nfA=1$). Now the maximum likelihood estimates of $\fsA$ and $\ffA$ are $0$ and $0.01$ respectively, and plugging these into (2) from the first sheet gives $p(H_s|D) = 0$. That is, we would conclude that the tusk was {\it certainly}, with no room for doubt, from a forest elephant, and not a savannah one. Furthermore we would draw this conclusion whatever the prior probabilities $\pis$ and $\pif$ (as long as $\pif \neq 0$), so even if we were {\it a priori} very confident that the tusk arose from a savanna elephant we would reverse this confidence based on the genetic data. Such a conclusion goes against the common sense intuition that, in this case, the amount of information obtained about the tusk origin from the genetic data is rather limited.
+
+Now let us see how we can take a Bayesian approach to this problem. Now the unknowns include not only $S$, but also $\fsA$ and $\ffA$, and the data $D$ 
+include not only that the tusk has allele $A$ (an event we now denote $\ta$), but also the observation of $\nsA$ and $\nfA$ copies of $A$ in $n$ savanna and forest elephants. Thus we write $D=(\ta,\nsA,\nfA)$.
+
+Since $\fsA$ and $\ffA$ are unknown, we must specify a prior distribution for
+them. A convenient choice here is the Beta distribution (because of conjugacy). To follow this example all you need to know is that the Beta distribution with parameters $\alpha, \beta$, written $\be(\alpha,\beta)$, is a distribution on $[0,1]$ with density 
+$p(f) \propto f^\alpha-1 (1-f)^{\beta-1}$, and expectation $\alpha/(\alpha+\beta)$. It may help to note that $\alpha=\beta=1$ is the uniform distribution on $[0,1]$ (see Wikipedia for more on the beta distribution). We assume that $S$ is {\it a priori} independent of $\fsA$ and $\ffA$.
+
+Recall, from the previous sheet, we have
+\begin{equation}
+\frac{p(\Hs | D)}{p(\Hf | D)}  = \frac{p(D|\Hs)}{p(D|\Hf)} \frac{p(\Hs)}{p(\Hf)}.
+\end{equation}
+Consider computing $p(D | \Hs)$ and $p(D | \Hf)$.
+We have
+\begin{align}
+p(D | \Hs) &= p(\ta,\nsA,\nfA | \Hs) \\
+& = p(\ta | \nsA, \nfA, \Hs) p(\nsA,\nfA | \Hs)
+\intertext{and similarly}
+p(D | \Hf) & = p(\ta | \nsA, \nfA, \Hf) p(\nsA,\nfA | \Hf).
+\end{align}
+Since $S$ is assumed independent of  $\fsA$ and $\ffA$, $p(\nsA,\nfA | \Hs) = p(\nsA,\nfA | \Hf)$ and these terms will cancel in the ratio $p(D|\Hs)/p(D|\Hf)$.
+Therefore we are left to compute $p(\ta | \nsA, \nfA, \Hs)$, from
+\begin{align}
+p(\ta | \nsA, \nfA, \Hs) &= \int p(\ta, \fsA | \nsA, \nfA, \Hs) d\fsA \\
+& = \int p(\ta | \fsA,  \nsA, \nfA, \Hs) p(\fsA | \nsA, \nfA, \Hs) d\fsA \\
+& = \int \fsA p(\fsA | \nsA,\nfA,\Hs). \label{fexpected}
+\end{align}
+
+Now the conditional distribution $p(\fsA | \nsA,\nfA,\Hs)$ comes from Bayes theorem:
+\begin{align}
+p(\fsA | \nsA,\nfA,\Hs) & \propto p(\nsA, \nfA, \Hs | \fsA) p(\fsA) \\
+& \propto \fsA^\nsA (1-\fsA)^{n-\nsA} \fsA^{\alpha-1} (1-\fsA)^{\beta-1} \\
+& \propto \fsA^{\nsA+\alpha-1} (1-\fsA)^{n-\nsA+\beta-1}
+\end{align}
+from which we conclude that $\fsA | \nsA,\nfA,\Hs \sim \be(\nsA+\alpha, n-\nsA+\beta)$. Now, recognizing (\ref{fexpected}) as the expectation of this distribution, we get  $p(\ta | \nsA, \nfA, \Hs) = \frac{\nsA+\alpha}{n+\alpha+\beta}$.
+
+
+
+\end{document}

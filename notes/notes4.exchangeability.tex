@@ -1,0 +1,453 @@
+\documentclass{article}
+\def \baselinestretch{1.2}
+\textwidth=18.0cm
+\topmargin=-1.2cm
+\columnsep=1.0cm
+\textheight=21.8cm
+\hoffset=-3.2cm
+\begin{document}
+%\twocolumn
+\normalsize
+\underline{\Large{\bf Hierarchical Modeling and Exchangeability (see also Bernardo and Smith, Ch. 4)}}
+
+Note: these notes are ``work in progress", particularly the earlier
+material focussed on hierarchical modeling.
+
+\vskip 7mm
+
+\section{Hierarchical modelling}
+
+\subsection{Examples:}
+
+In genomics there are many settings where we measure something
+on a large number
+of objects. A common example is measuring ``gene expression" (which
+essentially means the activity level of a gene) on
+a large number of genes (e.g. approximately 20,000 genes in humans and chimps). Another example, is measuring the amount of transcription factor binding that occurs at a large number (thousands) of binding sites. 
+
+In other contexts it is common to measure the same thing on
+many examples (although perhaps not thousands). For example, we might measure the murder rate
+in many cities in the USA.
+
+And in an example we looked at earlier, we considered having measured
+the DNA of several elephant tusks taken from a single ``seizure", and using
+these  measurements to infer whether each tusk came from a Savanna
+or a forest elephant.
+
+The key idea that we want to get over here is that, in cases such as these,
+measurements on one object usually {\it actually give you information on the other objects}. Sometimes that information is very imprecise, sometimes it is very precise, but our first job is to convince ourselves that the general principle is, intuitively, true:  measurements on some objects give information about
+other similar objects.
+
+So consider the following examples:
+\begin{itemize}
+\item If you were told that the measured expression levels of 10 randomly-selected genes were 4.5, 6.2, 6.4, 7.5, 8.2, 6.3, 5.4, 10.1, 5.5 and 9.4, and were asked what you would guess for the expression level of the next gene,
+what would your answer be? Would it be different if you had instead
+seen 11.2,10.3,12.5,11.3,9.8,10.9,13.2,14.2,12.0, and 11.1?
+\item If I tell you that the murder rates in 5 randomly-selected
+US cities are 6.3,4.4,4.0,5.9, and 20.7 (per 100,000 people per year), what would you guess for the next one? Would it be different than if I'd told you 1.1,2.3,0.8,3.3 and 0.1?
+\item If you were testing a seizure of 100 tusks to determine their origins,
+and the first 95 all came from forest elephants. What would be your guess
+for the next one? Would it be different than if the first 95 had all come from savanna elephants?
+\end{itemize}
+ The idea of sharing information across observations to improve inferences
+ and estimates is sometimes referred to as ``Borrowing Strength".
+ 
+ 
+\subsection{Hierarchical, or Multi-level, Modelling, to borrow strength}
+
+Hierarchical modeling provides a way, indeed the way, to capture the key idea
+above, and to ``borrow strength" across observations.  
+
+Here's perhaps the simplest hierarchical model (related to the ``normal means" problem).
+
+Suppose you are measuring $n$ related quantities, with error. Let $\beta_1,\dots,\beta_n$ represent the true values, and $X_1,\dots,X_n$ represent the measured values. Let $\sigma_1,\dots, \sigma_n$ represent the
+standard deviations of each measurement, and we'll assume these are known for now. We'll also assume that the errors are normal, so $X_i | \beta \sim N(\beta_i, \sigma_i^2)$. How should we estimate $\beta_1$ from the data?
+
+The obvious estimate is $\hat\beta_1:=X_1$.
+ But this does not borrow strength at all. It ignores the other observations!
+ 
+Here's the idea: we can do better by assuming that the $\beta_i$ come from some underlying (unknown) distribution. Then we can estimate this distribution from the data, which will allow us to borrow strength across observations.
+ 
+ For example, let's suppose we assume that $\beta_1,\dots,\beta_n$ are independent and identically distributed $\sim N(\mu,\sigma^2)$. Of course
+ we don't know $\mu$ and $\sigma$, but we can estimate them from the data.
+ For example, the likelihood is given by:
+ \begin{equation}
+ L(\mu,\sigma) := p(X | \mu,\sigma) = \prod_i p(X_i | \mu, \sigma)
+ \end{equation}
+ where $p(X_i | \mu, \sigma)$ is given by the normal density, $X_i \sim N(\mu,\sigma_i^2 + \sigma^2)$. 
+ We could estimate $\mu, \sigma$ by maximum likelihood.
+ 
+ Given $\mu$ and $\sigma$, we could estimate $\beta_i$ using the posterior distribution $p(\beta_i | X, \hat\mu, \hat\sigma)$. (Exercise: what is the posterior mean?)
+ 
+ This two-step procedure, using maximum likelihood to estimate the ``hyper-parameters" $\mu$ and $\sigma$, is often called ``Empirical Bayes".
+ 
+ Note that because we used
+ maximum likelihood here for $\mu$ and $\sigma$, the posterior for $\beta_i$, $p(\beta_i | X, \hat\mu, \hat\sigma)$, ignores the uncertainty in these ``nuisance parameters", and will underrepresent the actual uncertainty in $\beta$. If the data are very informative for $\mu$ and $\sigma$ then this is a small issue. If not then it is a bigger issue. 
+
+Of course, we could get around this by doing ``full Bayes", specifying 
+prior distributions for $\mu$ and $\sigma$, and integrating them out to
+obtain the posterior distributions for $\beta$. 
+ 
+Something to think about: when will this procedure work well?
+When might it work less well?
+ 
+ 
+
+\section{Exchangeability}
+
+Exchangeability is a mathematical concept that can motivate hierarchical modeling.
+
+
+\underline{Definition}:  The random quantities $x_1,\ldots,x_n$ are
+said to be (finitely) {\bf exchangeable} if
+$$P(x_1 \in E_1, x_2 \in E_2, \ldots, x_n \in E_n)
+=P(x_{\pi(1)} \in E_1,\ldots ,x_{\pi(n)} \in E_n)$$
+for any permutation $\pi$ of the set {1,2,...,n}, and any
+(measureable) sets $E_1,\ldots,E_n$ of possible values.  In terms of
+the corresponding pdf, this is equivalent to 
+$$p(x_1,\cdots,x_m)=p(x_{\pi(1)},\cdots,x_{\pi(m)}).
+$$
+An infinite sequence $x_1,x_2,\ldots$ is said to be exchangeable if
+every finite sequence is (finitely) exchangeable.
+
+Intuitively,
+exchangeability is a statement that beliefs about the observeables
+$x_1,x_2,\ldots$ do not depend on the labelling or order in which we
+consider them.
+
+Note that ``independent and identically distributed" is a special case of exchangeable.  (Simple Exercise.)
+
+\vskip 4mm
+The assumption of exchangeability will be natural in many contexts. Canonical examples include tossing a coin, or a thumb-tack. More generally it will be natural when
+\begin{enumerate}
+\item The random quantities arise from a sample from a population (eg results of an opinion poll).
+\item They arise as the result of an ``experiment'' which is repeated
+  under similar conditions.
+\item There is no natural labelling or indexing of the random
+  quantities (for example because they do not arise in a time ordered
+  way) and they are labelled for convenience.
+\end{enumerate}
+\vskip 6mm
+\underline{\bf Theorem (de Finetti)}:  If $x_1,x_2,\ldots$ is an
+infinite exchangeable sequence of real valued random quantities with
+probability measure $P$, there exists a probability measure $Q$ on $\cal{F}$, the
+set of all distributions on {\bf R}, such that the joint distribution
+of $x_1,\ldots,x_n$ has the form
+$$P(x_1,\ldots,x_n)=\int_{\cal{F}} \prod_{i=1}^n F(x_i)dQ(F)$$
+Further,
+\begin{equation}
+Q=\lim_{n\to\infty} P(F_n)
+\end{equation}
+where $F_n$ is the empirical distribution function of
+$x_1,x_2,\ldots,$ (that is, $F_n$ is the distribution which places mass $n^{-1}$
+on each observed value $x_i$, $i=1,2,\ldots$)
+and $P(F_n)$ denotes the law (distribution) of $F_n$.
+\vskip 4mm
+\underline{Proof}:  See Bernardo and Smith, or most (advanced) textbooks on probability. 
+
+\vskip 4mm
+\noindent Remarks.
+\begin{enumerate}
+\item  The theorem says that we
+  can think of an exchangeable sequence $x_i,i=1,2,\ldots$ as arising
+from a ``two-stage'' randomization
+  \begin{enumerate}
+    \item First pick a distribution $F$ according to the measure $Q$.
+    \item Conditional on $F$, $x_i,i=1,2,\ldots$ are i.i.d. $F$.
+  \end{enumerate}
+\item Consider the special case of an infinite sequence of \{0,1\}-valued
+random variables.  A distribution on \{0,1\} is uniquely
+  determined by the mass, $p$, on \{1\}.  Thus the set of all
+  distributions on \{0,1\} is effectively the unit interval [0,1].  The
+  de Finetti measure $Q$ is then just a probability distribution on [0,1].
+In this context de Finetti's theorem says 
+$$p(x_1,\ldots,x_n)=\int_0^1 p^{\Sigma x_i} (1-p)^{n-\Sigma x_i}
+dQ(p).$$
+In words, any infinite exchangeable sequence of \{0,1\}-valued random
+variables has a distribution of the form
+\begin{enumerate}
+\item Choose a value $p$ for the success probability according to $Q$
+\item Conditional on $p$, the $x_i$ are i.i.d. Bernoulli($p$).
+\end{enumerate}
+Further, $n^{-1} \sum_{i=1}^n x_i \to p$, so that $p$ is the
+limiting long run proportion of successes.
+\vskip 4mm
+
+\item Consider the case where the sequence $x_1,x_2,\dots$ are either all 0s or all 1s, with equal probability. Clearly the values are not independent. But, they are exchangeable. Indeed, they are conditionally $iid$ given $p$, where $p$ is drawn from $\{0,1\}$ with
+equal probability on each. [Note that this provides a nice simple illustration of $Q$ being the limit of the empirical distribution. It also demonstrates
+that exchangeability does not imply i.i.d.].
+
+\item An important consequence of de Finetti's theorem is that
+  subjective beliefs which are consistent with (infinite)
+  exchangeability {\it must} be of the form
+\begin{enumerate}
+\item There are beliefs ({\it a priori}) on a parameter ``$F$''
+\item Conditional on $F$ the observations are i.i.d.
+\end{enumerate}
+In general, the ``parameter'' $F$ will be infinite dimensional.  In
+particular contexts, additional structure in the beliefs may result in
+a restriction to finite dimensional parameter space.  In this case,
+conventional terminology refers to the model as ``parametric''.  In
+the infinite dimensional case it is often called ``non-parametric''.
+\item In the presence of exchangeability, the ``parameter'' about
+  which one has ``prior'' beliefs has a natural interpretation as a
+  limit of observable quantities.  (One concern sometimes expressed
+about Bayesian statistics is that it is ``unnatural'' to have to express
+``beliefs'' about parameters.  The point being made here is that in the
+presence of exchangeability, parameters are just functions of
+observables.  For example in the exchangeable $\{0,1\}$-valued setting,
+the ``parameter'' $p$ is just the long-run proportion of successes, and
+it does not seem unreasonable to ask about uncertainty about this before
+seeing data.)
+\end{enumerate}
+\vskip 6mm
+Exchangeability represents complete symmetry amongst the random
+quantities $x_1,x_2,\ldots$.  There are many situations in which this
+might be unreasonable, but in which weaker symmetry conditions are
+plausible.  These lead to versions of {\bf partial exchangeability}
+for which analogies of de Finetti's theorem are available.
+
+Note that even in situations where exchangeability does not formally apply, 
+it can be a convenient and useful modeling approximation in practice (just as independence can 
+be a convenient and useful modeling assumption).
+For example, if we are modeling data for the 50 states of the US, then the data
+are probably not formally exchangeable, but might be conveniently modeled as such.
+
+
+\newpage
+\underline{\bf Examples:}
+\vskip 4mm
+\begin{enumerate}
+\item For $i=1,2,\ldots,L$, suppose that $x_{i1},x_{i2},\ldots$
+  represent measurements of components produced by the $i$th of $L$
+  machines.  For each $i$, it may be plausible that
+  $x_{i1},x_{i2},\ldots$ are exchangeable, but this may not be
+  plausible for $x_{11}, x_{21}, x_{22}$ for example.
+\item Drug Trial:  In each of $I$ contexts (e.g. type of subject with
+  regard to age, sex, $\ldots$ in a drug trial) there may be $J$ different
+  treatments (e.g. drugs) applied to each of $K$ subjects.  Writing
+  $x_{ijk}$ for the response of the $k$th subject given treatment $j$ in
+  context $i$, ($i=1,2,\ldots,I$, $j=1,2,\ldots,J$, $k=1,2,\ldots,K$) it may
+  be reasonable to assume that $x_{ij1}$ and $x_{ij2}$ are
+  exchangeable for each $i$ and $j$, but exchangeability across $i$ and $j$
+  may be implausible.
+\item Consider a specific case of Example 1
+  above in which the $x_{ij}$ are \{0,1\} valued.  Under the assumption
+  that $x_{i1},x_{i2},\ldots$ are exchangeable for each $i$, an analogue
+  of de Finetti's theorem shows that the joint distribution of the
+  $x_{ij}$ must have the form
+\begin{eqnarray*}p(x_{11},\ldots,x_{1 n_{1}},x_{21},\ldots,x_{2
+  n_{2}},\ldots,x_{L1},\ldots,x_{L n_{L}})
+&=&\int_{[0,1]} \theta_1^{\Sigma x_{1j}} (1-\theta_1)^{n_1 -
+  \Sigma x_{1j}}\\
+&& \ldots \theta_L^{\Sigma x_{Lj}} (1-\theta_L)^{n_L -
+  \Sigma x_{Lj}} dQ(\theta_1,\ldots,\theta_L),
+\end{eqnarray*}
+where $\theta_i=\lim_{n\to\infty}(x_{i1}+\cdots+x_{i n})/n$,
+for $i=1,2,\ldots,L$.
+\vskip 4mm
+That is, the joint distribution is as if there were unknown success
+probabilities $\theta_i$ associated with the $i$th component, and
+conditional on $(\theta_1,\ldots,\theta_L)$, the $x_{ij}$ are
+independent Bernoulli r.v.'s with 
+$$P(x_{ij}=1 \mid \theta_1,\ldots,\theta_L)=\theta_i,~~~~ j=1,2,\ldots.$$
+\vskip 4mm
+If the machines are ``similar'', then it may be natural to regard the
+$L$ long run success frequencies $\theta_1,\ldots,\theta_L$ as
+exchangeable.  If further, the $L$ machines may be thought of as a
+choice from a potentially infinite collection, then we may regard
+$\theta_1,\ldots,\theta_L$ as part of an infinite exchangeable
+sequence.  In this case, de Finetti's theorem gives
+$$Q(\theta_1,\ldots,\theta_L)=\int \prod_{i=1}^L G(\theta_i) d\pi(G).$$
+That is, it is {\it as if} there were a random distribution $G$ on [0,1], and
+conditional on $G$, the $\theta$'s are i.i.d. $G$.  This gives a
+heirarchichal model for the data $x_{i1},x_{i2},\ldots$, $i=1,2,\ldots$.
+\end{enumerate}
+
+\newpage
+
+\underline{\bf Finite Exchangeability}
+\vskip 4mm
+Throughout this subsection we have considered infinite exchangeable
+sequences.  Suppose instead that we have a finite collection
+$x_1,\ldots,x_n$ which we regard as exchangeable.  We can use de
+Finetti's theorem {\it if} we can regard $x_1,\ldots,x_n$ as part of an
+infinite collection $x_1,x_2,\ldots$.  Formally, we need the existence of
+an exchangeable distribution for the infinite sequence whose
+restriction to the first $n$ elements coincides with our distribution
+for $x_1,\ldots,x_n$.
+\begin{enumerate}
+\item Not all finite exchangeable sequences can be embedded in an infinite
+sequence in this way.  For a simple example, $x_1,x_2$ with
+$$P(x_1=1,x_2=0)=P(x_1=0,x_2=1)=\frac{1}{2},$$
+cannot be embedded in an exchangeable sequence
+$x_1,x_2,x_3$. (Exercise)
+\item If $x_1,\ldots,x_n$ can be embedded in an exchangeable
+  $x_1,\ldots,x_N$ for large $N$, then (in an appropriate sense) the
+  distribution of $x_1,\ldots,x_n$ will be close to that given by the
+  de Finetti representation.  (Diaconis and Freedman, Ann. Prob. 8
+  (1980) 745-764.)
+\end{enumerate}
+
+\clearpage
+
+\section{Example: Multiple Linear Regression}
+
+Consider the multiple linear regression model,
+\begin{equation}
+Y = \beta X + \epsilon
+\end{equation}
+where $Y$ is an (observed) $n$-vector of responses, $X$ is an 
+(observed) $n \times p$ matrix
+of predictors, $\beta$ is a $p$ vector of effects (to be estimated), and $\epsilon \sim N(0,1/\tau)$ is an (unobserved) $n$-vector of errors.
+Assume that both $Y$ and $X$ have been ``centered" to have 0 mean in each column (this is a common trick that is used so that there is no need to worry about an intercept).
+
+If $p$ is large compared with $n$, then maximum likelihood estimation
+of $\beta$ will not work (too many parameters leads to an underdetermined system).
+
+Solution: ``borrow strength" on the $\beta$ values using a hierarchical model.
+
+\subsection{Non-sparse version}
+
+Simplest version of borrowing strength is to assume 
+\begin{equation} \label{eqn:ridge}
+\beta_j |\tau, \sigma_b \sim N(0,\sigma_b^2/\tau). 
+\end{equation}
+
+Note 1: we could assume a non-zero mean,
+but it is usually not appropriate. For example, you would usually want procedures to be invariant to recoding a column of $X$ as $-X$, which 
+requires a symmetric prior for $\beta$ about 0.
+
+Note 2: the scaling of the prior by $\tau$ is standard: it simplifies
+computation, and makes results transform appropriately with
+changes in units of $Y$ (e.g. changing $Y$ from feet to inches would scale
+estimates of $\beta$ by a factor of 12).
+
+In an empirical Bayes approach, we would estimate hyper-parameters $\sigma_b^2$ and $\tau$ by maximum likelihood. (The likelihood is easy,
+integrating out $\beta$: exercise). And the 
+posterior distribution on $\beta | \sigma_b, \tau, Y,X$ is available in closed form.
+
+This procedure always leads to estimated $\beta$ values that are closer
+to 0 than the least squares estimates (e.g. when these exist, $p<n$). 
+This effect is referred to as ``shrinkage", and the prior (\ref{eqn:ridge}) is 
+referred to as a ``shrinkage prior". 
+[Frequentists like shrinkage too: it can reduce variance, at the cost of
+some bias, resulting in a smaller mean squared error.]
+
+\subsection{Sparse version}
+
+The assumption that the $\beta$ values are normally-distributed is a little
+restrictive. Various deviations from normality could be considered,
+but a common one is to allow that some values of $\beta$ might be
+exactly zero (or so close as to be indistinguishable), while
+the remainder are normally distributed.
+This leads to the following prior:
+\begin{equation}
+p(\beta | \pi, \sigma_b, \tau) = (1-\pi) \delta_0 + \pi N(0,\sigma_b^2/\tau)
+\end{equation}
+where $\delta_0$ denotes a point mass on zero.
+
+With this prior, integrating out to obtain  a likelihood for $\pi,\tau$ and $\sigma_b$ is no longer easy. In practice people have either fixed $\pi, \sigma_b$  to ``default" values (estimating $\tau$), or performed a full Bayesian analysis, placing priors on these unknowns and estimating them by computational methods to be discussed (MCMC).
+
+Note that the resulting model can encourage $\beta$ to be sparse (if $\pi$ is near 0),
+and learns how sparse by borrowing strength across all $\beta$ values to
+learn $\pi$. Alternative approaches to encouraging sparsity include penalized regression such as the Lasso and Elastic net. 
+
+Further reading: Y Guan and M Stephens. Bayesian Variable Selection Regression for Genome-wide Association Studies, and other Large-Scale Problems. Annals of Applied Statistics. 5(3): 1780-1815, September 2011.
+
+
+
+
+
+
+
+
+
+
+
+
+%\vskip 6mm
+%\underline{\bf Meta Modelling}
+%\vskip 4mm
+%The idea of this section is that general structural properties can be
+%quite powerful in focusing on particular classes of models.  We
+%illustrate with some examples.
+%\begin{enumerate}
+%\item Exchangeability.  We saw in the previous section that a belief
+%  in exchangeability (to be precise, in the possibility of embedding
+%  observables in an infinite exchangeable sequence) induces, via de
+%  Finetti's theorem, a mixture representation for the predictive
+%  distribution in which there are prior beliefs about a ``parameter''
+%  and then a sampling model in which the data are i.i.d.\ given the
+%  parameter.
+%
+%We discussed the extensions to versions of partial
+%  exchangeability.
+%\item Spherical Symmetry.  Say that the random quantities
+%  $x_1,\ldots,x_n$ enjoy {\it centered spherical symmetry} if
+%  for any $n\times n$ orthogonal matrix $A$, $(x_1 -
+%  \bar{x}_n,\ldots,x_n-\bar{x}_n)$ and $A(x_1 -
+%  \bar{x}_n,\ldots,x_n-\bar{x}_n)$ have the same distribution, where
+%  $\bar{x}_n=(x_1+\cdots+x_n)/n$.  (Centered Spherical Symmetry is
+%  equivalent to the statement that the predictive distribution of
+%  $(x_1,\ldots,x_n)$ depends only on $(x_1-\bar{x}_1)^2 +\cdots
+%  +(x_n-\bar{x}_n)^2)$.
+%\vskip 4mm
+%  \underline{Proposition}:  If $x_1,x_2,\ldots$ is an infinitely
+%  exchangeable sequence of random quantities for which, for each $n$,
+%  $\{ x_1,\ldots,x_n \}$ enjoy centred spherical symmetry, then the
+%  joint density $P$ of ($x_1,\ldots,x_n$) has the form
+%$$P(x_1,\ldots,x_n)=\int_{{\bf R}\times {\bf R}^{+}} \prod_{i=1}^n
+%\phi\left( \frac{x_i-\mu}{\sigma^2} \right) dQ(\mu,\sigma^2),$$
+%for some distribution $Q$ on ${\bf R}\times {\bf R}^{+}$, where $\phi$
+%is the standard normal density.  Further,
+%$$Q( \mu < \alpha, \sigma^2 < \beta  ) = \lim_{n\to\infty}{\mbox{Pr}(\{
+%  \bar{x}_n < \alpha,s_n^2 < \beta \} ) }$$
+%where $\bar{x}_n=(x_1+\cdots+x_n)/n$, $s_n^2=n^{-1} \sum_{1}{n}
+%(x_i-\bar{x})^2$.
+%
+%Proof is in Bernardo and Smith, pp.\ 183-5.
+%\vskip 4mm
+%Thus, in the presence of exchangeability and centered spherical
+%symmetry, (subjective) beliefs must behave as if there is a joint
+%prior on $\mu, \sigma^2$ and conditional on $\mu, \sigma^2$, the data
+%are i.i.d.\ $N(\mu,\sigma^2)$.  There is a natural generalization to
+%multivariate data: if the $x_i$ are now $k$-dimensional then say that
+%$(x_1,\ldots,x_n)$ has centered spherical symmetry if $(c^T
+%x_1,\ldots, c^T x_n)$ does for each $c\in {\bf R^k}$.  Now, (Bernardo
+%and Smith, p.\ 186), exchangeability and centered spherical symmetry of
+%$(x_1,\ldots,x_n)$ imply a mixture (over prior for mean vector and
+%variance covariance matrix) of multivariate normals.
+%
+%%\item Sufficient Statistics.  As an example, suppose the sequence of
+%%  non-negative integer valued random quantities $y_1,y_2,\ldots$ is
+%%  judged exchangeable and that in addition, the conditional
+%%  distribution of $y=(y_1,\ldots,y_k)$ given $y_1 + \cdots + y_n=s$ is
+%%  specified to be multinomial
+%%  $(s,1/n,\ldots,1/n,(n-k)/n)$, it follows that
+%%  beliefs about the $y$'s are equivalent to a prior $Q$ on $\theta\in
+%%  {\bf R}$ and that conditional on $\theta$, the $y_i$ are
+%%  i.i.d.\ Poisson($\theta$), (Bernardo and Smith p.\ 206).
+%%\vskip 4mm
+%%  More generally, beliefs about the conditional distribution of
+%%  observables given sufficient statistics can be used to force an
+%%  exponential family distribution with a prior on the parameters.  For  a fuller discussion, see Bernardo and Smith \S 4.5.
+%\end{enumerate}
+
+%Could do Johnson type postulates for species sampling:
+% assuming probability of particular species $j$ next depends only on number
+% of species observed and number of species $j$, then have
+%Dirichlet-multinomial. 
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
