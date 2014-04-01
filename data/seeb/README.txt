@@ -10,6 +10,8 @@ Ogo2.1: the second allele measured at the Ogo2 marker
 Ogo4: first allele at Ogo4 marker.
 Ogo4: second allele at Ogo4 marker.
 etc for other markers
+Note that there are some missing data, denoted "NA".
+
 
 Note that there are two columns for each marker (eg Ogo2 and Ogo2.1 both
 refer to marker Ogo2). Thus there are two
