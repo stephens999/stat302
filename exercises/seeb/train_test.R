@@ -1,12 +1,15 @@
-
-load("../../data/seeb/four_salmon_pops.rda")
+orig_data = read.table("../../data/seeb/four_salmon_pops.csv",header=TRUE,colClasses="character",sep=",")
 set.seed(100) #to ensure reproducibility
 
 #Convert the data at each locus to a factor
 #Note that we have to be careful to include all the levels from *both* columns
 #for each locus
-mylevels= function(locus){levels(factor(four_salmon_pops[,1+2*locus, 2+2*locus]))}
+mylevels= function(locus){levels(factor(c(orig_data[,(1+2*locus)],
+                                          orig_data[,(2+2*locus)])))}
 
+
+#now set up four_salmon_pops
+four_salmon_pops = orig_data
 for(locus in 1:12){
   four_salmon_pops[,1+2*locus]= factor(four_salmon_pops[,1+2*locus],levels = mylevels(locus))
   four_salmon_pops[,2+2*locus]= factor(four_salmon_pops[,2+2*locus],levels = mylevels(locus))
@@ -47,3 +50,4 @@ trainf = lapply(trainc,normalize) #compute the proportions, or relative frequenc
 #4. Comment on any problems you came across as you did this exercise, and how you solved them. Your answer
 #should include all your R code in a format that can be run to reproduce your results (I recommend using RStudio and
 #the knitr package to produce your report).
+
