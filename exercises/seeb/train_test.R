@@ -26,7 +26,7 @@ test = four_salmon_pops[!subset,]
 #this function computes a table of the alleles and their counts at a given locus (locus= 1...12)
 #in a given data frame (data)
 compute_counts = function(data,locus){
-  return(table(data[,1+2*locus, 2+2*locus]))
+  return(table(data[,1+2*locus]) + table(data[,2+2*locus]))
 }
 
 #Here's an example of how this can be used
