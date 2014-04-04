@@ -1,0 +1,83 @@
+\documentclass[12pt]{article}
+\def\P{\mbox{P}}
+\def\G{\Gamma}
+\def\t{\theta}
+\def\a{\alpha}
+\def\E{\mbox{E}}
+\parindent=0in
+%\parskip=5mm
+\pagestyle{empty}
+%\usepackage{chicago}
+\usepackage{url}
+\usepackage{natbib}
+
+\begin{document}
+
+\begin{center}
+{\bf
+Bayesian Statistics
+
+\smallskip
+
+Exercises 1.
+}
+\smallskip
+
+\end{center}
+
+\bigskip
+
+Note: the Gamma($m,\lambda$) distribution refers
+to the distribution with density $p(x) \propto x^{m-1} \exp(-\lambda x)$
+
+
+\begin{enumerate}
+\item Suppose $x \in \{1,2,3\}$ and $\theta \in \{0,1\}$ with 
+\begin{table}[h!]
+\center
+\begin{tabular}{c|c|c|c}
+$x$ & 1 & 2 & 3 \\ \hline
+$p(x|\theta=0)$ & 0.005 & 0.005 & 0.99 \\
+$p(x|\theta=1)$ & 0.0049 & 0.9851 & 0.01 
+\end{tabular}
+\end{table}
+
+Now consider testing the null hypothesis, $H_0:\theta=0$, vs $H_1:\theta=1$ using a likelihood ratio test. 
+Recall that a type I error is defined as
+rejecting $H_0$ when it is true,
+and a type II error is failing to reject $H_0$ when it is false.
+\begin{enumerate}
+\item Consider the test that rejects $H_0$ when $x \in \{1,2\}$. Derive the probability of a type I error given that $H_0$ holds, and the probability of a type II error given that $H_0$ does not hold.
+\item If $x=1$, what is the $p$ value? What is the Bayes Factor for $H_1$ vs $H_0$? Comment on how strong (qualitatively) the evidence is to reject $H_0$.
+\item If $x=2$, what is the $p$ value? What is the Bayes Factor for $H_1$ vs $H_0$? Comment on how strong (qualitatively) the evidence is to reject $H_0$.
+\item Modify the example so that $x=1$ corresponds to a $p$ value of $0.01$ and a very large Bayes Factor in favour of $H_1$.
+\end{enumerate}
+
+\item \cite{sellke2001calibration} consider the problem of calibrating $p$ values in testing a series of drugs. In particular, they consider testing a series of drugs, and ask ``of the tests that produce a $p$ value near 0.05, what proportion of the corresponding drugs follow the null?". As discussed in class, the answer to this question will depend on i) the overall proportion of drugs for which the null hypotheses is true ($\pi$), and ii) the effect size of the non-null drugs ($\theta_1$). [It will also depend on the sample size used to do the test; you may choose to fix this or allow it to vary, as you prefer.]
+ 
+Perform a simulation study (e.g. using R), to
+illustrate the way that the answer depends on i) and ii) above. Your answer should have the following structure: a) A brief, precise, and self-contained description of the situation you considered (this should be at a level that it would make sense to another graduate student who has not read Sellke et al); b) a summary of the results you obtained, in table or graph form as you feel appropriate; c) a discussion of how your results compare with those in Sellke et al.. Include any computer code you used as an appendix.
+
+\item Consider $x_1, x_2, \ldots, x_n$ i.i.d.\ with sampling distribution $f(x|\mu)$ which is Poisson($\mu$).  Suppose the prior on $\mu$ is Gamma($m, \lambda$).  Find the posterior for $\mu$.
+
+
+\item  Suppose that, given $\sigma$, $x$ is Normal with mean 0 and variance $\sigma^2$, and that the prior for $\sigma$ is such that $1/\sigma^2$ has a Gamma(1,2) distribution.  Find the posterior distribution of $\sigma^2$.
+[Hint: the algebra is easier if you compute the posterior for the ``precision", $\tau:=1/\sigma^2$, rather than for the variance $\sigma^2$. For this reason
+Bayesian analyses often consider the precision rather than the variance.]
+
+
+\item Clone or fork the repository \url{https://github.com/stephens999/stat302/}. Run the R code in \verb|exercises/seeb/train_test.R|, which loads
+and processes a dataset on 544 fish (salmon) at 12 genetic markers/loci, from \cite{seeb:2007}. Complete the exercise in the commented
+text at the end of \verb|train_test.R|.
+
+
+
+\end{enumerate}
+
+\bibliographystyle{chicago}
+\bibliography{/Users/stephens/Documents/mainbib}
+
+\end{document}
+
+
+
