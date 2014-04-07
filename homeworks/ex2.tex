@@ -82,8 +82,8 @@ If the prior distribution for $\t=(\t_1,\dots,\t_k)$ is Dirichlet$(\a_1,\a_2,\ld
 \item[iii)] Return to the exercise in \verb|exercises/seeb/train_test.R|. In that exercise you were told, after step 1, to ``Assume for the remainder of this exercise that these allele frequencies from the training set are the ``true" frequencies in each population." Now redo steps 2 and 3 of the exercise, replacing this assumption with 
 a more complete Bayesian procedure, using a Dirichlet$(1,\dots,1)$ prior distribution for the frequencies of the alleles at each marker/locus. 
 More explicitly, in step 2, for each sample $j$ in the test set, you are now asked to compute the posterior probability 
-$$\Pr(\text{sample $j$ came from population $k$} | X_j, \text{Training data}),$$ 
-where $X_j$ denotes the genetic data on test sample $j$. Compare the error rate (step 3) with the error rate you obtained
+$$\Pr(\text{sample $j$ came from population $k$} | G_j, \text{Training data}),$$ 
+where $G_j$ denotes the genetic data on test sample $j$. Compare the error rate (step 3) with the error rate you obtained
 previously. [Note that this is still not quite a fully Bayesian analysis, which would
 compute $\Pr(\text{sample $j$ came from population $k$} | \text{All test data}, \text{Training data})$, but this full analysis is beyond us for now.]
 \end{enumerate}
