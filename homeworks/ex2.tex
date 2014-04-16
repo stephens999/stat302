@@ -84,24 +84,6 @@ multinomial distribution with parameters $n$ (fixed and known) and ${\bf p}=(p_1
 p_{k-1})$ (which is unknown), find the Jeffreys prior for $\bf p$. 
 
 
-%
-%\item The Dirichlet distribution is a generalization of the Beta distribution.  
-%A $k$-tuple $(\t_1,\t_2,\ldots,\t_k)$ is said to have a Dirichlet distribution with parameters $(\a_1,\a_2,\ldots,\a_k)$ if its (joint) probability density function is
-%$$p(\t_1,\t_2,\ldots,\t_k) = \frac{\G(\a_1+\a_2+\cdots+\a_k)}{\G(\a_1) \G(\a_2) \cdots \G(\a_k)} \t_1^{\a_1-1}\cdots \t_k^{\a_k-1},$$
-%provided $\t_1+\cdots+\t_k=1$, and $p(\t_1,\t_2,\ldots,\t_k) = 0$ otherwise.
-%
-%\begin{enumerate}
-%\item[i)] If  $(\t_1,\t_2,\ldots,\t_k)$ has a Dirichlet distribution with parameters $(\a_1,\a_2,\ldots,\a_k)$, find $\E(\t_i)$, var$(\t_i)$, and covar$(\t_i,\t_j)$ for $i,j = 1,2, \ldots,k$, $i\ne j$.  For fixed $\E(\t_i)$, $i = 1,2, \ldots,k$, how do the qualitative properties of the distribution depend on its parameters?
-%\item[ii)] Let $X_1,\dots,X_n$ denote independent and identically distributed random variables on $\{1,\dots,k\}$, with $\Pr(X_i=k) = \t_k$. 
-%If the prior distribution for $\t=(\t_1,\dots,\t_k)$ is Dirichlet$(\a_1,\a_2,\ldots,\a_k)$, find the posterior distribution for $\t | X_1,\dots,X_n$.
-%\item[iii)] Return to the exercise in \verb|exercises/seeb/train_test.R|. In that exercise you were told, after step 1, to ``Assume for the remainder of this exercise that these allele frequencies from the training set are the ``true" frequencies in each population." Now redo steps 2 and 3 of the exercise, replacing this assumption with 
-%a more complete Bayesian procedure, using a Dirichlet$(1,\dots,1)$ prior distribution for the frequencies of the alleles at each marker/locus. 
-%More explicitly, in step 2, for each sample $j$ in the test set, you are now asked to compute the posterior probability 
-%$$\Pr(\text{sample $j$ came from population $k$} | G_j, \text{Training data}),$$ 
-%where $G_j$ denotes the genetic data on test sample $j$. Compare the error rate (step 3) with the error rate you obtained
-%previously. [Note that this is still not quite a fully Bayesian analysis, which would
-%compute $\Pr(\text{sample $j$ came from population $k$} | \text{All test data}, \text{Training data})$, but this full analysis is beyond us for now.]
-%\end{enumerate}
 \end{enumerate}
 
 

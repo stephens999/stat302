@@ -1,0 +1,142 @@
+\documentclass[12pt]{article}
+\def\P{\mbox{P}}
+\def\G{\Gamma}
+\def\t{\theta}
+\def\a{\alpha}
+\def\E{\mbox{E}}
+\def\to{\tau_0}
+\def\ti{\tau_1}
+\def\train{\text{Training data}}
+
+\parindent=0in
+%\parskip=5mm
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{url}
+
+\begin{document}
+
+\begin{center}
+{\bf
+Bayesian Statistics
+
+\smallskip
+
+Exercises 3.
+}
+\smallskip
+
+\end{center}
+
+\bigskip
+
+\begin{enumerate}
+
+\item The Dirichlet distribution is a generalization of the Beta distribution.  
+A $k$-tuple $(\t_1,\t_2,\ldots,\t_k)$ is said to have a Dirichlet distribution with parameters $(\a_1,\a_2,\ldots,\a_k)$ if its (joint) probability density function is
+$$p(\t_1,\t_2,\ldots,\t_k) = \frac{\G(\a_1+\a_2+\cdots+\a_k)}{\G(\a_1) \G(\a_2) \cdots \G(\a_k)} \t_1^{\a_1-1}\cdots \t_k^{\a_k-1},$$
+provided $\t_1+\cdots+\t_k=1$, and $p(\t_1,\t_2,\ldots,\t_k) = 0$ otherwise.
+
+\begin{enumerate}[i)]
+\item If  $(\t_1,\t_2,\ldots,\t_k)$ has a Dirichlet distribution with parameters $(\a_1,\a_2,\ldots,\a_k)$, find $\E(\t_i)$, var$(\t_i)$, and covar$(\t_i,\t_j)$ for $i,j = 1,2, \ldots,k$, $i\ne j$.  For fixed $\E(\t_i)$, $i = 1,2, \ldots,k$, how do the qualitative properties of the distribution depend on its parameters?
+\item Let $X_1,\dots,X_n$ denote independent and identically distributed random variables on $\{1,\dots,k\}$, with $\Pr(X_i=k) = \t_k$,
+Assume that the prior distribution for $\t=(\t_1,\dots,\t_k)$ is Dirichlet$(\a_1,\a_2,\ldots,\a_k)$. 
+\begin{enumerate}[a)]
+\item Derive the posterior distribution for $\t | X_1,\dots,X_n$.
+\item Derive the predictive distribution $p(X_n | X_1,\dots,X_{n-1})$.
+\end{enumerate} 
+\end{enumerate}
+
+\item Using the above results on the Dirichlet, we now return to the exercise in \verb|exercises/seeb/train_test.R|. In that exercise you were told, after step 1, to ``Assume for the remainder of this exercise that these allele frequencies from the training set are the ``true" frequencies in each population." Some of you may have noticed that zeros in allele
+counts in the training set then create problems, and perhaps solved this problem by adding pseudo counts (in which case you have already
+made a good start on this exercise). In this exercise you are now asked to revisit the exercise using a more complete Bayesian procedure, 
+using a Dirichlet$(\alpha,\dots,\alpha)$ prior distribution for the frequencies of the alleles at each marker/locus. Explicitly:
+\begin{enumerate}[a)]
+\item In step 2, for each sample $j$ in the test set, implement and apply a method to compute (given $\alpha$) the posterior probability 
+$$\Pr(\text{sample $j$ came from population $k$} | G_j, \text{Training data}, \alpha),$$ 
+where $G_j$ denotes the genetic data on test sample $j$. 
+\item  Tabulate and compare the error rate (step 3) for different values of $\alpha$. 
+You should consider $\alpha=0.5$ and $\alpha=1$, as well as a ``very small" and a ``very big" value for $\alpha$.
+\item Derive the likelihood for $\alpha$ given the training set data, $L(\alpha) :=\Pr(\train | \alpha)$, and obtain the maximum likelihood estimate for $\alpha$
+for these training data.
+\item Compute the error rate (step 3) using the maximum likelihood estimate of $\alpha$ (effectively this is the ``Empirical Bayes" approach), and compare it with the other values you obtained.
+\item The Empirical Bayes approach could be criticized for failing to fully reflect uncertainty in $\alpha$. An alternative would be to put a prior distribution on $\alpha$, and perform 
+fully Bayesian inference, integrating over the uncertainty in $\alpha$. Perform this analysis, using a uniform discrete prior on $\alpha \in \{0.025,0.05,0.1,0.2,0.4,0.8,1.6,3.2,6.4\}$. Again, compare the error rate for this ``fully Bayes" analysis with the other approaches. 
+\end{enumerate}
+ [Note that the above approaches, consider classifying test data one at a time given {\it only the information from the training data}.
+ In practice, if we had access to multiple test samples (of unknown origin) we should also use any information they
+ give us when attempting to classify samples. That is, we would
+compute $\Pr(\text{sample $j$ came from population $k$} | \text{All test data genotypes}, \text{Training data genotypes and populations of origin},\alpha)$. However, this full analysis is beyond us for now.]
+
+
+%\item Suppose $x$ has a Poisson distribution with unknown mean $\t$.
+%
+%Determine the conjugate prior, and associated posterior distribution, for $\t$.
+%
+%Determine the Jeffreys prior $\pi^J$ for $\t$, and discuss whether the ``scale invariant'' prior $\pi_0(\t) = 1/\t$ might be preferable as a noninformative prior.
+%Compare the posteriors obtained, in each case, for observations $x=x_1$ vs $x=cx_1$ (for some constant $c$).
+%
+%
+%\item If ${\bf X}=(X_1,X_2,\ldots, X_k)$ has a
+%multinomial distribution with parameters $n$ (fixed and known) and ${\bf p}=(p_1, \ldots,
+%p_{k-1})$ (which is unknown), find the Jeffreys prior for $\bf p$. 
+%
+
+\item
+ Read the chapter by Krebs entitled ``Independence, Exchangeability,
+and de Finetti's Theorem''.   Do exercise 1 at the end.
+
+
+
+\item  Consider throwing a thumb tack repeatedly. Find a thumb tack, but {\it do not throw it yet}. With heads and tails as described in Krebs' chapter (tail means point uppermost), what is your prior for $\t$, the long run proportion of heads?  
+
+Sketch a graph of your prior.
+
+The appropriate conjugate prior here is the family of Beta distributions.  Choose one, or a mixture of two, Beta distributions which (roughly) approximate your prior.  (Don't waste time trying to get a very good approximation.)  In the remainder of the question I will refer to this as your approximate prior.
+
+Sketch (or plot) a graph of your approximate prior.
+
+Toss your tack 100 times under similar conditions and record the results.
+
+Using your approximate prior as the prior, calculate and then sketch the posterior after $n=$ 1, 10, 50, and 100 tosses.  
+
+What is your predictive probability, based on the first $n$ tosses, that the $(n+1)$st toss would result in a tail, for these values of $n$?
+
+My prior is an equal mixture of the Beta(2,4) and the Beta(4,2) distributions.
+Using my prior as the prior, calculate and then sketch the posterior after $n=$ 1, 10, 50, and 100 tosses.  
+
+What is the predictive probability, based on the first $n$ tosses, that the $(n+1)$st toss would result in a tail, for these values of $n$?
+
+Comment.
+
+
+
+
+\item  Verify the claim in lectures that an exchangeable sequence $X_1, X_2$,
+ with
+$$
+\P(X_1=1, X_2=0) = \P(X_1=0, X_2=1) = \frac{1}{2},
+$$
+cannot be embedded in an exchangeable sequence of length three.
+
+
+\item   Show that if  $X_1, X_2, \ldots$ is an infinite exchangeable
+sequence of 0-1 valued random quantities, then for any pair $i,j$,
+Cov$(X_i, X_j) \ge 0$.  
+
+In fact this result is true for any infinite exchangeable sequence. 
+Prove this also.
+
+%\item  If  $X_1, X_2, \ldots, X_n$ is a finite exchangeable sequence of 0-1
+%valued random quantities, obtain a lower bound for Cov$(X_i, X_j)$, for
+%any pair $i,j$.
+
+ 
+\end{enumerate}
+
+
+\end{document}
+
+
+
