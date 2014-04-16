@@ -362,6 +362,8 @@ The idea is that even if $p(\theta)$ does not integrate to a finite quantity,
 if $\int p(D|\theta) p(\theta) d\theta$ is finite then
 the above produces a ``proper" posterior. 
 \begin{enumerate}
+\item For example, suppose $x | \theta \sim N(\theta,1)$. Assume an ``improper prior" on $\theta$ with $p(\theta) \propto 1$. This is improper because $\int p(\theta) d\theta$ is infinite, and so $p(\theta)$ is not proportional to a density. However, if we just ``plug in" this prior to Bayes Theorem we get
+$p(\theta | x) \propto \exp(-(\theta-x)^2/2)$, which implies that $\theta | x \sim N(x,1)$. That is we get a ``proper" posterior.
 \item Improper priors often result from attempts to define Objective priors. See, for example, below.
 \item  Often, Bayesian analysis with an improper prior can lead to
   procedures with attractive frequentist properties.  In fact, many
@@ -377,9 +379,6 @@ Certainly improper priors {\it can} lead to paradoxes and inconsistencies, which
  However, in many cases an improper prior produces a posterior that is a good approximation to the posterior that one would have got with a carefully-constructed
 subjective proper prior. In these cases (as in the semi-subjective prior above) I would argue it is OK. However, it is wise to be careful before using an improper prior. {\it In particular you should check that your posterior distribution is proper, as this is not always the case!}
 
-\ni\underline{Example:} Improper uniform prior for a normal mean
-
-If $x \sim N(\mu,1)$, and we use an improper prior, $p(\mu) \propto 1$, then show the posterior $p(\mu | x)$ is proper (for any $x$). Furthermore, this posterior is a reasonable approximation to the posterior you would have gotten with any prior that is ``reasonably flat near $x$". (cf Savage's potato).
 
 \ni\underline{Example:} The problem with improper priors for mixtures
 
