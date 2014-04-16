@@ -77,19 +77,29 @@ when the parameter space is continuous, it is usually helpful to restrict onesel
 so that the resulting prior distribution approximates prior beliefs, perhaps by
   matching moments or (for more robustness) percentiles to prior assessments (see for example the ``relative risk" example below). 
 
+Ultimately there is no ``right" approach to subjective prior specification. The following examples are intended to illustrate some of the issues one
+may encounter in practice.
+
 \underline{Examples:}
   
 \begin{enumerate}
-  \item Law enforcement agencies are interested in classifying African Elephant ivory as being from Forest or Savanna elephants (two subspecies of African elephant). What is your prior that a tusk is from Forest? Note that, of course, there is no ``right" answer to this question. Let's consider a series of possible situations. 
+  \item Law enforcement agencies are interested in classifying African Elephant ivory as being from Forest or Savanna elephants (two subspecies of African elephant). What is your prior that an illegally-poached tusk is from Forest? Note that, of course, there is no ``right" answer to this question. Let's consider a series of possibilities.
   \begin{itemize}
   \item If we knew nothing more about the problem we might say 0.5 for each. (One possible argument for this is ``symmetry", which could
   be seen as an ``Objective" argument. Alternatively we could see it as a directly representation of our subjective knowledge.)
-  \item If the police told us that they had reason to believe that the tusk was from a Forest elephant, because most poaching comes from forest elephants, we might decide to select a prior that favored forest elephants slightly, eg 2/3 to 1/3. On the other hand, we might prefer to stick with the 50-50 prior, to see what the DNA data say in the absence of the police's prior beliefs. If our analysis with a 50-50 prior concluded that the tusk was, with probability 0.99, from savannah, and the police (or someone else) were skeptical of this conclusion, then we might ask the question, ``how strong would the prior belief in the forest have to be to outweigh the data?" [{\it Exercise!}] Note that this might be a general reason to consider priors that do not necessarily represent our actual prior beliefs: to convince a skeptic! In this example, Bayes Factors come in handy for seeing how the prior and data combine.
-  \item Suppose we were considering a whole series of tusks. Let's say there were 100 tusks.
-  Further suppose, for the sake of argument, that the first 99 all turned
-  out to be very clearly from forest elephants
-  on the basis of their DNA.  For the last tusk, maybe we would be inclined to use a prior that strongly favored forest: perhaps even something as strong as 0.99 to 0.01? Note: despite the apparent over-simplicity of this example, this kind of ``sharing of information" or ``borrowing information" across units is a very powerful and
-  widely-used idea. In practice it is usually done more formally, by use of hierarchical models, as we shall see later.
+  \item Suppose that you had been involved in this kind of problem for a long time, and in your extensive experience, two thirds of illegally-poached tusfks
+  were from forest elephants. Then you might use a prior $\Pr(\text{forest}) = 2/3$ and $\Pr(\text{savanna}) = 1/3$.
+  Indeed, this might seem overwhelmingly an obvious thing to do. It may even seem ``objective". Certainly it is ``data driven". However, note
+  that actually this prior is still making a (subjective) assumption: that the tusk in hand is somehow ``comparable with" or ``similar to" the tusks
+  you have come across in the past. (We will better formalize this notion when we look at ``exchangeability" later.)  So...
+  \item ... suppose that although two-thirds of tusks you have  come across in the past were from forest elephants, this particular tusk came
+  from a collection of tusks, all seized at the same time, in a single shipment, and all bearing a similar distinctive red marking - and the other tusks in this shipment
+  all turned out to be savanna tusks. In this case it would seem not unreasonable to assume a prior for this tusk that favors savanna. (Again, this will
+  be seen to relate to exchangeability assumptions.)
+  \item On the other hand, even given all the above, we might prefer to perform our analysis initially with the 50-50 prior, to see what the DNA data have
+  to add to any of these other ``prior" sources of information. Alternatively, and perhaps preferably in this situation, we might rather report the results
+  of the analysis as a Bayes Factor, since this has a direct interpretation in terms of how the DNA data should modify prior beliefs.
+  For example, if an analysis with a 50-50 prior concluded that the tusk was, with probability 0.99, from savannah, and the police (or someone else) were skeptical of this conclusion, then we might ask the question, ``how strong would the prior belief in the forest have to be to outweigh the data?" [{\it Exercise!}] Note that this might be a general reason to consider priors that do not necessarily represent our actual prior beliefs: to convince a skeptic! In this example, Bayes Factors come in handy for seeing how the prior and data combine.
 \end{itemize}  
   
   \item At a C/G single nucleotide polymorphism (SNP), there are three possible genotypes (``classes") for each individual: CC,CG and GG. 
