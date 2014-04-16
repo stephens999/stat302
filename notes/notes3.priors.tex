@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
 \def \baselinestretch{1.2}
 \def\ni{\noindent}
+\def\Be{\text{Be}}
 
 \usepackage{amsmath}
 
@@ -102,13 +103,22 @@ may encounter in practice.
   For example, if an analysis with a 50-50 prior concluded that the tusk was, with probability 0.99, from savannah, and the police (or someone else) were skeptical of this conclusion, then we might ask the question, ``how strong would the prior belief in the forest have to be to outweigh the data?" [{\it Exercise!}] Note that this might be a general reason to consider priors that do not necessarily represent our actual prior beliefs: to convince a skeptic! In this example, Bayes Factors come in handy for seeing how the prior and data combine.
 \end{itemize}  
   
+  \def\fvec{(f_{CC},f_{CG},f_{GG})}
+  
   \item At a C/G single nucleotide polymorphism (SNP), there are three possible genotypes (``classes") for each individual: CC,CG and GG. 
- Consider specifying a prior distribution for the  frequencies $f=(f_{CC},f_{CG},f_{GG})$ for a sample of individuals from China.
+ Consider specifying a prior distribution for the  frequencies $f=\fvec$ for a sample of individuals from China.
  \begin{itemize}
  \item Someone who knew nothing more about this might start with a uniform prior on $f$ (subject to the constraint that $f_{CC}+f_{CG}+f_{GG}=1$). Indeed, even someone who knows quite a bit more might use this prior if they had lots of data from which they were about to compute a posterior, and figured that it was not worth worrying too much about more careful prior specification. (In the first case one might view this as a subjective prior; in the second a ``semi-subjective" prior).
- \item Someone who knows a bit about population genetics might decide to use the assumption of ``Hardy--Weinberg Equilibrium", which is effectively the assumption that the two alleles carried by each individual are independent draws from some distribution. Thus, if $f_C$ denotes the overall frequency of $C$ in the population, then $f=(f_C^2, 2f_C(1-f_C),(1-f_C)^2)$. This assumption effectively reduces the vector parameter $f$ to a single parameter $f_C$, so
+ \item Someone who knows a bit about population genetics might decide to use the assumption of ``Hardy--Weinberg Equilibrium" (HWE), which is effectively the assumption that the two alleles carried by each individual are independent draws from some distribution. Thus, if $f_C$ denotes the overall frequency of $C$ in the population, then $f=(f_C^2, 2f_C(1-f_C),(1-f_C)^2)$. This assumption effectively reduces the vector parameter $f$ to a single parameter $f_C$, so
  putting a prior on $f$ can now be achieved by putting
  a prior on $f_C$. Perhaps we might choose a uniform prior on $[0,1)$ for $f_C$.
+  \item Although HWE is a pretty reasonable assumption for many natural populations, there are many reasons that there might be small (or even perhaps large)
+  deviations from HWE in practice. In particular, if individuals tend, even slightly to preferentially mate with others who are more ``genetically similar" then
+  there will be an excess of CC and GG genotypes compared with expectations under HWE.
+   A common way to allow for this kind of potential deviation from HWE is to introduce a new parameter, $\xi$ say, with $\xi \in [0,1]$, and
+ $f=(1-\xi)(f_C^2, 2f_C(1-f_C),(1-f_C)^2) + \xi(f_C,0,1-f_C)$. Note that $\xi=0$ corresponds to HWE, while $\xi>0$ corresponds to an ``excess" of $CC$ and $GG$ genotypes
+ compared with those expected under HWE. We might then assume independent uniform priors on $\xi$ and $f$. Or perhaps we should use a prior
+ on $\xi$ that favors values near 0 (since we know that HWE often holds well in practice). Eg $\xi \sim Be(1,10)$.    
  \item Someone who knows a bit more about population genetics might know that, both from mathematical models and in actual data, allele frequencies like $f_C$ tend not to be uniform on $[0,1)$, but more skewed towards the ends 0 and 1. Perhaps they would use a Beta(0.5,0.5) or Beta(0.1,0.1) distribution for $f_C$. Better still, perhaps they would go out and gather frequency data on, say, all known SNPs in Chinese, and fit a Beta$(\alpha, \beta)$ distribution to those data,
  and use that as a prior for this new SNP. (Note that this strategy is ``borrowing information" across SNPs.)
  \item  Finally, suppose that from a large data set on Japanese individuals we know that the frequencies of the three types in Japan are $g=(g_{CC},g_{CG},g_{GG})$. Perhaps we could
@@ -117,7 +127,26 @@ may encounter in practice.
  perhaps again we could get some idea from using data on other SNPs. (Note that this strategy
  is ``borrowing information" across both SNPs and populations).
    \end{itemize}
-   
+ Note that the above example illustrates the blurring between ``prior assumptions" and ``modeling assumptions". Here, we could describe the assumption of HWE as either
+ a ``prior assumption" or a ``modeling assumption". In the first case we think of it as encoding a prior on $f=\fvec$, in the second we might say the
+ likelihood has a single parameter $f_C$, rather than the full two-parameter parameterization in $\fvec$.
+ Of course, whichever way you describe it, the resulting inference is identical.
+ In fact, it turns out to be impossible, logically, to distinguish ``prior assumptions" from ``modeling assumptions". 
+ So, for example, if we assume a normal distribution for the data when formulating a likelihood, this is effectively also prior assumption.
+(A prior assumption that, with probability 1, the data come from a normal distribution). This may seem a trivial point, but in fact it is quite important
+to remember that {\it any} analysis is making (almost inevitably subjective) assumptions. 
+
+It is also interesting to note that people appear to be hard-wired to be more comfortable with direct assumptions than with ``fuzzy" priors.
+For example, if I submit an analysis that starts ``We assume HWE holds,...." then provided this assumption seems somewhat reasonable in the
+setting I am in then most readers or reviewers would not even think to object. However, suppose instead I say
+``We assume that $f=(1-\xi)(f_C^2, 2f_C(1-f_C),(1-f_C)^2) + \xi(f_C,0,1-f_C)$,
+with a mixture prior on $\xi \sim 0.5 \delta_0 + 0.5 \Be(0.5,0.5)$ where $\delta_0$ denotes a point mass on 0.". This prior assumption is
+less restrictive than assuming HWE: with probability 0.5 HWE holds, and with probability 0.5 we allow some deviation from HWE. But
+the natural initial reaction to this statement is to see it as a {\it stronger} assumption than HWE, and to ask ``where on earth does that prior come from"?
+Similarly, if I say I assume that my data are normally distributed, then readers will generally not think to question the assumption. But if I say that I assume
+they are $t$ distributed on $\nu$ degrees of freedom, with a prior on $\nu$ that is $p(\nu)= 0.5\delta_\infty + 0.5 \text{Unif}\{1,2,4,8,16,32,64\}$,
+then again it is very natural to ask where this assumption came from (even though it is, in many ways, a weaker assumption than normality).
+h    
  % BVSR EXAMPLE? \item Suppose that in a regression model, 
   \item Consider specifying a prior for the ``relative risk" (RR) of having a disease given that you carry one of two possible genetic types $A$ or $a$. Note $RR(A \mbox{ vs } a) := p(\mbox{disease} | A)/p(\mbox{disease} | a)$.
   
@@ -135,8 +164,10 @@ One can get more flexibility by using a $t$ distribution, or (sometimes more con
 \begin{enumerate}
 \item If putting a prior on a parameter that is really a ratio of two symmetric quantities (e.g. the RR above, or the ratio
 of the expression level of gene $A$ to gene $B$, where no information is available a priori to distinguish $A$ and $B$) then take the log of the parameter, and put a symmetric (perhaps normal, with some variance?) prior centered on 0.
-\item If putting a prior on a small positive quantity, about which uncertainty spans orders of magnitude, put a prior (perhaps uniform, on some range, say?) on the log of the quantity, and not on the quantity itself. Example: imagine placing a prior on the probability $p$ that an aircraft you are about to board will crash. You decide that, for sure $p<0.001$, but much more you are not prepared to say. This leads you 
-to consider putting a $U[0,0.001)$ prior on $p$.  But I would argue that this is a mistake - why?
+\item If putting a prior on a small positive quantity, about which uncertainty spans orders of magnitude, put a prior (perhaps uniform, on some range, say?) on the log of the quantity, and not on the quantity itself. Example: imagine placing a prior on the probability $p$ that an aircraft you are about to board will crash. You decide that, for sure $p$ is between $10^{-12}$ and $10^{-5}$, but much more you are not prepared to say. This leads you 
+to consider putting a $U[10^{-12},10^{-5}]$ prior on $p$.  But I would argue that this is a mistake. For example, it implies (approximately) a $90\%$ prior probability that $p \in [10^{-6}, 10^{-5}]$, 
+which is probably not what you intended. Consider instead a uniform prior on $\log_{10}(p)$ in $[-12,-5]$. Although one could argue that the hard end-points are unnatural,
+this prior does at least capture the idea that we are {\it uncertain about the order of magnitude} of $p$.
 \end{enumerate}
 
 \subsubsection{Prior Elicitation}
