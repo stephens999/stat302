@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  16 APR 2014 10:39
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  21 APR 2014 10:16
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -130,9 +130,9 @@ n/12 = (\OML/cmm/m/it/12 ^^R[]; [] ; ^^R[]\OT1/cmr/m/n/12 )$ is Dirichlet$(\OML
 [1
 
 {/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (400.46234pt too wide) in paragraph at lines 67--71
-\OT1/cmr/m/n/12 ples. That is, we would com-pute $[]([]\OMS/cmsy/m/n/12 j[]\OML
-/cmm/m/it/12 ; []; \OT1/cmr/m/n/12 )$.
+Overfull \hbox (235.3548pt too wide) detected at line 71
+[]\OT1/cmr/m/n/12 ([]\OMS/cmsy/m/n/12 j[]\OML/cmm/m/it/12 ; []; \OT1/cmr/m/n/1
+2 )\OML/cmm/m/it/12 :
  []
 
 [2] [3] (./ex3.aux) ) 
@@ -143,7 +143,7 @@ Here is how much of TeX's memory you used:
  4282 multiletter control sequences out of 15000+200000
  8100 words of font info for 30 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 27i,7n,20p,386b,258s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 27i,6n,20p,386b,258s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmmi12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfo
@@ -156,7 +156,7 @@ r8.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
 pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.p
 fb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pf
 b>
-Output written on ex3.pdf (3 pages, 109445 bytes).
+Output written on ex3.pdf (3 pages, 109446 bytes).
 PDF statistics:
  58 PDF objects out of 1000 (max. 8388607)
  41 compressed objects within 1 object stream
