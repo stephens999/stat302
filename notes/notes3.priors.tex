@@ -50,14 +50,11 @@ However, it seems to me perfectly reasonable to
 ask whether individuals with different prior beliefs will come to different conclusions. Thus, in situations
 where it is plausible that different individuals might have quite different prior beliefs it seems reasonable to report results of multiple analyses using different priors.
 
-Some questions for thought/discussion:
-\begin{enumerate}
-\item Suppose that an Objective prior specification procedure resulted in a prior that was not
+A question for thought/discussion:
+Suppose that an Objective prior specification procedure resulted in a prior that was not
 either subjective or semi-subjective. Would you be happy to use it anyway? What would the resulting posterior distributions mean?
-\item In 2011, while I was teaching this material, Jim Berger gave a series of lectures on Objective prior specification. In one of these lectures he mentioned that he did not concern himself greatly with the definition of probability - anything that satisfies the axioms of probability will do. This got me thinking: in that case, how do we interpret the results of an objective analysis?
 What does a 95\% credible interval computed from an ``objective prior" mean? (For a subjective
 prior, it has a relatively straightforward interpretation as representing a certain state of uncertainty in the parameter after viewing data.)
-\end{enumerate}
 
 
 
@@ -366,7 +363,7 @@ parameter value. However, when the parameter space has ``structure" (e.g. some v
 and a lot less sensible, than it might seem.
 For example, consider an undirected graph with $V$ vertices. Then the number of possible edges is $E= {V\choose2}$, and the number of possible graphs is $G=2^E$. Now consider putting a prior on graphs. The uniform prior on graphs would put mass $1/2^E$ on each possible graph. This is the same as each edge being present, independently, with probability 0.5. So the number of actual edges present is, a priori, Binomial$(E, 0.5)$. If $E$ is large, as it usually is in this setting, then this prior is very concentrated near $E/2$. So this prior says that, with high probability, close to a half of the possible edges will be present - not very Objective at all (and in many settings not very sensible either - for example, in many applications one expects to see ``sparse" graphs).
 
-An alternative, and (in my subjective opinion, generally more sensible) prior here is to assume that each possible edge is present, independently, with probability $p$, and then to place a Uniform[0,1) prior on $p$.  Alternatively, and equivalently,
+An alternative, and (in my subjective opinion, generally more sensible) prior here is to assume that each possible edge is present, independently, with probability $p$, and then to place a Be$(1,1)$ or Be$(0.5,0.5)$ prior on $p$.  Alternatively, and equivalently,
 assume that the number of edges is uniform on $0$ to $E$, and that, conditional on the number of edges, all graphs are equally likely. Note that in some contexts this prior will also not be appropriate. For example, in practice, one often expects some nodes of the graph to be connected to a lot of neighbors, while others will be connected to none. So maybe edge $i,j$ should be present with probability $p_{ij}$ given by $\log[p_{ij}/(1-p_{ij})] = \mu+\alpha_i + \alpha_j$ where
 $\alpha_i$ and $\mu$ now need some prior specifying.....
 
