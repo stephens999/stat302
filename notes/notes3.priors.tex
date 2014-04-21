@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
 \def \baselinestretch{1.2}
 \def\ni{\noindent}
+\def\Be{\text{Be}}
 
 \usepackage{amsmath}
 
@@ -74,28 +75,47 @@ when the parameter space is continuous, it is usually helpful to restrict onesel
 so that the resulting prior distribution approximates prior beliefs, perhaps by
   matching moments or (for more robustness) percentiles to prior assessments (see for example the ``relative risk" example below). 
 
+Ultimately there is no ``right" approach to subjective prior specification. The following examples are intended to illustrate some of the issues one
+may encounter in practice.
+
 \underline{Examples:}
   
 \begin{enumerate}
-  \item Law enforcement agencies are interested in classifying African Elephant ivory as being from Forest or Savanna elephants (two subspecies of African elephant). What is your prior that a tusk is from Forest? Note that, of course, there is no ``right" answer to this question. Let's consider a series of possible situations. 
+  \item Law enforcement agencies are interested in classifying African Elephant ivory as being from Forest or Savanna elephants (two subspecies of African elephant). What is your prior that an illegally-poached tusk is from Forest? Note that, of course, there is no ``right" answer to this question. Let's consider a series of possibilities.
   \begin{itemize}
   \item If we knew nothing more about the problem we might say 0.5 for each. (One possible argument for this is ``symmetry", which could
   be seen as an ``Objective" argument. Alternatively we could see it as a directly representation of our subjective knowledge.)
-  \item If the police told us that they had reason to believe that the tusk was from a Forest elephant, because most poaching comes from forest elephants, we might decide to select a prior that favored forest elephants slightly, eg 2/3 to 1/3. On the other hand, we might prefer to stick with the 50-50 prior, to see what the DNA data say in the absence of the police's prior beliefs. If our analysis with a 50-50 prior concluded that the tusk was, with probability 0.99, from savannah, and the police (or someone else) were skeptical of this conclusion, then we might ask the question, ``how strong would the prior belief in the forest have to be to outweigh the data?" [{\it Exercise!}] Note that this might be a general reason to consider priors that do not necessarily represent our actual prior beliefs: to convince a skeptic! In this example, Bayes Factors come in handy for seeing how the prior and data combine.
-  \item Suppose we were considering a whole series of tusks. Let's say there were 100 tusks.
-  Further suppose, for the sake of argument, that the first 99 all turned
-  out to be very clearly from forest elephants
-  on the basis of their DNA.  For the last tusk, maybe we would be inclined to use a prior that strongly favored forest: perhaps even something as strong as 0.99 to 0.01? Note: despite the apparent over-simplicity of this example, this kind of ``sharing of information" or ``borrowing information" across units is a very powerful and
-  widely-used idea. In practice it is usually done more formally, by use of hierarchical models, as we shall see later.
+  \item Suppose that you had been involved in this kind of problem for a long time, and in your extensive experience, two thirds of illegally-poached tusfks
+  were from forest elephants. Then you might use a prior $\Pr(\text{forest}) = 2/3$ and $\Pr(\text{savanna}) = 1/3$.
+  Indeed, this might seem overwhelmingly an obvious thing to do. It may even seem ``objective". Certainly it is ``data driven". However, note
+  that actually this prior is still making a (subjective) assumption: that the tusk in hand is somehow ``comparable with" or ``similar to" the tusks
+  you have come across in the past. (We will better formalize this notion when we look at ``exchangeability" later.)  So...
+  \item ... suppose that although two-thirds of tusks you have  come across in the past were from forest elephants, this particular tusk came
+  from a collection of tusks, all seized at the same time, in a single shipment, and all bearing a similar distinctive red marking - and the other tusks in this shipment
+  all turned out to be savanna tusks. In this case it would seem not unreasonable to assume a prior for this tusk that favors savanna. (Again, this will
+  be seen to relate to exchangeability assumptions.)
+  \item On the other hand, even given all the above, we might prefer to perform our analysis initially with the 50-50 prior, to see what the DNA data have
+  to add to any of these other ``prior" sources of information. Alternatively, and perhaps preferably in this situation, we might rather report the results
+  of the analysis as a Bayes Factor, since this has a direct interpretation in terms of how the DNA data should modify prior beliefs.
+  For example, if an analysis with a 50-50 prior concluded that the tusk was, with probability 0.99, from savannah, and the police (or someone else) were skeptical of this conclusion, then we might ask the question, ``how strong would the prior belief in the forest have to be to outweigh the data?" [{\it Exercise!}] Note that this might be a general reason to consider priors that do not necessarily represent our actual prior beliefs: to convince a skeptic! In this example, Bayes Factors come in handy for seeing how the prior and data combine.
 \end{itemize}  
   
+  \def\fvec{(f_{CC},f_{CG},f_{GG})}
+  
   \item At a C/G single nucleotide polymorphism (SNP), there are three possible genotypes (``classes") for each individual: CC,CG and GG. 
- Consider specifying a prior distribution for the  frequencies $f=(f_{CC},f_{CG},f_{GG})$ for a sample of individuals from China.
+ Consider specifying a prior distribution for the  frequencies $f=\fvec$ for a sample of individuals from China.
  \begin{itemize}
  \item Someone who knew nothing more about this might start with a uniform prior on $f$ (subject to the constraint that $f_{CC}+f_{CG}+f_{GG}=1$). Indeed, even someone who knows quite a bit more might use this prior if they had lots of data from which they were about to compute a posterior, and figured that it was not worth worrying too much about more careful prior specification. (In the first case one might view this as a subjective prior; in the second a ``semi-subjective" prior).
- \item Someone who knows a bit about population genetics might decide to use the assumption of ``Hardy--Weinberg Equilibrium", which is effectively the assumption that the two alleles carried by each individual are independent draws from some distribution. Thus, if $f_C$ denotes the overall frequency of $C$ in the population, then $f=(f_C^2, 2f_C(1-f_C),(1-f_C)^2)$. This assumption effectively reduces the vector parameter $f$ to a single parameter $f_C$, so
+ \item Someone who knows a bit about population genetics might decide to use the assumption of ``Hardy--Weinberg Equilibrium" (HWE), which is effectively the assumption that the two alleles carried by each individual are independent draws from some distribution. Thus, if $f_C$ denotes the overall frequency of $C$ in the population, then $f=(f_C^2, 2f_C(1-f_C),(1-f_C)^2)$. This assumption effectively reduces the vector parameter $f$ to a single parameter $f_C$, so
  putting a prior on $f$ can now be achieved by putting
  a prior on $f_C$. Perhaps we might choose a uniform prior on $[0,1)$ for $f_C$.
+  \item Although HWE is a pretty reasonable assumption for many natural populations, there are many reasons that there might be small (or even perhaps large)
+  deviations from HWE in practice. In particular, if individuals tend, even slightly to preferentially mate with others who are more ``genetically similar" then
+  there will be an excess of CC and GG genotypes compared with expectations under HWE.
+   A common way to allow for this kind of potential deviation from HWE is to introduce a new parameter, $\xi$ say, with $\xi \in [0,1]$, and
+ $f=(1-\xi)(f_C^2, 2f_C(1-f_C),(1-f_C)^2) + \xi(f_C,0,1-f_C)$. Note that $\xi=0$ corresponds to HWE, while $\xi>0$ corresponds to an ``excess" of $CC$ and $GG$ genotypes
+ compared with those expected under HWE. We might then assume independent uniform priors on $\xi$ and $f$. Or perhaps we should use a prior
+ on $\xi$ that favors values near 0 (since we know that HWE often holds well in practice). Eg $\xi \sim Be(1,10)$.    
  \item Someone who knows a bit more about population genetics might know that, both from mathematical models and in actual data, allele frequencies like $f_C$ tend not to be uniform on $[0,1)$, but more skewed towards the ends 0 and 1. Perhaps they would use a Beta(0.5,0.5) or Beta(0.1,0.1) distribution for $f_C$. Better still, perhaps they would go out and gather frequency data on, say, all known SNPs in Chinese, and fit a Beta$(\alpha, \beta)$ distribution to those data,
  and use that as a prior for this new SNP. (Note that this strategy is ``borrowing information" across SNPs.)
  \item  Finally, suppose that from a large data set on Japanese individuals we know that the frequencies of the three types in Japan are $g=(g_{CC},g_{CG},g_{GG})$. Perhaps we could
@@ -104,7 +124,26 @@ so that the resulting prior distribution approximates prior beliefs, perhaps by
  perhaps again we could get some idea from using data on other SNPs. (Note that this strategy
  is ``borrowing information" across both SNPs and populations).
    \end{itemize}
-   
+ Note that the above example illustrates the blurring between ``prior assumptions" and ``modeling assumptions". Here, we could describe the assumption of HWE as either
+ a ``prior assumption" or a ``modeling assumption". In the first case we think of it as encoding a prior on $f=\fvec$, in the second we might say the
+ likelihood has a single parameter $f_C$, rather than the full two-parameter parameterization in $\fvec$.
+ Of course, whichever way you describe it, the resulting inference is identical.
+ In fact, it turns out to be impossible, logically, to distinguish ``prior assumptions" from ``modeling assumptions". 
+ So, for example, if we assume a normal distribution for the data when formulating a likelihood, this is effectively also prior assumption.
+(A prior assumption that, with probability 1, the data come from a normal distribution). This may seem a trivial point, but in fact it is quite important
+to remember that {\it any} analysis is making (almost inevitably subjective) assumptions. 
+
+It is also interesting to note that people appear to be hard-wired to be more comfortable with direct assumptions than with ``fuzzy" priors.
+For example, if I submit an analysis that starts ``We assume HWE holds,...." then provided this assumption seems somewhat reasonable in the
+setting I am in then most readers or reviewers would not even think to object. However, suppose instead I say
+``We assume that $f=(1-\xi)(f_C^2, 2f_C(1-f_C),(1-f_C)^2) + \xi(f_C,0,1-f_C)$,
+with a mixture prior on $\xi \sim 0.5 \delta_0 + 0.5 \Be(0.5,0.5)$ where $\delta_0$ denotes a point mass on 0.". This prior assumption is
+less restrictive than assuming HWE: with probability 0.5 HWE holds, and with probability 0.5 we allow some deviation from HWE. But
+the natural initial reaction to this statement is to see it as a {\it stronger} assumption than HWE, and to ask ``where on earth does that prior come from"?
+Similarly, if I say I assume that my data are normally distributed, then readers will generally not think to question the assumption. But if I say that I assume
+they are $t$ distributed on $\nu$ degrees of freedom, with a prior on $\nu$ that is $p(\nu)= 0.5\delta_\infty + 0.5 \text{Unif}\{1,2,4,8,16,32,64\}$,
+then again it is very natural to ask where this assumption came from (even though it is, in many ways, a weaker assumption than normality).
+h    
  % BVSR EXAMPLE? \item Suppose that in a regression model, 
   \item Consider specifying a prior for the ``relative risk" (RR) of having a disease given that you carry one of two possible genetic types $A$ or $a$. Note $RR(A \mbox{ vs } a) := p(\mbox{disease} | A)/p(\mbox{disease} | a)$.
   
@@ -122,8 +161,10 @@ One can get more flexibility by using a $t$ distribution, or (sometimes more con
 \begin{enumerate}
 \item If putting a prior on a parameter that is really a ratio of two symmetric quantities (e.g. the RR above, or the ratio
 of the expression level of gene $A$ to gene $B$, where no information is available a priori to distinguish $A$ and $B$) then take the log of the parameter, and put a symmetric (perhaps normal, with some variance?) prior centered on 0.
-\item If putting a prior on a small positive quantity, about which uncertainty spans orders of magnitude, put a prior (perhaps uniform, on some range, say?) on the log of the quantity, and not on the quantity itself. Example: imagine placing a prior on the probability $p$ that an aircraft you are about to board will crash. You decide that, for sure $p<0.001$, but much more you are not prepared to say. This leads you 
-to consider putting a $U[0,0.001)$ prior on $p$.  But I would argue that this is a mistake - why?
+\item If putting a prior on a small positive quantity, about which uncertainty spans orders of magnitude, put a prior (perhaps uniform, on some range, say?) on the log of the quantity, and not on the quantity itself. Example: imagine placing a prior on the probability $p$ that an aircraft you are about to board will crash. You decide that, for sure $p$ is between $10^{-12}$ and $10^{-5}$, but much more you are not prepared to say. This leads you 
+to consider putting a $U[10^{-12},10^{-5}]$ prior on $p$.  But I would argue that this is a mistake. For example, it implies (approximately) a $90\%$ prior probability that $p \in [10^{-6}, 10^{-5}]$, 
+which is probably not what you intended. Consider instead a uniform prior on $\log_{10}(p)$ in $[-12,-5]$. Although one could argue that the hard end-points are unnatural,
+this prior does at least capture the idea that we are {\it uncertain about the order of magnitude} of $p$.
 \end{enumerate}
 
 \subsubsection{Prior Elicitation}
@@ -318,6 +359,8 @@ The idea is that even if $p(\theta)$ does not integrate to a finite quantity,
 if $\int p(D|\theta) p(\theta) d\theta$ is finite then
 the above produces a ``proper" posterior. 
 \begin{enumerate}
+\item For example, suppose $x | \theta \sim N(\theta,1)$. Assume an ``improper prior" on $\theta$ with $p(\theta) \propto 1$. This is improper because $\int p(\theta) d\theta$ is infinite, and so $p(\theta)$ is not proportional to a density. However, if we just ``plug in" this prior to Bayes Theorem we get
+$p(\theta | x) \propto \exp(-(\theta-x)^2/2)$, which implies that $\theta | x \sim N(x,1)$. That is we get a ``proper" posterior.
 \item Improper priors often result from attempts to define Objective priors. See, for example, below.
 \item  Often, Bayesian analysis with an improper prior can lead to
   procedures with attractive frequentist properties.  In fact, many
@@ -333,9 +376,6 @@ Certainly improper priors {\it can} lead to paradoxes and inconsistencies, which
  However, in many cases an improper prior produces a posterior that is a good approximation to the posterior that one would have got with a carefully-constructed
 subjective proper prior. In these cases (as in the semi-subjective prior above) I would argue it is OK. However, it is wise to be careful before using an improper prior. {\it In particular you should check that your posterior distribution is proper, as this is not always the case!}
 
-\ni\underline{Example:} Improper uniform prior for a normal mean
-
-If $x \sim N(\mu,1)$, and we use an improper prior, $p(\mu) \propto 1$, then show the posterior $p(\mu | x)$ is proper (for any $x$). Furthermore, this posterior is a reasonable approximation to the posterior you would have gotten with any prior that is ``reasonably flat near $x$". (cf Savage's potato).
 
 \ni\underline{Example:} The problem with improper priors for mixtures
 

@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+\def\P{\mbox{P}}
+\def\G{\Gamma}
+\def\t{\theta}
+\def\a{\alpha}
+\def\E{\mbox{E}}
+\def\to{\tau_0}
+\def\ti{\tau_1}
+\parindent=0in
+%\parskip=5mm
+\pagestyle{empty}
+\usepackage{amsmath}
+\usepackage{url}
+
+\begin{document}
+
+\begin{center}
+{\bf
+Bayesian Statistics
+
+\smallskip
+
+Exercises 2.
+}
+\smallskip
+
+\end{center}
+
+\bigskip
+
+\begin{enumerate}
+\item Read the article at
+\url{http://www.nytimes.com/2011/01/11/science/11esp.html}. The following is a quotation from this article:
+\begin{quote}
+Consider the following experiment. Suppose there was reason to believe that a coin was slightly weighted toward heads. In a test, the coin comes up heads 527 times out of 1,000.
+Is this significant evidence that the coin is weighted?
+Classical analysis says yes. With a fair coin, the chances of getting 527 or more heads in 1,000 flips is less than 1 in 20, or 5 percent, the conventional cutoff. To put it another way: the experiment finds evidence of a weighted coin Òwith 95 percent confidence.Ó
+Yet many statisticians do not buy it. One in 20 is the probability of getting any number of heads above 526 in 1,000 throws. That is, it is the sum of the probability of flipping 527, the probability of flipping 528, 529 and so on.
+But the experiment did not find all of the numbers in that range; it found just one Ñ 527. It is thus more accurate, these experts say, to calculate the probability of getting that one number Ñ 527 Ñ if the coin is weighted, and compare it with the probability of getting the same number if the coin is fair.
+Statisticians can show that this ratio cannot be higher than about 4 to 1, according to Paul Speckman, a statistician, who, with Jeff Rouder, a psychologist, provided the example. 
+\end{quote}
+
+\begin{enumerate}
+\item[i)] Formalize and confirm the statement ``Statisticians can show that this ratio cannot be higher than about 4 to 1". 
+\item[ii)] In the above setting, if your prior probability that the coin is weighted is 0.5, what is the largest your posterior probability (that the coin is weighted) could be?
+\item[iii)] Explain how the ``largest" value of the ratio
+described above can be considered to be a Bayes Factor in favor of an alternative hypothesis with a data-dependent prior for the binomial proportion. Provide an alternative analysis that computes a Bayes Factor using instead a Beta$(\alpha,\beta)$ prior for $p$ under the alternative. Compute the Bayes Factor for $\alpha=\beta=10$, $\alpha=\beta=1$, and $\alpha=\beta=0.5$. Which of these priors would you prefer in this setting? Give reasons for your answer.
+\end{enumerate}
+
+
+\item Suppose $X_i | \theta_i \sim N(\theta_i,1)$ (for $i=1,\dots,n$ with $n$ large). Then $X_i \pm 1.96$ is the conventional 95\% CI for $\theta_i$.
+\begin{enumerate}
+\item[i)] Show that, for any fixed value of $\theta_i$, the conventional 95\% CI has the correct frequentist coverage properties. i.e. the interval will contain $\theta_i$ in 95\% of trials.
+\item[ii)] Now suppose that the true values of $\theta_i$ are normally distributed: $\theta_i \sim N(0,1)$. Suppose that our interest focuses on which of the $\theta_i$ are positive. We will say we are ``confident" that $\theta_i$ is positive if its 95\% CI contains only positive values. Among all the occasions $i$ in which we are confident that $\theta_i$ is positive, what proportion will we be wrong?  Provide a mathematical argument, and provide R code that confirms your result by simulation.
+\end{enumerate}
+
+\item Consider $X_1,X_2,\dots \sim \text{Bernoulli}(\pi)$. 
+\begin{enumerate}
+\item[i)]  If the prior distribution for $\pi$ is $\pi \sim \text{Beta}(\alpha,\beta)$, derive the posterior distribution for $\pi$ given $X_1,\dots,X_n$. 
+Show that the predictive distribution $X_{n+1} | X_1,\dots,X_n$ is Bernoulli($(\alpha+\sum_{i=1}^n X_i)/(\alpha+\beta+n)$).
+\item[ii)] Now assume that the prior distribution for $\pi$ is instead a {\it mixture} of Beta distributions, with prior density 
+\begin{equation} \label{mixture}
+p(\pi | w,\alpha,\beta) = \sum_{j=1}^k w_j \text{Beta}(\pi; \alpha_j, \beta_j)
+\end{equation}
+where $w_1 +\cdots+w_k =1$ are the mixing weights. Show that the posterior distribution
+for $\pi$ given $X_1,\dots,X_n$ is also a mixture of Beta distributions.
+Give expressions for the (posterior) mixing weights
+and (posterior) hyperparameters.
+\end{enumerate}
+
+% Note, that in 2014, Jim Berger gave his lecture on Jeffrey's priors in lecture 4, so I added
+% these problems to this set. In cases where he gives his lecture later, they should be moved to a later set.
+
+\item Suppose $x$ has a Poisson distribution with unknown mean $\t$.
+
+Determine the conjugate prior, and associated posterior distribution, for $\t$.
+
+Determine the Jeffreys prior $\pi^J$ for $\t$, and discuss whether the ``scale invariant'' prior $\pi_0(\t) = 1/\t$ might be preferable as a noninformative prior.
+Compare the posteriors obtained, in each case, for observations $x=x_1$ vs $x=cx_1$ (for some constant $c$).
+
+
+\item If ${\bf X}=(X_1,X_2,\ldots, X_k)$ has a
+multinomial distribution with parameters $n$ (fixed and known) and ${\bf p}=(p_1, \ldots,
+p_{k-1})$ (which is unknown), find the Jeffreys prior for $\bf p$. 
+
+
+\end{enumerate}
+
+
+\end{document}
+
+
+
