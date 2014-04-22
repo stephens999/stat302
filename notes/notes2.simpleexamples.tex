@@ -190,13 +190,17 @@ include not only that the tusk has allele $A$ (an event we now denote $\ta$), bu
 
 Since $\fsA$ and $\ffA$ are unknown, we must specify a prior distribution for
 them. A convenient choice here is the Beta distribution (because of conjugacy). To follow this example all you need to know is that the Beta distribution with parameters $\alpha, \beta$, written $\be(\alpha,\beta)$, is a distribution on $[0,1]$ with density 
-$p(f) \propto f^\alpha-1 (1-f)^{\beta-1}$, and expectation $\alpha/(\alpha+\beta)$. It may help to note that $\alpha=\beta=1$ is the uniform distribution on $[0,1]$ (see Wikipedia for more on the beta distribution). We assume that $S$ is {\it a priori} independent of $\fsA$ and $\ffA$.
+$p(f) \propto f^\alpha-1 (1-f)^{\beta-1}$, and expectation $\alpha/(\alpha+\beta)$. It may help to note that $\alpha=\beta=1$ is the uniform distribution on $[0,1]$ (see Wikipedia for more on the beta distribution). We assume that $S$ is {\it a priori} independent of $\fsA$ and $\ffA$, and that $\fsA$ and $\ffA$ are, a priori, independent $\sim \be(\alpha,\beta)$.
 
-Recall, from the previous sheet, we have
+Recall, from the previous notes on this question, we have
 \begin{equation}
 \frac{p(\Hs | D)}{p(\Hf | D)}  = \frac{p(D|\Hs)}{p(D|\Hf)} \frac{p(\Hs)}{p(\Hf)}.
 \end{equation}
-Consider computing $p(D | \Hs)$ and $p(D | \Hf)$.
+Or, in words, 
+\begin{equation}
+\text{Posterior odds} = \text{Bayes Factor} \times \text{prior odds}.
+\end{equation}
+To compute the posterior odds, for any given prior odds, we have to compute the  Bayes Factor, and so focus on computing $p(D | \Hs)$ and $p(D | \Hf)$.
 We have
 \begin{align}
 p(D | \Hs) &= p(\ta,\nsA,\nfA | \Hs) \\
@@ -204,8 +208,8 @@ p(D | \Hs) &= p(\ta,\nsA,\nfA | \Hs) \\
 \intertext{and similarly}
 p(D | \Hf) & = p(\ta | \nsA, \nfA, \Hf) p(\nsA,\nfA | \Hf).
 \end{align}
-Since $S$ is assumed independent of  $\fsA$ and $\ffA$, $p(\nsA,\nfA | \Hs) = p(\nsA,\nfA | \Hf)$ and these terms will cancel in the ratio $p(D|\Hs)/p(D|\Hf)$.
-Therefore we are left to compute $p(\ta | \nsA, \nfA, \Hs)$, from
+Since $S$ is assumed independent of  $\fsA$ and $\ffA$, $p(\nsA,\nfA | \Hs) = p(\nsA,\nfA | \Hf)$ and these terms will cancel in the Bayes Factor $p(D|\Hs)/p(D|\Hf)$.
+Therefore we are left to compute $p(\ta | \nsA, \nfA, \Hs)$ and $p(\ta | \nsA, \nfA, \Hf)$. For the first of these we have
 \begin{align}
 p(\ta | \nsA, \nfA, \Hs) &= \int p(\ta, \fsA | \nsA, \nfA, \Hs) d\fsA \\
 & = \int p(\ta | \fsA,  \nsA, \nfA, \Hs) p(\fsA | \nsA, \nfA, \Hs) d\fsA \\
@@ -219,6 +223,22 @@ p(\fsA | \nsA,\nfA,\Hs) & \propto p(\nsA, \nfA, \Hs | \fsA) p(\fsA) \\
 & \propto \fsA^{\nsA+\alpha-1} (1-\fsA)^{n-\nsA+\beta-1}
 \end{align}
 from which we conclude that $\fsA | \nsA,\nfA,\Hs \sim \be(\nsA+\alpha, n-\nsA+\beta)$. Now, recognizing (\ref{fexpected}) as the expectation of this distribution, we get  $p(\ta | \nsA, \nfA, \Hs) = \frac{\nsA+\alpha}{n+\alpha+\beta}$.
+
+Similarly, we obtain $p(\ta | \nsA,\nfA, \Hf)  = \frac{\nfA+\alpha}{n+\alpha+\beta}$.
+
+Return now to our example, with $n = 100$, $\nsA = 0$, and $\nfA=1$. If we use $\alpha=\beta=0.5$ (Jeffrey's prior for this problem) then
+the BF is $0.5/1.5$ = $1/3$, which accords with the intuition that this reflects only ``modest" evidence for $\Hf$.
+
+Of course, the BF in this case is quite sensitive to the prior - that is, the choice for $\alpha$ and $\beta$. 
+However, if $\alpha,\beta$ are modest (i.e. not too small) the BF will be modest (i.e. not very strongly in favor of $\Hf$). 
+
+In practical classification examples one often has multiple features that could be used in the classification, and in that case
+the important thing is to avoid a single ``relatively uninformative" feature grossly overstating the evidence for one class vs the other,
+to the exclusion of other (perhaps more informative) features.
+
+
+
+it is generally desirable to {\it avoid grossly overstating the evidence} either way, and this is accomplished here 
 
 
 

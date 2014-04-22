@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  21 APR 2014 10:16
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  21 APR 2014 19:52
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -130,7 +130,7 @@ n/12 = (\OML/cmm/m/it/12 ^^R[]; [] ; ^^R[]\OT1/cmr/m/n/12 )$ is Dirichlet$(\OML
 [1
 
 {/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Overfull \hbox (235.3548pt too wide) detected at line 71
+Overfull \hbox (235.3548pt too wide) detected at line 72
 []\OT1/cmr/m/n/12 ([]\OMS/cmsy/m/n/12 j[]\OML/cmm/m/it/12 ; []; \OT1/cmr/m/n/1
 2 )\OML/cmm/m/it/12 :
  []
@@ -156,7 +156,7 @@ r8.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
 pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.p
 fb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pf
 b>
-Output written on ex3.pdf (3 pages, 109446 bytes).
+Output written on ex3.pdf (3 pages, 109549 bytes).
 PDF statistics:
  58 PDF objects out of 1000 (max. 8388607)
  41 compressed objects within 1 object stream

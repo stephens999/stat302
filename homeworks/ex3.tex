@@ -58,7 +58,8 @@ $$\Pr(\text{sample $j$ came from population $k$} | G_j, \text{Training data}, \a
 where $G_j$ denotes the genetic data on test sample $j$. 
 \item  Tabulate and compare the error rate (step 3) for different values of $\alpha$. 
 You should consider $\alpha=0.5$ and $\alpha=1$, as well as a ``very small" and a ``very big" value for $\alpha$.
-\item Derive the likelihood for $\alpha$ given the training set data, $L(\alpha) :=\Pr(\train | \alpha)$, and obtain the maximum likelihood estimate for $\alpha$
+\item Derive the likelihood for $\alpha$ given the training set data, $L(\alpha) :=\Pr(\train | \alpha)$. Implement a method to compute
+the likelihood for any give $\alpha$, and use numerical methods to obtain the maximum likelihood estimate for $\alpha$
 for these training data.
 \item Compute the error rate (step 3) using the maximum likelihood estimate of $\alpha$ (effectively this is the ``Empirical Bayes" approach), and compare it with the other values you obtained.
 \item The Empirical Bayes approach could be criticized for failing to fully reflect uncertainty in $\alpha$. An alternative would be to put a prior distribution on $\alpha$, and perform 
