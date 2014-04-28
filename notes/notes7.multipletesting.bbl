@@ -1,0 +1,23 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Benjamini and Hochberg}{Benjamini and
+  Hochberg}{1995}]{benjamini.hochberg.95}
+Benjamini, Y. and Y.~Hochberg (1995).
+\newblock Controlling the false discovery rate: a practical and powerful
+  approach to multiple testing.
+\newblock {\em Journal of the Royal Statistical Society. Series B
+  (Methodological)\/}~{\em 57\/}(1), 289--300.
+
+\bibitem[\protect\citeauthoryear{Storey}{Storey}{2002}]{storey.02}
+Storey, J. (2002).
+\newblock A direct approach to false discovery rates.
+\newblock {\em Journal of the Royal Statistical Society. Series B (Statistical
+  Methodology)\/}~{\em 64\/}(3), 479--498.
+
+\bibitem[\protect\citeauthoryear{Storey}{Storey}{2003}]{storey.03}
+Storey, J. (2003).
+\newblock The positive false discovery rate: A {Bayesian} interpretation and
+  the q-value.
+\newblock {\em The Annals of Statistics\/}~{\em 31\/}(6), 2013--2035.
+
+\end{thebibliography}
