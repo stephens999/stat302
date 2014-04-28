@@ -154,7 +154,7 @@ so the posterior variance is smaller than the prior and model
 variance.
 \item For credible intervals, given $x$,
 $$P\left( -z_{\alpha/2} < \frac{\theta - \theta_1}{\sqrt{\phi_1}} <
-  z_{\alpha/2} \right) = \alpha,$$
+  z_{\alpha/2} \right) = 1-\alpha,$$
 where $z_{\alpha/2}$ is the $(1-\alpha/2) \times$100th percentile of the
 N(0,1) distribution.  In particular as the prior variance $\phi_0
 \rightarrow \infty$, $\phi_1 \rightarrow \phi$, and $\theta_1
@@ -232,13 +232,10 @@ the BF is $0.5/1.5$ = $1/3$, which accords with the intuition that this reflects
 Of course, the BF in this case is quite sensitive to the prior - that is, the choice for $\alpha$ and $\beta$. 
 However, if $\alpha,\beta$ are modest (i.e. not too small) the BF will be modest (i.e. not very strongly in favor of $\Hf$). 
 
-In practical classification examples one often has multiple features that could be used in the classification, and in that case
-the important thing is to avoid a single ``relatively uninformative" feature grossly overstating the evidence for one class vs the other,
-to the exclusion of other (perhaps more informative) features.
+%In practical classification examples one often has multiple features that could be used in the classification, and in that case the important thing is to avoid a single ``relatively uninformative" feature grossly overstating the evidence for one class vs the other, to the exclusion of other (perhaps more informative) features.
 
 
-
-it is generally desirable to {\it avoid grossly overstating the evidence} either way, and this is accomplished here 
+%it is generally desirable to {\it avoid grossly overstating the evidence} either way, and this is accomplished here 
 
 
 
