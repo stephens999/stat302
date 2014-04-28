@@ -20,7 +20,7 @@
 \def\pFDR{\text{pFDR}}
 \def\FWER{\text{FWER}}
 
-\usepackage{natbib}
+\usepackage{natbib,amsmath}
 \bibliographystyle{chicago}
 
 \usepackage{amsmath}
@@ -75,11 +75,14 @@ really want $E(V/R | R>0)$ to be small (and $\Pr(R>0)$ large if possible!). So h
 \begin{equation}
 \pFDR = E(V/R | R>0).
 \end{equation}
+Although in these notes we will distinguish between the $\FDR$ and $\pFDR$, in practice we (and others) are often sloppy
+about this distinction, and simply use $\FDR$ even when we mean $\pFDR$. Indeed, many (most?) users of FDR-based methods
+will probably not be aware of the distinction.
 
 In most multiple testing problems I would argue that $\pFDR$ is a more appropriate choice of error measure than FWER for two reasons. First, 
 the FWER seems much harder to calibrate. Or, perhaps more accurately, it is easier to forget that
 one needs to worry about this. For example, how
-does one decide what level to control the FWER? This is the same problem as the $p$ value paradox we covered last class.  In practice everyone chooses $0.05$ (or 0.01? or some other arbitrary value) without much thought or comment. 
+does one decide what level to control the FWER? This is the same problem as calibrating $p$ values that we covered previously.  In practice everyone chooses $0.05$ (or 0.01? or some other arbitrary value) without much thought or comment. 
 Second,
 controlling FWER to be small is often unnecessarily stringent: in practice one would probably be OK with making a few errors ($V>1$) provided $R=S+V$ is large compared with $V$. Note also that intuitively $S$ depends on the power of the test, and $V$ depends on the size, so controlling pFDR can be thought of, informally, as balancing power vs size.
 The fact that this balancing act is explicitly part
@@ -177,7 +180,7 @@ Note that in the quantity on the left the randomness is over $T$ (and $H$), wher
 be viewed as connecting the frequentist measure $\pFDR$ with a Bayesian quantity. 
 
 Note, however, that the quantity on the right is not what a fully Bayesian analysis would compute, because it conditions only on $T \in \Gamma$, whereas a full analysis would condition on the {\it actual observed value} of $T$. In some cases this could lead to $\pFDR$ overstating the evidence against the null. For example, if you observe $T=\gamma$ then your
-posterior probability for $H=0$ should be $\Pr(H=0 | T=\gamma)$ which will naturally be greater than $\Pr(H=0 | T \leq \gamma)$ because the latter includes cases where $T<\gamma$ which provide greater evidence against $H=0$ that does $T=\gamma$.
+posterior probability for $H=0$ should be $\Pr(H=0 | T=\gamma)$ which will naturally be greater than $\Pr(H=0 | T \leq \gamma)$ because the latter includes cases where $T<\gamma$ which provide greater evidence against $H=0$ than does $T=\gamma$.
 
 Note also that this theorem implies that $\pFDR$ does not depend on $m$!!! That is, {\it if what you care about is the false discovery rate, then the number of tests you did is effectively irrelevant in selecting an appropriate threshold.} The intuition here is that, although doing more tests increases the number of false positive findings (at a given threshold), it will also increase the number of true positives in a similar way, and the two effects balance each other in the pFDR. Thus, if what you care about is the pFDR then there is no ``problem" with multiple tests, and no need to ``correct" for multiple tests. You will repeatedly come across people (statisticians especially!) who worry about the ``problem of multiple testing", or ``correcting for multiple tests". Ask them if they are worried about the FWER or pFDR, and if they say the pFDR point out that it does not depend on the number of tests.\footnote{In contrast the FDR can, in principle, depend on the number of tests because the additional term $\Pr(R>0)$ can depend on the number of tests. However, in many cases of practical interest $\Pr(R>0)$ is near 1, and does not depend ``much" on the number of tests, so in practice controlling FDR is also not really ``correcting for multiple tests". However, this whole issue is complicated by the fact that the BH procedure {\it does} depend on the number of tests. The way I think of this is that the BH procedure is conservative.}
 
@@ -211,12 +214,39 @@ If you average the local fdrs over all tests that you reject then you get a Baye
 
 \section{Multiple tests of the same null hypothesis}
 
-In these notes we have considered multiple tests of lots of different hypotheses. It is important not to confuse this with another situation that might be considered to invove ``multiple testing": that is,
+\def\x{\mathbf x}
+\def\y{\mathbf y}
+\def\Tmin{T_\text{min}}
+
+In these notes we have considered multiple tests of lots of different hypotheses. It is important not to confuse this with another situation that might be considered to involve ``multiple testing": that is,
 multiple tests of the same hypothesis. For example, 
 in genetics, one might test a genetic variant for association using two different tests, one that is
 aimed at detecting additive effects, and another that is aimed at detecting dominant or recessive effects.
-Clearly the minimum of these two $p$ values (for example) is not a valid $p$ value for because it is not uniform under the null. One would need to correct for this, for example, by modifying the null distribution. The Bonferroni procedure also works here, but is generally conservative because the tests are highly dependent; usually permutation is used in this kind of situation.
+Clearly the minimum of these two $p$ values (for example) is not a valid $p$ value for because it is not uniform under the null. One would need to correct for this, for example, by modifying the null distribution. The Bonferroni procedure also works here, but is generally conservative because the tests are highly dependent; usually permutation is used in this kind of situation. 
 
+To illustrate in more detail how permutation testing works, 
+suppose that we are attempting to test for association between a variable $y$ and a variable $x$, each measured on $n$ individuals.
+So the data are $\y=(y_1,\dots,y_n)$ and $\x=(x_1,\dots,x_n)$. Let $T_1(\x,\y)$ and $T_2(\x,\y)$ denote two different test statistics testing for association. For example,
+$T_1$ could be the $p$ value from a linear regression of $\y$ on $\x$, and $T_2$ could be a $p$ value from a Mann-Whitney test statistic for association between $\x$ and $\y$. Now define 
+\begin{equation}
+\Tmin(\x,\y):= \min(T_1(\x,\y),T_2(\x,\y)).
+\end{equation}
+The general motivation for considering more than one test here is that the two tests might be powerful against different alternative hypotheses, and 
+so by combining them in this way $\Tmin$ will be powerful against a wider range of alternatives than either $T_1$ or $T_2$ alone.
+
+To define a permutation-based procedure for assessing the significance of $\Tmin$ we need some notation.
+First, for any permutation $\pi$ of the indices $(1,\dots,n)$ let $\pi(\x)$ denote the vector obtained by applying the permutation $\pi$ to the vector $\x$:  
+\begin{equation}
+\pi(\x):=(x_{\pi(1)},\dots,x_{\pi(n)}).
+\end{equation}
+Now let $\pi_1,\dots,\pi_N$ denote $N$ different permutations of the indices $(1,\dots,n)$ (with each $\pi_j$ sampled uniformly from the set of all permutations).
+Finally, let $\Tmin^j:= \Tmin(\pi_j(\x),\y)$, be the result of computing $\Tmin$ for the $j$th permutation.
+Then the permutation-based $p$ value is
+\begin{equation} \label{eqn:permp}
+p:= \frac{1+\#\{\Tmin^j \leq \Tmin(\x,\y)\}}{1+N}.
+\end{equation}
+The idea here is that the test statistics $(\Tmin^1,\dots,\Tmin^N)$ approximate the distribution of $\Tmin(\x,\y)$ under $H_0: \text{$\x$ unassociated with $\y$}$. Therefore
+the expression  (\ref{eqn:perm}) approximates the probability, under $H_0$, of seeing a more extreme (or equally extreme) value of $\Tmin$ as the observed value $\Tmin(\x,\y)$.
 
 \bibliography{/Users/stephens/Documents/mainbib}
 \end{document}
