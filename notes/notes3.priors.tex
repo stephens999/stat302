@@ -3,7 +3,7 @@
 \def\ni{\noindent}
 \def\Be{\text{Be}}
 
-\usepackage{amsmath}
+\usepackage{amsmath,url,enumerate}
 
 \textwidth=17.0cm
 \oddsidemargin 3cm
@@ -410,21 +410,62 @@ $\alpha_i$ and $\mu$ now need some prior specifying.....
 This example shows how when attempting to be ``uninformative" for one feature (the actual graph)
 one can easily, unintentionally, be extremely informative about another feature (the number of edges in the graph). Indeed, in general, in complex problems, the first aim of prior specification could be viewed as trying to find a prior that does not have unintended, undesirable, implications.
 
-\subsubsection{Bartlett's paradox: problems with non-informative priors and Model choice}
+\subsubsection{Lindley's paradox}
 
-When you want to compare models, it can
-be crucial to give serious consideration to
-suitable prior specification.  In even simple cases there is a subtle trap ready for the unwary who
+Lindley (1957) gave an example of what he referred to 
+as ``A Statistical Paradox". Here is his first sentence:
+
+\begin{quote}
+An example is produced to show that, if $H$ is a simple hypothesis and $x$ the result of an
+experiment, the following two phenomena can occur simultaneously:
+\begin{enumerate}[(i)]
+\item a significance test for $H$ reveals that $x$ is significant at, say, the 5\% level;
+\item the posterior probability of $H$, given $x$, is, for quite small prior probabilities of $H$, as high as 95 \%.
+\end{enumerate}
+\end{quote}
+
+This results was followed by a discussion by Bartlett (1957), who corrects
+an error in one of Lindley's expressions, 
+and a similar result was apparently also known by Jeffrey's (e.g. Jeffreys 1961), and so the paradox 
+is sometimes called the Jeffrey's paradox, or the Lindley-Jeffrey's paradox,
+or the Bartlett paradox, or...
+
+Lindley's example is basically the following. Suppose $x_1,\dots,x_n \sim N(\mu,1)$ and consider testing $\mu=0$. Then a sufficient statistic
+is the sample mean $\bar{x}$, which has distribution $N(\mu,1/n)$. 
+So we'd get a $p$ value of $0.05$ if $\bar{x} = 1.96/\sqrt(n)$ say.
+Lindley also computes the posterior probability on $H_0$, for this value of $\bar{x}$, and a uniform prior for $\mu$ on some interval $I$. Of course this posterior probability depends on $n$, but as $n \rightarrow \infty$
+he shows that the posterior probability on $H_0$ tends to 1.
+Based on this, you can obviously have some value of $n$ for which the
+$p$ value is 0.05 and the posterior probability on $H_0$ is 0.95 (or even higher) which supports his original claim.
+
+Whether this is really a ``paradox" is a matter of opinion. It certainly says
+that a $p$ value of 0.05 can correspond to very
+weak evidence against $H_0$, but at this point this is not news to us!
+
+\subsection{Bartlett's paradox, and problems with non-informative priors and Model choice}
+
+In the discussion of Lindley's paradox by Bartlett (1957), he points out that Lindley missed a term $1/|I|$ in his prior specification where $|I|$ denotes
+the length of the interval $I$. (Uniform on $I$ has density $1/|I|$).
+Since this missing term might be considered constant in $n$, it does not affect Lindley's limiting argument on $n$. However, Bartlett then goes on
+to point out another issue, which is that you might like to let $I$ be big,
+ and that in the limit $|I| \rightarrow \infty$ then the posterior probability on $H_0$ tends to 1 (for any fixed data and fixed $n$), which he regards
+ as a ``silly answer".
+
+This result, which I have seen referred to as ``Bartlett's paradox" (although
+Bartlett does not refer to this result as a paradox, and the name Bartlett's paradox is also sometimes used to refer to as Lindley's paradox!) effectively
+says that very diffuse priors can give silly answers when doing model comparisons. That is, there is a subtle trap ready for the unwary who
 are ready to simply use a ``convenient" prior without
-thinking about it too much, sometimes known as ``Bartlett's paradox". (Although it is not a true paradox, it is an
-unexpected result for many.)
-
-To illustrate the idea, considering
+thinking about it too much.
+ In other words, for model comparison, it can
+be crucial to give serious consideration to
+suitable prior specification. 
+ 
+To illustrate the idea, consider
 $x_1,\dots,x_n \sim N(\mu,1)$ and consider comparing the hypothesis $H_0: \mu=0$ with the alternative $H_1: \mu \neq 0$. 
 To do this is a Bayesian framework we would
 place priors on $H_0$ and $H_1$ ($\pi_0$ and $\pi_1$ say), and compute the Bayes Factor for $H_0$ vs $H_1$,
 BF= $p(x | H_1)/p(x|H_0)$, from which we could
-then compute the posterior probabilities $p(H_0|x$ and $p(H_1 | x)$. 
+then compute the posterior probabilities $p(H_0|x)$ and $p(H_1 | x)$. 
 
 However, as we state it above, the alternative $H_1$ is not sufficiently  detailed to compute $p(x | H_1)$. Thus, to compare these hypotheses in a Bayesian framework, one must be more specific
 about $H_1$. In particular we need to specify a prior distribution $p_1(\mu)$ for $\mu$ under $H_1$.
@@ -448,11 +489,33 @@ Note that, despite appearances, the right hand side does not actually depend on 
 In the example above, $\theta$ is $\mu$.
 Under $H_1$, in the limit $\sigma_\mu^2 \rightarrow \infty$, the terms $p(x | \mu)$ and $p(\mu | x)$ tend to finite limits, and $p_1(\mu | \sigma_\mu^2) \rightarrow 0$, so the integral tends to 0.
 
+To summarize: when 
+you are computing Bayes Factors to do model comparison
+you have to be careful when 
+using improper priors, or even ``very flat" proper priors, because
+the BF can depend very sensitively to how flat the prior is. 
+This is important:
+if you didn't know about this paradox you might go ahead and use a diffuse prior
+to compute Bayes Factors and not realize that your results are very sensitive to how flat.
 
+The need for care in prior specification for BFs applies particularly to parameters that require a prior distribution in only one of the two models.
+Often times there are additional (nuisance) parameters that 
+occur in both models, and require a prior distribution in both models.
+For these nuisance parameters you can often get sensible
+BFs using very flat or improper priors on the nuisance parameters,
+provided the same prior is used for both models.
+ See \cite{servin.stephens.07} for example.
 
-
-
-
+%So to summarize this:
+%- if you are doing inference for a normal mean parameter $\theta$, having observed
+%data $x| \theta \sim N(\theta,1)$, and use a prior distribution $\theta \sim N(0,\sigma_0^2)$,
+%then the posterior distribution on $\theta$ tends to a sensible limit as $\sigma_0 \rightarrow \infty$.
+%
+%- However, if you consider {\it testing} $H_0:\theta=0$ in the above situation, vs $H_1:  \theta \sim N(0,\sigma_0^2)$
+%by computing the BF for $H_1$ vs $H_0$
+%then the BF does not tend to a sensible limit as $\sigma_0^2 \rightarrow infty$. (The BF tends to 0, whatever the value
+%of $x$, so in that limit one would always not reject $H_0$, whatever the data.)
+%
 %\subsubsection{Invariance: Priors for Location Parameters}
 
 %Suppose the parameter space $\Theta$ and the range $\cal{X}$ of the r.v.'s
