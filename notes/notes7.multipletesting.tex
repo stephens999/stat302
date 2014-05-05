@@ -236,7 +236,7 @@ so by combining them in this way $\Tmin$ will be powerful against a wider range 
 
 To define a permutation-based procedure for assessing the significance of $\Tmin$ we need some notation.
 First, for any permutation $\pi$ of the indices $(1,\dots,n)$ let $\pi(\x)$ denote the vector obtained by applying the permutation $\pi$ to the vector $\x$:  
-\begin{equation}
+\begin{equation} 
 \pi(\x):=(x_{\pi(1)},\dots,x_{\pi(n)}).
 \end{equation}
 Now let $\pi_1,\dots,\pi_N$ denote $N$ different permutations of the indices $(1,\dots,n)$ (with each $\pi_j$ sampled uniformly from the set of all permutations).
@@ -246,7 +246,7 @@ Then the permutation-based $p$ value is
 p:= \frac{1+\#\{\Tmin^j \leq \Tmin(\x,\y)\}}{1+N}.
 \end{equation}
 The idea here is that the test statistics $(\Tmin^1,\dots,\Tmin^N)$ approximate the distribution of $\Tmin(\x,\y)$ under $H_0: \text{$\x$ unassociated with $\y$}$. Therefore
-the expression  (\ref{eqn:perm}) approximates the probability, under $H_0$, of seeing a more extreme (or equally extreme) value of $\Tmin$ as the observed value $\Tmin(\x,\y)$.
+the expression  (\ref{eqn:permp}) approximates the probability, under $H_0$, of seeing a more extreme (or equally extreme) value of $\Tmin$ as the observed value $\Tmin(\x,\y)$.
 
 \bibliography{/Users/stephens/Documents/mainbib}
 \end{document}
