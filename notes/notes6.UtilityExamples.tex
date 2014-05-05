@@ -1,0 +1,122 @@
+\documentstyle[12pt]{article}
+\def\P{\mbox{P}}
+\def\G{\Gamma}
+\def\t{\theta}
+\def\a{\alpha}
+\def\E{\mbox{E}}
+\parindent=0in
+%\parskip=5mm
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{center}
+{\bf
+Bayesian Statistics Examples
+
+\smallskip
+
+Maximizing Expected Utility/ Minimizing Expected Loss.
+}
+\smallskip
+
+\end{center}
+
+\bigskip
+\begin{enumerate}
+\item {\it You are a competitor on a quiz show. So far, you have won five thousand dollars, and are given the choice between i) leaving with the five thousand dollars; ii) attempting a bonus question, which, if you answer correctly, will give you a Toyota Prius car. Which do you choose?}
+
+{\bf Answer 1:} You have seen the quiz show before, and the bonus questions are quite hard: you think
+you are able to answer them correctly about half the time. That is, your personal probability that
+you will answer the bonus question correctly is 0.5. On the other hand, you have always wanted
+a Prius, and your current car is on its last legs so you are going to buy a new one soon
+anyway. The Prius costs more than 20,000 dollars. So, treating dollars as utility, the expected utility
+for i) is 5,000 dollars, and for ii) is 10,000 dollars, so you choose ii).
+
+{\bf Answer 2:} You are happy with your car, and don't really like the Prius. Of course, you could always
+sell the Prius. Perhaps you would get 18,500 for it. But it would be a bit of work, so maybe
+the Prius is worth 18,000 to you when you've accounted for that. Also,
+although you think you could answer previous bonus questions right about half the time, you
+are feeling unlucky today, so your probability that you will get today's question right is more like 0.25.
+So your utility for i) is still 5,000 dollars, but for ii) it is 0.25*18,000 = 4,500. You choose i).
+
+\medskip
+
+\item {\it (Purchasing Insurance) You are buying a new Ipod at Best Buy. It costs 300 dollars,
+and comes with a 1 year warranty.
+They ask you if you would like to purchase the extended 3-year warranty for 30 dollars. Do you?}
+
+{\bf Possible Answer: } You know that they must be expecting to make money on the warranty, so you figure
+that it is used by fewer than one person in ten. If you buy the warranty, that will cost you 30 dollars.
+If you do not buy the warranty, then if your ipod breaks during years 2 or 3 you will have to replace
+it. But costs are dropping, and things always get better, so you will presumably spend less than 300
+to replace it for something better. So you figure your utility for buying it is -30, and your
+utility for not buying it is more than (-300)*0.1 = -30. So you don't buy it.
+
+\medskip
+
+\item {\it (Purchasing Insurance 2). You have just bought a new house, for 500,000 dollars.
+To insure the house against fire for one year costs 1,000 dollars. Do you do it?}
+
+{\bf Possible Answer:}  Fire is pretty unlikely. Indeed, you know that they expect to make
+money on insurance, so presumably it affects less than 1 in 500 houses per year. On the other
+hand, if your house burned down you would lose everything, and, to you, 
+losing your house is unthinkable: much more than 500 times worse than losing 1,000 dollars.
+So you buy the insurance. (Note: Of course, in most cases the people lending you money to buy a house
+insist you insure it!)
+
+
+\item {\it (Point Estimation). In current genetic studies, the most commonly-used type of marker is called a SNP (Single Nucleotide Polymorphism). Each SNP is a single position in the genome, where different copies of the genome carry one of two different bases. For example, at a C/G SNP, some genome copies carry the C, and others have a G. Since we each have two copies of our genome (one from mother,
+or one from father), at a C/G SNP each of us will have either 0, 1 or 2 Cs. That is our "genotype" can be thought of as a 0, 1 or 2 variable.
+
+Suppose now that we have a method for measuring genotypes. This method acknowledges
+that the measurement may have errors, so instead of just giving a genotype for each individual,
+it instead gives probabilities $p_0,p_1$ and $p_2$ for the genotype to be 0,1 or 2.
+Given these probabilities, what would you report to be the genotype?}
+
+{\bf Answer 1 (0-1 loss; mode):} You decide that if the genotype is incorrect, you will lose 1 unit, whereas
+if it is correct, you lose 0. This is referred to as 0-1 loss, and can be written as
+$$L(\hat{g}; g) = I(\hat{g} \neq g),$$
+where $L(\hat{g}; g)$ denotes the loss (``consequence") you suffer if you report $\hat{g}$ (``action")
+when the truth is $g$ (``Event"). 
+Note that 0-1 loss assumes that, when you are wrong, it does not matter
+{\it how} wrong you are. 
+
+If you report anything but 0, 1 or 2 as your genotype you are certain
+to be wrong, so your expected loss would be 1. If you report $g \in \{0,1,2\}$ then your expected
+loss is $1-p_g$. To minimize your expected loss you report $\hat{g} = \arg \max p_g$. That
+is, you report the modal genotype.
+
+{\bf Answer 2 (quadratic loss; mean):} You decide that, when a mistake is made, some mistakes
+are worse than others. For example, if the truth is 0, and you guess 2, then this is worse than
+guessing 1, even though both guesses are wrong. A common way to quantify this is via
+quadratic loss, which penalizes big mistakes quite harshly:
+$$L(\hat{g}; g ) = (g - \hat{g})^2.$$
+
+Now you want to choose $\hat{g}$ to minimize your expected loss
+$$E[L(\hat{g};g)] = \sum_g p_g (g-\hat{g})^2.$$
+Differentiating with respect to $\hat{g}$, and setting the derivative to zero, yields
+$\hat{g} = \sum_g p_g g$. That is, you estimate the genotype by the mean, averaging over the
+uncertainty.
+
+Note: The results regarding 0-1 loss and quadratic loss are quite general, and are not limited
+only to this example, or to discrete outcomes. That is, reporting a mode of a distribution as
+the point estimate is to implicitly adopt 0-1 loss; reporting the mean as a point estimate
+is to implicitly adopt quadratic loss.
+
+\item {\it (Proper scoring rules). Assume now that you are asked to report the probability that
+the genotypes are 0, 1 or 2. Naively it would appear to make sense to report the probabilities
+$p_0, p_1$ and $p_2$. Consider a formal decision-theoretic approach to this problem, with
+the following loss functions: i) $L(\hat{p}; g) = 1-\hat{p}_g$; ii) $L(\hat{p};g) = \sum_{i=0}^2 (\hat{p}_i - I(g=i))^2$;
+iii) $L(\hat{p};g) = -\log(\hat{p}_g)$.}
+
+Note: loss functions that lead to your reporting your actual probability distribution are referred
+to as "proper scoring rules". Which of the above are proper scoring rules? 
+
+
+\end{enumerate}
+
+\end{document}
+
+
+
