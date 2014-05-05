@@ -1,5 +1,9 @@
 *.log
 *.aux
+*.html
+*.md
+*.blg
+notes/figure
 .Rproj.user
 .Rhistory
 .RData
