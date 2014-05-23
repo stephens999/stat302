@@ -1,0 +1,118 @@
+\documentstyle[12pt]{article}
+\def\P{\mbox{P}}
+\def\G{\Gamma}
+\def\t{\theta}
+\def\a{\alpha}
+\def\to{\tau_0}
+\def\ti{\tau_1}
+\def\E{\mbox{E}}
+\parindent=0in
+%\parskip=5mm
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{center}
+{\bf
+Bayesian Statistics
+
+\smallskip
+
+Exercises 5}
+
+\smallskip
+
+
+\end{center}
+
+
+\bigskip
+
+\begin{enumerate}
+
+
+\item Mr. Rubin has determined that his utility function for a change in fortune on the interval $r \in [-100,500]$ is $$U(r) = 0.62 \log (0.004r + 1).$$
+\begin{enumerate}
+\item[a)] He is offered a choice between \$100 and the chance to participate in a gamble wherein he wins \$0 with probability $2/3$ and \$500 with probability $1/3$. Which should he choose?
+\item[b)] Suppose he is offered instead a chance to {\it pay} \$100 to participate in the gamble. Should he do it?
+\end{enumerate}
+
+
+
+\item Consider two forecasters, who are predicting whether it will rain tomorrow. Each gives their probability that it will rain tomorrow, and these predictions are later compared against the actual observation of whether or not it rains. In a particular 10-day period the probabilities given by each forecaster are: 
+\begin{verbatim}
+1: 0.59 0.79 0.54 0.36 0.77 0.62 0.37 0.18 0.39 0.14
+2: 0.32 0.57 0.60 0.53 0.85 0.21 0.46 0.07 0.45 0.29
+\end{verbatim}
+and the actual observations were
+\begin{verbatim}
+1 1 0 0 1 1 1 0 1 0
+\end{verbatim}
+where 1 indicates rain, and 0 indicates no rain.
+Based on these data, who do you assess to be the better forecaster, and why? Provide analyses for both the Brier score loss function and the log-loss function discussed in class.
+
+\item (continuation of 3. above) Now suppose that you were forecaster 1 in the above example, and you were invited to participate in a forecasting competition, where they are going to score your forecasts using the Loss
+$L_1(i,p) = 1-p_i$, where $p_i$ is the probability that you assign to outcome $i$ ($i=0,1$). a) Show that $L_1$ is not a proper scoring rule. b) For the 10-day period considered in 3 above, what would you have {\it reported} to the competition as your probabilities for rain on each day, in order to minimize your expected loss $L_1$? c) For these reported probabilities what would your average loss $L_1$ have been for this 10-day period? Compare this with the loss you would have achieved if you had instead reported your actual probabilities from 3. above. 
+
+
+\item Suppose $x$ is Poisson with mean $\t$ and that it is desired to estimate $\t$ under the loss $L(\t,d) = (\t - d)^2/\t$.  
+
+What is the (frequentist) risk function $R(\t, \delta)$ for the estimator $\delta_0(x)=x$?
+
+Now suppose that we have a Gamma$(\alpha, \beta)$ prior on $\t$, with $\alpha>1$.  Find the Bayes estimator of $\t$  (that is, the estimator
+that minimizes the integrated risk).
+
+\item Let $X$ be Poisson with mean $\theta \in \Theta$, where $\Theta = (0,\infty)$ and the action space $\mathcal{A}= [$ 0 $, \infty)$. The loss function $L(\theta,a) = (\theta-a)^2$. Consider decision rules of the form $\delta_c(x) = cx$. Assume $\pi(\theta)=e^{-\theta}$ is the prior density.
+\begin{itemize}
+\item[a)] Find the risk function $R(\theta, \delta_c)$.
+\item[b)] Show that $\delta_c$ is inadmissible if $c>1$.
+\item[c)] Find the integrated risk $r(\pi,\delta_c)$.
+\item[d)] Find the value of $c$ that minimizes $r(\pi,\delta_c)$.
+\end{itemize}
+
+
+
+%\item Suppose that $Y_1$ and $Y_2$ are independent uniform $(\t, \t+1)$.  We wish to test $H_0: \t =0$ against the alternative $H_1: \t>0$.
+
+%First consider the following two frequentist procedures.  Use the test statistic $T = (Y_1+Y_2 - 1)$.  (Is this a natural choice?) 
+%\begin{enumerate}
+%\item Consider the unconditional one-sided test based on $T$. What is the size $\alpha$ test?
+%\item Consider the conditional (one-sided) significance test based on the conditional distribution of $T$ given the value of $R \equiv \mbox{max}(Y_1, Y_2) - \mbox{min}(Y_1, Y_2)$.
+%\end{enumerate}
+
+%Now consider two Bayesian analyses, assuming equal prior probability on $H_0$ and $H_1$.
+%\begin{enumerate}
+%\item[(c)] First consider an improper uniform prior on $\t$.  Find the Bayes Factor and the posterior probability of $H_0$.
+%\item[(d)] Next consider a prior with an atom of size $\rho_0$ on $\{0\}$ and a uniform $[-L, L]$ density on $H_1$.  Find the Bayes factor, and the posterior probability of $H_0$.
+%\end{enumerate}
+
+%Suppose that the observations were $y_1 = 0.049$ and $y_2 = 0.999$.  Perform the tests in (a) and (b) above, and evaluate the posteriors and the Bayes factor in (c) and (d).  Discuss (which means give a substantive discussion of the similarities and differences and possible preferences amongst the four procedures).
+
+%\item Consider $x\sim N(\t,1)$ with an improper uniform prior on $\t$.  Suppose we wish to test $H_0:|\t|\le c$ against $H_1:|\t| >c$.
+
+%Find an expression, in terms of the observed data $x$, for the Bayes factor and the posterior probability of $H_0$.
+
+%Now suppose $x=0$.  For what value of $c$ is the Bayes factor equal to 1?  
+
+%What would be the $p$-value of the usual classical test for this value of $c$?  
+
+%Again suppose $x=0$, with $c=1.96$.  What is the Bayes factor?  What is the $p$-value of the classical test.
+
+%Comment.
+
+%
+%\item  Suppose $x$ is Binomial$(n,\t)$ in which it is wished to test $H_0: \t = 1/2$.  Consider the class of priors which have mass $\rho_0$ on $H_0$ and a  conjugate prior density with mean 1/2 otherwise.  
+
+%Find an expression for the infimum over this class of priors of the posterior probability of $H_0$.  
+
+%(Optional)  Evaluate this lower bound numerically, and tabulate it, and the corresponding $p$-value, for $n = 10, 20, 30$ and $x = 0, 1, \ldots, n/2$.  Comment. 
+
+\end{enumerate}
+
+
+
+
+\end{document}
+
+
+
