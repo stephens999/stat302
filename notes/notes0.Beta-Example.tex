@@ -32,16 +32,45 @@
 %\baselinestretch{1.2}
 
 \begin{center}
-\Large\bf Bayesian Inference: Introductory Motivating Example
+\Large\bf Bayesian Inference: Introduction
 \end{center}
 \normalsize
 
-\section*{Preamble}
+\section*{Preamble: Probability and Uncertainty}
 
-In Bayesian statistics, we treat all unknown quantities (including quantities that might generally be referred to as ``parameters")
-as random variables, and represent our uncertainty regarding these quantities using probability distributions. 
+In Bayesian statistics, we {\it use the calculus of probability to represent uncertainty}.
+Sometimes people (including possibly me!) will say that Bayesian statistics treats things about which we are uncertain as ``random variables".
+This is because in mathematics, we usually use the calculus of probability for random variables.
+However, uncertainty and randomness are different: one can be uncertain about something that
+is not random, at least not in the traditional sense of the word random. For example, what is the
+population of the US to the nearest 1 million? Some of you may know this, and others may not.
+Those who do not know it are uncertain about it. The Bayesian view is that we can use probability to
+describe and communicate this uncertainty.
 
-To describe the inference process at a generic level, let $\theta$ denote unknown quantities (``parameters") of interest, and $\data$ denote observed data. Then inference proceeds as follows:
+Another example: will it rain tomorrow in Chicago? Presumably you are all somewhat uncertain about this.
+But whether or not rain in Chicago
+is a ``random" event seems like, perhaps, a tricky philosophical question. 
+Fortunately, if we embrace the use of probability to describe uncertainty, we do not have to 
+concern ourselves with whether or not it is actually random: we can use probability to represent uncertainty in either case.
+Indeed, you have probably all encountered probabilistic weather forecasts in your day-to-day life. Did you every
+worry about whether weather is truly random? Probably not. Did you find the use of probability to represent
+the uncertainty difficult to get to grips with? Again, probably not: even people unfamiliar with Bayesian statistics,
+or indeed random variables, find the use of probability to represent uncertainty in the weather both natural and useful.
+(However, we will later discuss in a little more detail what one might mean when one says that the probability of rain tomorrow is, say, 20\%.)
+
+In statistics we often come across the need to perform inference from data. Of course the need to perform statistical inference
+necessarily implies uncertainty about the answer to a question (at least before viewing the data).
+ From the discussion
+above, you should not be suprised to learn that Bayesian statistics uses the calculus of probability to perform statistical inference,
+and to describe uncertainty about, for example, the values of parameters in a model.
+
+\section*{Bayesian Inference in Outline}
+
+We now very briefly introduce the mechanics of Bayesian inference for a generic statistical inference problem.
+The main goal is simply to introduce some notation and terminology. Subsequent sections will illustrate these ideas.
+
+Assume that we wish to perform inference about unknown quantities $\theta$ (``parameters"), from observed data
+$\data$. Bayesian inference proceeds as follows:
 \begin{enumerate}
 \item Specify a {\it prior distribution} $p(\theta)$ for $\theta$, which reflects our knowledge or uncertainty about
 $\theta$ prior to observing the data $\data$;
@@ -123,22 +152,38 @@ Thus understanding this example is a key first step to appreciating
 the fundamental ideas behind Bayesian inference and why it is useful and important. 
 
 
-\section*{Alternative Inference Paradigms: Frequentist Inference}
+\section*{Alternative inference paradigms: Frequentist inference}
 
-The main alternative paradigm to Bayesian inference is Frequentist Inference.
-In broad terms the paradigm proceeds as follows:
+The main alternative paradigm to Bayesian inference is Frequentist inference.
+In broad terms this paradigm proceeds as follows:
 \begin{itemize}
-\item Define a procedure for making some kind of inference about an unknown, $\theta$, from data $\data$.
-\item Study how this procedure performs {\it on average} for $\data$ sampled from $p(\data|\theta)$. (Note that this may depend on $\theta$, so one can consider performance characteristics for different values of $\theta$).
+\item Define a procedure for making some kind of inference about an unknown, $\theta$, from data $\data$. 
+For example, we might define a ``confidence interval" $[A(\data),B(\data)]$ that is designed to contain $\theta$ with high probability.
+\item Study, mathematically, how this procedure would perform {\it on average} for $\data$ randomly sampled from $p(\data|\theta)$. (Note that this performance 
+may, in general, depend on $\theta$, necessitating consideration of performance characteristics for different values of $\theta$.)
+\item For actual observed data $\data$ report the outcome of the procedure, and report its expected average performance.
+For example, we might report the observed value of the interval $[A(\data),B(\data)]$ = $[1,3]$ say, along with the fact that, on average, $[A(\data),B(\data)]$
+is expected to contain the true value of $\theta$ 95\% of the time.
 \end{itemize}
 
-There are two important ideas I hope you will take away from this class regarding frequentist inference. 
+Here are the important ideas I hope you will take away from this class regarding frequentist inference, and frequentist ideas more generally. 
 \begin{enumerate}
-\item There is an important general {\it philosophical} or {\it foundational} problem with frequentist thinking. This can be summarized as follows: just because
+\item Studying the average performance of a procedure (across possible datasets $\data$) can be a useful way to compare procedures with one another. 
+For example, I often distribute software implementing methods for performing statistical inference. If lots of people use my software, across lots of different datasets, then 
+I would certainly hope that the the average performance (by some appropriate metric) will be good. 
+(However, the different datasets will usually have different values of $\theta$, so
+average performance across a range of values of $\theta$ is usually more relevant than average performance for a specific value of $\theta$.)
+\item Bayesian methods usually have good average performance across different datasets (at least, on average, across different values of $\theta$, although possibly
+not for some specific fixed $\theta$).
+\item Although average performance is a reasonable way to compare procedures, 
+{\it reporting the average performance as a measure of confidence or uncertainty is fraught with theoretical and practical problems}. 
+First the theoretical problem: just because
 a procedure performs well {\it on average}, doesn't mean it performs sensibly for that particular $\data$.  Indeed,  one can easily construct examples of procedures that perform well {\it on average}
-but seem silly for particular values of $\data$.
+but seem silly for particular values of $\data$ (see example below).
 In practice
 you have usually just observed a particular value of $\data$: wouldn't you want to choose a procedure that performs sensibly for that $\data$, rather than one that works well on average (for other $\data$!)
+Second, the practical problem: what does it mean to say that $[1,3]$ is a 95\% confidence interval for $\theta$? Does it mean that the true value of $\theta$ likely
+lies between 1 and 3? How likely? 
 \item Regarding $p$ values specifically, which
 are one of the most widely used frequentist tools,
 it is difficult to decide what an appropriate $p$ value threshold should be for rejecting a null hypothesis. This is sometimes referred to as the problem of {\it calibrating} $p$ values. For example, if $p=0.05$, does this represent strong or weak evidence against the null hypothesis? Should I reject at $p=0.05$? or $p=0.01$? or ...?
@@ -220,6 +265,6 @@ to evidence for the null, and other times it can correspond to evidence against 
 
 
 
-\bibliography{/Users/stephens/Documents/mainbib}
+\bibliography{/Users/stephens/Dropbox/Documents/mainbib}
 
 \end{document}
