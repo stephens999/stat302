@@ -1,0 +1,108 @@
+\documentstyle{article}
+\def\E{\mbox{E}}
+\def\P{\mbox{P}}
+\def\ni{\noindent}
+
+\textwidth=18.0cm
+\topmargin=-1.2cm
+\columnsep=1.0cm
+\textheight=21.8cm
+\hoffset=-3.2cm
+\renewcommand\refname{Recommended Reading}
+
+
+\begin{document}
+%\twocolumn
+%\baselinestretch{1.2}
+
+
+
+
+\begin{center}
+\Large\bf Stat 30200: Mathematical Statistics 2\end{center}
+\vskip 6mm
+\normalsize
+
+\bibliographystyle{amsplain}
+\bibliography{/Users/stephens/Dropbox/Documents/mainbib}
+\nocite{berger:1985}
+\nocite{lindley:2006}
+\nocite{bernardo94}
+\nocite{berger1988likelihood}
+\nocite{savage1970reading}
+\nocite{savage1972foundations}
+\nocite{sellke2001calibration}
+\nocite{berger1987testing}
+\nocite{edwards1963bayesian}
+
+\section{Outline}
+
+This course continues the development of Mathematical Statistics, with an emphasis
+on Bayesian inference. Topics include Bayesian Inference and Computation, Frequentist Inference, Decision theory, admissibility and Stein's paradox, the Likelihood principle, Exchangeability and De Finetti's theorem, multiple comparisons and False Discovery Rates.
+The mathematical level will generally be at that of an easy advanced calculus course.
+We will assume familiarity with
+standard statistical distributions (e.g. Normal, Poisson, Binomial, Exponential),
+with the laws of probability, expectation, conditional expectation etc, as well as standard statistical
+concepts such as likelihood,
+$p$ values, and confidence intervals.
+
+Concepts will be illustrated  by instructive "toy" examples, where
+calculations can be done by hand, as well as some more
+complex, practical applications
+of Bayesian statistics. Familiarity with the R statistical language will be assumed.
+
+
+\section{Grading}
+
+Final Grades will be based on average grade from weekly homeworks (60\%),
+an in-class midterm (15\%), a final exam (15\%) 
+and a take-home final/literature report (10\%). 
+
+The take-home final will involve
+the preparation of a brief report on a paper on Bayesian statistics chosen from the literature. A good starting list of potential "classic" papers
+is given by Savage (1970) in "Reading suggestions for the Foundations of Statistics",
+American Statistician 24 (4). See also Chapter 2 of \cite{bernardo94}, which includes
+some more recent references. I will also give suggestions on more applied papers. If time permits the take-home final will also
+include a brief presentation to the class of the main points of the report.
+
+
+\section{Tentative Topic Schedule}
+
+The following is a tentative outline of the order I intend to cover topics (subject to change)
+\begin{enumerate}
+\item (Lec 1) Review of syllabus, and what type of course this is; what students find difficult; encourage questions. 
+\item Simple example of Bayesian inference (assignment problem; handout). 
+\item Problems with frequentist approaches to inference. Examples of crazy confidence procedures and hypothesis tests (Berger p 24-25); difficulty of calibrating $p$ values (Sellke paper). 
+\item (Lec 2) Subjective probability: card tricks, 
+measurement of probability, and axiomatic approach (Lindley chapter 1 examples; chapter 3 handout; notes handout).
+\item (Lec 3) More simple examples of Bayesian inference (handout: beta prior for frequencies; normal prior for normals, continuation of classification example).
+Conjugacy. Summarizing posterior distributions: means, medians, modes, credible intervals (symmetric and HPD). Savage's potato.
+\item (Lec 4) Prior Distributions (handout). Jeffrey's priors. Improper priors and ``non-informative" priors. 
+Empirical Bayes and Hierarchical models. Examples. Rules of thumb.
+\item Exchangeability and de Finnetti's theorem (handout); examples, including Kreps's thumb tack. %board rubber, triglycerides
+%Included extended example on machines; talked about graphical models.
+\item Posterior computation (handout). Monte Carlo and Importance Sampling. Metropolis--Hastings algorithm, including proof of correct stationary distribution; coordinate-wise MH and Gibbs. 
+%(Note that IS is not done as simply as might be on handout.) 
+%Started by trying to give a bit more intuition of IS, particularly sampling from prior and weighting by likelihood. 
+\item Computer Practical, Gibbs sampling examples (inbreeding coefficient; introducing latent variables).  %stephenslab.uchicago.edu/Rlab.txt
+\item Midterm
+\item Decision theory: action space, and loss (0-1 loss, squared loss, absolute loss); Examples, including label-switching in mixtures.
+\item Bayesian Conditional Decision Principle, of choosing action to minimize posterior expected loss. Examples
+%Example 1: Loss functions for Classification (2 classes, eg Hypothesis testing). Cost $c_{10}$ and $c_{01}$. Note 0-1 loss as special case.
+%Example 2: Loss functions for inference: squared error, absolute error, 0-1 loss (indicator(|a-theta|>epsilon)). Example 2a: where squared loss does not work; $0.5 N(\mu_1,1)+0.5 N(\mu_2,1)$.
+Loss functions for prediction. Proper scoring rules. Examples.
+%Example 3: Loss functions for prediction. Proper scoring rules. Consider reporting the $p$ that minimizes $E(L(i,p))$ where expectation is taken over $i \sim p^*$. If this is minimized at $p=p^*$ then
+%$L$ is a proper scoring rule.
+%Note that $L(i,p) = \log(p_i)$ and $(1-p_i)^2$ are proper.
+%Proof that $L(i,p) = 1-p_i$ is not a proper scoring rule.
+Utility and axiomatic approaches (Berger Ch 2)
+\item Qualitative properties of utility; St Petersburg Paradox (Berger pp56-57). Frequentist decision principles: Risk Function, Integrated Risk, Minimax decision rules. Bayes Decision Rule. Admissibility. James-Stein Estimators. 
+\item Connection between Bayes Decision Rules and conditional Bayes decision principle. Admissibility of Bayes Rules. Complete Class Theorem. Neyman-Pearson Lemma. (handout photocopies of relevant pages from Berger). 
+\item Likelihood Principle (handouts).  %Chapter from mongraph, and also notes.tex
+\item Hypothesis testing, Bayesian and Frequentist. Bayes Factors. False Discovery Rates and multiple testing.
+%\item Calibration of p values; setting fixed size test vs reporting p values; conditioning on strength of evidence vs average performance; dependence of error rates on proportion of true nulls as well as power. %(handout Sellke et al paper).
+%\item Multiple testing: family-wise error rate, Bonferroni correction, False Discovery Rate, and pFDR; fact that pFDR does not depend on number of tests; Storey's procedure; q values. 
+\item Bayesian model averaging.
+\end{enumerate}
+
+\end{document}
