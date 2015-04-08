@@ -51,8 +51,14 @@ described above can be considered to be a Bayes Factor in favor of an alternativ
 \item Suppose $X_i | \theta_i \sim N(\theta_i,1)$ (for $i=1,\dots,n$ with $n$ large). Then $X_i \pm 1.96$ is the conventional 95\% CI for $\theta_i$.
 \begin{enumerate}
 \item[i)] Show that, for any fixed value of $\theta_i$, the conventional 95\% CI has the correct frequentist coverage properties. i.e. the interval will contain $\theta_i$ in 95\% of trials.
-\item[ii)] Now suppose that the true values of $\theta_i$ are normally distributed: $\theta_i \sim N(0,1)$. Suppose that our interest focuses on which of the $\theta_i$ are positive. We will say we are ``confident" that $\theta_i$ is positive if its 95\% CI contains only positive values. Among all the occasions $i$ in which we are confident that $\theta_i$ is positive, what proportion will we be wrong?  Provide a mathematical argument, and provide R code that confirms your result by simulation.
+\item[ii)] Suppose that the true values of $\theta_i$ are uniformly distributed on $[-a,a]$ for some $a$. Derive the posterior distribution for $\theta_i | X_i,a $. 
+Is it true that, for any fixed $x$, $\Pr(\theta_i \in x \pm 1.96 | X_i=x, a) \rightarrow 0.95$ as $a \rightarrow \infty$? 
+\item[ii)] Now suppose that the true values of $\theta_i$ are normally distributed: $\theta_i \sim N(0,1)$. Suppose that our interest focuses on which of the $\theta_i$ are positive. We will say we are ``confident" that $\theta_i$ is positive if its 95\% CI contains only positive values. Among all the occasions $i$ in which we are confident that $\theta_i$ is positive, what proportion will we be wrong?  Provide a mathematical argument, and provide R code that confirms your result by simulation., a
+\item[iii)] Comment briefly on how the results from this are related to discussions we had about confidence intervals vs credible intervals in class.
 \end{enumerate}
+
+\item Suppose $X_i | \theta_i \sim N(\theta_i,1)$ (for $i=1,\dots,n$ with $n$ large). 
+
 
 \item Consider $X_1,X_2,\dots \sim \text{Bernoulli}(\pi)$. 
 \begin{enumerate}
@@ -62,27 +68,47 @@ Show that the predictive distribution $X_{n+1} | X_1,\dots,X_n$ is Bernoulli($(\
 \begin{equation} \label{mixture}
 p(\pi | w,\alpha,\beta) = \sum_{j=1}^k w_j \text{Beta}(\pi; \alpha_j, \beta_j)
 \end{equation}
-where $w_1 +\cdots+w_k =1$ are the mixing weights. Show that the posterior distribution
+where $w_1 +\cdots+w_k =1$ are the mixing weights and $\text{Beta}(\cdot; \alpha_j, \beta_j)$ denotes
+the density of a Beta random variable with parameters $\alpha_j, \beta_j$. Show that the posterior distribution
 for $\pi$ given $X_1,\dots,X_n$ is also a mixture of Beta distributions.
 Give expressions for the (posterior) mixing weights
 and (posterior) hyperparameters.
 \end{enumerate}
 
+\item In problem set 1 you were asked to Complete the exercise in the commented
+text at the end of \verb|exercises/seeb/train_test.R|. 
+\begin{enumerate}
+\item Swap your code and results
+with someone else from the class (henceforth referred to as your ``partner"). 
+[Your partner should be someone with whom you have not previously compared 
+code/results for this question - if you need help identifying a partner, let me know.]
+\item Run your partner's code yourself, and check you get the same answer that they report.
+If not, communicate with your partner to resolve the difference, and report the outcome.
+\item Compare the results of your code with the results of your partner's code.
+Are they the same? If not, communicate with your partner to resolve the difference, and report the outcome.
+\item  Compare the way that your partner tackled the problem with the way
+you tackled the problem. Comment on any similarities and differences. 
+Is their code easier to read or harder to read than yours? Did they
+use any R tricks or functions that you were unfamiliar with? If possible improve your 
+code (and correct it if necessary) as a result of what you have learned. Hand in your improved code and its output.
+\end{enumerate}
+
 % Note, that in 2014, Jim Berger gave his lecture on Jeffrey's priors in lecture 4, so I added
 % these problems to this set. In cases where he gives his lecture later, they should be moved to a later set.
 
-\item Suppose $x$ has a Poisson distribution with unknown mean $\t$.
 
-Determine the conjugate prior, and associated posterior distribution, for $\t$.
-
-Determine the Jeffreys prior $\pi^J$ for $\t$, and discuss whether the ``scale invariant'' prior $\pi_0(\t) = 1/\t$ might be preferable as a noninformative prior.
-Compare the posteriors obtained, in each case, for observations $x=x_1$ vs $x=cx_1$ (for some constant $c$).
-
-
-\item If ${\bf X}=(X_1,X_2,\ldots, X_k)$ has a
-multinomial distribution with parameters $n$ (fixed and known) and ${\bf p}=(p_1, \ldots,
-p_{k-1})$ (which is unknown), find the Jeffreys prior for $\bf p$. 
-
+%\item Suppose $x$ has a Poisson distribution with unknown mean $\t$.
+%
+%Determine the conjugate prior, and associated posterior distribution, for $\t$.
+%
+%Determine the Jeffreys prior $\pi^J$ for $\t$, and discuss whether the ``scale invariant'' prior $\pi_0(\t) = 1/\t$ might be preferable as a noninformative prior.
+%Compare the posteriors obtained, in each case, for observations $x=x_1$ vs $x=cx_1$ (for some constant $c$).
+%
+%
+%\item If ${\bf X}=(X_1,X_2,\ldots, X_k)$ has a
+%multinomial distribution with parameters $n$ (fixed and known) and ${\bf p}=(p_1, \ldots,
+%p_{k-1})$ (which is unknown), find the Jeffreys prior for $\bf p$. 
+%
 
 \end{enumerate}
 
