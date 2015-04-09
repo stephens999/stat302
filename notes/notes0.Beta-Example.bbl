@@ -1,5 +1,11 @@
 \begin{thebibliography}{}
 
+\bibitem[\protect\citeauthoryear{Sellke, Bayarri, and Berger}{Sellke
+  et~al.}{2001}]{sellke2001calibration}
+Sellke, T., M.~Bayarri, and J.~Berger (2001).
+\newblock Calibration of $p$ values for testing precise null hypotheses.
+\newblock {\em The American Statistician\/}~{\em 55\/}(1), 62--71.
+
 \bibitem[\protect\citeauthoryear{Wasser, Joseph~Clark, Drori, Stephen~Kisamo,
   Mailand, Mutayoba, and Stephens}{Wasser et~al.}{2008}]{wasser.etal.08}
 Wasser, S.~K., W.~Joseph~Clark, O.~Drori, E.~Stephen~Kisamo, C.~Mailand,

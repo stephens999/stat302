@@ -15,7 +15,6 @@
 \def\Hf{H_F}
 \def\Hs{H_S}
 \def\ta{T_A}
-\def\data{x}
 \def\be{\text{Beta}}
 
 \usepackage{amsmath}
@@ -70,20 +69,20 @@ We now very briefly introduce the mechanics of Bayesian inference for a generic 
 The main goal is simply to introduce some notation and terminology. Subsequent sections will illustrate these ideas.
 
 Assume that we wish to perform inference about unknown quantities $\theta$ (``parameters"), from observed data
-$\data$. Bayesian inference proceeds as follows:
+$x$. Bayesian inference proceeds as follows:
 \begin{enumerate}
 \item Specify a {\it prior distribution} $p(\theta)$ for $\theta$, which reflects our knowledge or uncertainty about
-$\theta$ prior to observing the data $\data$;
-\item Specify a {\it probability model} $p(\data|\theta)$; 
+$\theta$ prior to observing the data $x$;
+\item Specify a {\it probability model} $p(x|\theta)$; 
 \item Compute a {\it posterior distribution} for $\theta$, using Bayes Theorem: 
 \begin{equation}
-p(\theta | \data) = p( \data |\theta) p(\theta)/p( \data).
+p(\theta | x) = p( x |\theta) p(\theta)/p( x).
 \end{equation} 
-The posterior distribution reflects our knowledge of $\theta$ after observing the data $\data$.
-Note that $p(\data) = \int p(\data | \theta) p(\theta) \, d\theta$ so the posterior distribution is entirely determined by the prior and the likelihood.
+The posterior distribution reflects our knowledge of $\theta$ after observing the data $x$.
+Note that $p(x) = \int p(x | \theta) p(\theta) \, d\theta$ so the posterior distribution is entirely determined by the prior and the likelihood.
 \end{enumerate}
 
-Note that, when considered as a function of $\theta$, $p(\data|\theta)$ is the likelihood function for $\theta$. This leads to a convenient way to verbalize Bayes theorem:  \begin{equation}
+Note that, when considered as a function of $\theta$, $p(x|\theta)$ is the likelihood function for $\theta$. This leads to a convenient way to verbalize Bayes theorem:  \begin{equation}
 \text{posterior $\propto$ likelihood $\times$ prior.}
 \end{equation}
 This verbalization also emphasizes that the posterior distribution results from combining the information in the data (likelihood) with external information (prior).
@@ -109,44 +108,44 @@ In this problem the main ``unknown" of interest is the subspecies from which the
 
 First we need to specify a prior distribution for $\theta$, which reflects our knowledge about $\theta$ before collecting the genetic data. If we had no prior reason to believe that the tusk was more or less likely from a savannah elephant that a forest elephant then we would use the prior distribution $p(\theta=\s) = p(\theta=\f) = 0.5$\footnote{Throughout I use $p(\cdot)$ to denote both probabilities and densities. Although such sloppiness can sometimes get you into trouble, usually there is no problem.}. If we had prior experience that poaching tended to occur more often from one subspecies than another then we might modify this prior to reflect this. We will talk a lot more about prior specification later. For now we assume that the prior is specified, with $p(\theta=\s)= \pis = 1-\pif$.
 
-Next we specify a model for the observed data, $p(\data | \theta)$.
-If the tusk came from a savannah elephant then we know that allele $A$ occurs at frequency $\fsA$ so $p( \data | \theta=\s) = \fsA$. Similarly $p(\data | \theta=\f) = \ffA$. This completes the specification of the probability model, and hence the likelihood.
+Next we specify a model for the observed data, $p(x | \theta)$.
+If the tusk came from a savannah elephant then we know that allele $A$ occurs at frequency $\fsA$ so $p( x | \theta=\s) = \fsA$. Similarly $p(x | \theta=\f) = \ffA$. This completes the specification of the probability model, and hence the likelihood.
 
 Now we apply Bayes Theorem to obtain the posterior distribution for $\theta$. For example: 
 \begin{align}
-p(\theta=\s | \data) & = p( \data | \theta=\s) p(\theta=\s)/ p(\data) \label{bayes} \\ 
+p(\theta=\s | x) & = p( x | \theta=\s) p(\theta=\s)/ p(x) \label{bayes} \\ 
 &= \fsA \pis / (\fsA \pis + \ffA \pif),  \label{final}
 \intertext{and similarly}
-p(\theta=\f | \data) &=  \ffA \pif / (\fsA \pis + \ffA \pif).
+p(\theta=\f | x) &=  \ffA \pif / (\fsA \pis + \ffA \pif).
 \end{align}
 
-To make this more concrete, let's try some numbers. Let's assume both subspecies are a priori equally likely, so $\pif=\pis = 0.5$. And assume that the $A$ is twice as common in savannah elephants as forest elephants, say $\fsA = 0.3$ and $\ffA = 0.15$. Then $p(\theta=\s | \data) = 0.3/(0.15+0.3) = 2/3$.
+To make this more concrete, let's try some numbers. Let's assume both subspecies are a priori equally likely, so $\pif=\pis = 0.5$. And assume that the $A$ is twice as common in savannah elephants as forest elephants, say $\fsA = 0.3$ and $\ffA = 0.15$. Then $p(\theta=\s | x) = 0.3/(0.15+0.3) = 2/3$.
 
 \subsubsection*{An alternative solution, and the posterior odds}
 
 Here it is helpful to note an alternative (but equivalent) way of solving this kind of problem, which can simplify algebraic manipulation. 
 First, to simplify notation we introduce $\Hs$ and $\Hf$ to denote the events ``$\theta=\s$" and ``$\theta=\f$" respectively. Note that (\ref{bayes}) gives an expression for the
-posterior probability $p(\Hs | \data)$. Now, the idea is to avoid
-computing the denominator $p(\data)$ in (\ref{bayes}) by considering the ratio $p(\Hs | \data)/p(\Hf | \data)$, so that $p(\data)$ cancels out. This ratio is known as the ``posterior odds" for $\Hs$ vs $\Hf$. Applying Bayes theorem to the numerator and denominator, and cancelling out the $p(\data)$ that occurs in each,  we get
+posterior probability $p(\Hs | x)$. Now, the idea is to avoid
+computing the denominator $p(x)$ in (\ref{bayes}) by considering the ratio $p(\Hs | x)/p(\Hf | x)$, so that $p(x)$ cancels out. This ratio is known as the ``posterior odds" for $\Hs$ vs $\Hf$. Applying Bayes theorem to the numerator and denominator, and cancelling out the $p(x)$ that occurs in each,  we get
 \begin{equation}
-\frac{p(\Hs | \data)}{p(\Hf | \data)}  = \frac{p(\data|\Hs)}{p(\data|\Hf)} \frac{p(\Hs)}{p(\Hf)}.
+\frac{p(\Hs | x)}{p(\Hf | x)}  = \frac{p(x|\Hs)}{p(x|\Hf)} \frac{p(\Hs)}{p(\Hf)}.
 \end{equation}
 This equation, which applies quite generally for any two events $\Hs$ and $\Hf$ (but is usually used for mutually exclusive events), also has a convenient verbalization: 
 \begin{equation}
 \text{Posterior Odds} = \text{Bayes Factor} \times  \text{Prior Odds}
 \end{equation}
-where the Bayes Factor for $\Hs$ vs $\Hf$ is defined to be the ratio $p(\data|\Hs)/p(\data|\Hf)$, and quantifies the {\it information in the data regarding the relative plausibility of $\Hs$ and $\Hf$}. Note that this equation really emphasizes the way that the prior information (prior odds) are combined with the information in the data (Bayes Factor) to give the posterior.
+where the Bayes Factor for $\Hs$ vs $\Hf$ is defined to be the ratio $p(x|\Hs)/p(x|\Hf)$, and quantifies the {\it information in the data regarding the relative plausibility of $\Hs$ and $\Hf$}. Note that this equation really emphasizes the way that the prior information (prior odds) are combined with the information in the data (Bayes Factor) to give the posterior.
 
 In our case, the Bayes factor is $\fsA/\ffA$ and the prior odds is $\pis/\pif$, and we obtain
 \begin{equation}
-\frac{p(\Hs | \data)}{p(\Hf | \data)} = \frac{\fsA\pis}{\ffA \pif}.
+\frac{p(\Hs | x)}{p(\Hf | x)} = \frac{\fsA\pis}{\ffA \pif}.
 \end{equation}
-Noting that $p(\Hf|\data) = 1-p(\Hs|\data)$, and solving for $p(\Hs |\data)$ gives (\ref{final}).
+Noting that $p(\Hf|x) = 1-p(\Hs|x)$, and solving for $p(\Hs |x)$ gives (\ref{final}).
 
 \subsection*{Could we do this any other way?}
 
 The above example serves to illustrate many of the fundamental aspects of Bayesian statistical inference, and in particular how data are combined with prior information to come to a conclusion, including measures of uncertainty in that conclusion. The example was chosen both because it is simple, and because
-I know of no other satisfactory way to tackle this problem. One could treat $\theta$ as a ``parameter" and estimate it by ``maximum likelihood" (choose $\theta$ to maximise $p(\data|\theta)$), but this would not give an estimate of uncertainty in the conclusion. Getting a confidence interval for $\theta$ would be of little help: either the confidence interval would contain both $\s$ and $\f$, or just one of them, suggesting either complete confidence or no confidence, with no room for gradations of uncertainty. And if one tries to treat this as a hypthesis test, comparing $\Hs$ vs $\Hf$, which is the null hypothesis? 
+I know of no other satisfactory way to tackle this problem. One could treat $\theta$ as a ``parameter" and estimate it by ``maximum likelihood" (choose $\theta$ to maximise $p(x|\theta)$), but this would not give an estimate of uncertainty in the conclusion. Getting a confidence interval for $\theta$ would be of little help: either the confidence interval would contain both $\s$ and $\f$, or just one of them, suggesting either complete confidence or no confidence, with no room for gradations of uncertainty. And if one tries to treat this as a hypthesis test, comparing $\Hs$ vs $\Hf$, which is the null hypothesis? 
 
 Thus understanding this example is a key first step to appreciating
 the fundamental ideas behind Bayesian inference and why it is useful and important. 
@@ -157,31 +156,35 @@ the fundamental ideas behind Bayesian inference and why it is useful and importa
 The main alternative paradigm to Bayesian inference is Frequentist inference.
 In broad terms this paradigm proceeds as follows:
 \begin{itemize}
-\item Define a procedure for making some kind of inference about an unknown, $\theta$, from data $\data$. 
-For example, we might define a ``confidence interval" $[A(\data),B(\data)]$ that is designed to contain $\theta$ with high probability.
-\item Study, mathematically, how this procedure would perform {\it on average} for $\data$ randomly sampled from $p(\data|\theta)$. (Note that this performance 
+\item Define a procedure for making some kind of inference about an unknown, $\theta$, from data $x$. 
+For example, we might define a ``confidence interval" $[A(x),B(x)]$ that is designed to contain $\theta$ with high probability.
+\item Study, mathematically, how this procedure would perform {\it on average} for $x$ randomly sampled from $p(x|\theta)$. (Note that this performance 
 may, in general, depend on $\theta$, necessitating consideration of performance characteristics for different values of $\theta$.)
-\item For actual observed data $\data$ report the outcome of the procedure, and report its expected average performance.
-For example, we might report the observed value of the interval $[A(\data),B(\data)]$ = $[1,3]$ say, along with the fact that, on average, $[A(\data),B(\data)]$
+\item For actual observed data $x$ report the outcome of the procedure, and report its expected average performance.
+For example, we might report the observed value of the interval $[A(x),B(x)]$ = $[1,3]$ say, along with the fact that, on average, $[A(x),B(x)]$
 is expected to contain the true value of $\theta$ 95\% of the time.
 \end{itemize}
 
 Here are the important ideas I hope you will take away from this class regarding frequentist inference, and frequentist ideas more generally. 
 \begin{enumerate}
-\item Studying the average performance of a procedure (across possible datasets $\data$) can be a useful way to compare procedures with one another. 
+\item Studying the average performance of a procedure (across possible datasets $x$) can be a useful way to compare procedures with one another. 
 For example, I often distribute software implementing methods for performing statistical inference. If lots of people use my software, across lots of different datasets, then 
 I would certainly hope that the the average performance (by some appropriate metric) will be good. 
-(However, the different datasets will usually have different values of $\theta$, so
-average performance across a range of values of $\theta$ is usually more relevant than average performance for a specific value of $\theta$.)
-\item Bayesian methods usually have good average performance across different datasets (at least, on average, across different values of $\theta$, although possibly
-not for some specific fixed $\theta$).
+However, the different datasets will usually have different values of $\theta$, so
+average performance across a range of values of $\theta$ is usually more relevant than average performance for a specific value of $\theta$.
+\item Bayesian methods usually have good average performance across different datasets, particularly when the average
+is taken over different values of $\theta$ (which makes sense because different datasets will typically have different $\theta$!). Indeed, their average performance
+across different $(\theta, x)$ pairs is effectively ``optimal" provided that the average is taken over
+i) a distribution for $\theta$ that matches the assumed prior distribution, and ii) a distribution for the data given $\theta$ that matches the assumed model.
+That is, when expectation is taken over $p(D,\theta) = p(\theta) p(D|\theta)$. You might summarize this by saying that Bayesian methods are optimal when
+the prior and model are both ``correct".
 \item Although average performance is a reasonable way to compare procedures, 
 {\it reporting the average performance as a measure of confidence or uncertainty is fraught with theoretical and practical problems}. 
 First the theoretical problem: just because
-a procedure performs well {\it on average}, doesn't mean it performs sensibly for that particular $\data$.  Indeed,  one can easily construct examples of procedures that perform well {\it on average}
-but seem silly for particular values of $\data$ (see example below).
+a procedure performs well {\it on average}, doesn't mean it performs sensibly for that particular $x$.  Indeed,  one can easily construct examples of procedures that perform well {\it on average}
+but seem silly for particular values of $x$ (see example below).
 In practice
-you have usually just observed a particular value of $\data$: wouldn't you want to choose a procedure that performs sensibly for that $\data$, rather than one that works well on average (for other $\data$!)
+you have usually just observed a particular value of $x$: wouldn't you want to choose a procedure that performs sensibly for that $x$, rather than one that works well on average (for other $x$!)
 Second, the practical problem: what does it mean to say that $[1,3]$ is a 95\% confidence interval for $\theta$? Does it mean that the true value of $\theta$ likely
 lies between 1 and 3? How likely? 
 \item Regarding $p$ values specifically, which
@@ -191,35 +194,116 @@ In practice $p=0.05$ has been widely adopted as
 a threshold, but this is an arbitrary convention, and certainly not appropriate for all settings.
 \end{enumerate}
 
+\subsection*{Problems with $p$ values}
 
-Example: this example is a modification of Berger (p 25). Suppose $\data \in \{1,2,3\}$ and $\theta \in \{0,1\}$
+There are essentially two problems with $p$ values that every statistician should be familiar with.
+The first is that they are easy to mis-define and mis-interpret. The problem of misdefinition
+is easily addressed in principle, by just avoiding this pitfall and getting the definition right. 
+But in practice this turns out to be harder than expected. There are just so many ways to get the definition wrong!
+The second problem is that, as mentioned above, $p$ values are hard to calibrate, and in particular
+it is difficult to say what values of $p$ correspond to evidence against the null hypothesis. 
+For example, in some cases $p=0.01$ may correspond to evidence for the null hypothesis,
+and others may correspond to evidence against the null hypothesis. The following example demonstrates
+the former case ($p=0.01$ corresponds to data that favor the null); modifying the example
+so that $p=0.01$ corresponds to data against the null is left as an exercise.
+
+Example (modified from Berger, p25). Suppose $x \in \{1,2,3\}$ and $\theta \in \{0,1\}$
 with 
 \begin{table}[h!]
 \center
 \begin{tabular}{c|c|c|c}
-$\data$ & 1 & 2 & 3 \\ \hline
-$p(\data|\theta=0)$ & 0.005 & 0.005 & 0.99 \\
-$p(\data|\theta=1)$ & 0.0049 & 0.9851 & 0.01 
+$x$ & 1 & 2 & 3 \\ \hline
+$p(x|\theta=0)$ & 0.005 & 0.005 & 0.99 \\
+$p(x|\theta=1)$ & 0.0049 & 0.9851 & 0.01 
 \end{tabular}
 \end{table}
 
-Let $H_i$ denote the hypothesis $\theta=i$.
-Now consider the procedure ``Reject $H_0$ if $\data \in \{1,2\}$."
+Let $H_i$ denote the hypothesis $\theta=i$, so $H_0$ is the null hypothesis.
+Note that $x=2$ corresponds to evidence against $H_0$ ($x=2$ is more probable under $H_1$ than $H_0$)
+and $x=1,3$ correspond to evidence for $H_0$ ($x=1$ and $x=3$ are both more probable under $H_0$ than $H_1$).
+However, $x=1$ is only very weak evidence either way because it is almost equally probable under $H_0$ and $H_1$.
+If we order the possibe outcomes in terms of their strength of the evidence against $H_0$ we get $x=2$ is the strongest,
+followed by $x=1$ and then $x=3$.
 
-Note that, {\it on average} this procedure performs
+So now, compute the $p$ value for the $x=1$.
+Since the $p$ value is the probability of seeing evidence ``as or more extreme against $H_0$ if $H_0$ holds" the
+$p$ value is the probability of seeing $x=1$ or $x=2$ if $H_0$ holds, which is $p=0.01$. By convention $p=0.01$ 
+would usually be considered
+evidence against $H_0$, but in this case $x=1$ represents evidence slightly in favor of the null hypothesis.
+
+It is a simple exercise to modify this example so that $p=0.01$ corresponds to evidence against the null. 
+This demonstrates that sometimes $p=0.01$ can correspond
+to evidence for the null, and other times it can correspond to evidence against the null.
+
+Some statisticians prefer to work with type I error rates and type II error rates of test procedures, rather than with $p$ values.
+The idea now is that we will use a test with good type I error rates and type II error rates. 
+The problem now is that a test may have low type I and type II error rates, but sometimes produce a silly answer.
+
+For example, consider the test procedure ``Reject $H_0$ if $x \in \{1,2\}$" and note that{\it on average} this procedure performs
 well, whatever the value of $\theta$. Indeed
 the probability of making a mistake is 0.01,
 whatever the value of $\theta$. The probability of a type I error and a type II error are both 0.01.
-Or, in other words, the size of the test is 0.01 and the power is 0.99.
-Furthermore, this is the most powerful test of size 0.01. But
-if $\data=1$ is it really sensible to reject $H_0$? No, because $\data=1$ is (slightly) more probable under $H_0$ than under $H_1$, and so (slightly) supports $H_0$. 
+(In other words, the size of the test is 0.01 and the power is 0.99.
+Furthermore, this is the most powerful test of size 0.01.)
+So a frequentist using this test, on observing $x=1$, could reasonably say ``Using a test that has (frequentist) error probability 0.01, I reject $H_0$".
+But  as we have discussed $x=1$ represents evidence {\it for} $H_0$ (albeit very weak), so this seems
+a silly procedure.
 
-Interpreting this test instead in terms of $p$ values: the $p$ value for the observation $\data=1$ in this case is $p=0.01$. Usually $p=0.01$ would be considered
-evidence against $H_0$, but in this case $\data=1$ represents evidence slightly in favor of the null hypothesis.
-(Exercise: construct a case where $p=0.01$ corresponds to evidence against the null. Thus you will see that sometimes $p=0.01$ can correspond
-to evidence for the null, and other times it can correspond to evidence against the null.)
+As Berger points out, the resolution here is that $x=1$ is unlikely to occur. So the test does
+indeed do well ``on average" - it just doesn't produce sensible results in the rare cases where $x=1$.
+However, as Berger also points out, in the rare cases where $x=1$ shouldn't we still provide sensible results? 
+
+For more on calibration of $p$ values, including some useful practical guidelines, see \cite{sellke2001calibration}.
+
+\subsection*{Crazy Confidence Intervals}
+
+Confidence intervals are probably equally slippery as $p$ values.
+Let us first review what a confidence interval is.
+Recall we observe $x$ informing us about a parameter $\theta$.
+Here is will be useful to explicitly consider that $x$ is the realization of a random variable $X$
+whose distribution given by $p(x | \theta)$. 
+
+Let $A(\cdot),B(\cdot)$ represent functions, such that 
+\begin{equation}
+\Pr(\theta \in [A(X),B(X)]) = 0.95.
+\end{equation}
+Note that here the ``randomness" in the probability on the left side refers to randomness in $X$, not in $\theta$ which is to be considered fixed.
+That is, 
+\begin{equation}
+\Pr(\theta \in [A(X),B(X)]) := \int 1(A(x) \leq \theta \leq B(x)) p(x | \theta) dx.
+\end{equation}
+Then $[A(X),B(X)]$ is said to be a 95\% Confidence Interval (CI) for $\theta$.
+Also, in practice on observing $X=x$, analysts will report that ``$[A(x),B(x)]$ is a 95\% CI for $\theta$".
+
+Example: Suppose $X | \theta \sim N(\theta,1)$. Then
+$[X-1.96, X+1.96]$ is a 95\% CI for $\theta$. This is because
+$$\Pr(\theta \in [X-1.96, X+1.96]) = \Pr(X \in [\theta-1.96,\theta+1.96]) = 0.95.$$
+(Remember that all these probability statements are about randomness in $X$.)
+
+Further, if we observed $X=2$, we would report $[0.04,3.96]$ as a 95\% CI for $\theta$.
+
+Here is the problem: what does it actually mean to say that ``$[0.04,3.96]$ is a 95\% CI for $\theta$"?
+It sounds like it ought to mean that $\theta$ is ``likely" to lie in the range $[0.04,3.96]$.
+Perhaps even that 
+\begin{equation} \label{eqn:theta}
+\Pr(\theta \in [0.04,3.96] | X=2) = 0.95.
+\end{equation}
+That would be a nice thing to be able to say. But what would this statement mean?
+It would {\it have} to be a probabilty statement about $\theta$ (because $X$ is no longer random), and to make such
+a statement we must either treat $\theta$ as random,
+or we have to take the view that we are using probability to represent uncertainty about $\theta$: 
+in either case, computing the conditional probability in (\ref{eqn:theta}) 
+would first require specification of the distribution of $\theta$ unconditional on $X$ (the ``prior distribution"),
+after which the conditional probability could be computed using Bayes Theorem.
 
 
+So if  ``$[0.04,3.96]$ is a 95\% CI for $\theta$" does not mean (\ref{eqn:theta}) holds, what does it mean?
+I personally can provide no other useful meaning to the statement. If $(\ref{eqn:theta})$ does not
+hold, at least approximately, then I think that the statement ``$[0.04,3.96]$ is a 95\% CI for $\theta$" has no useful meaning.
+However, confidence intervals are widely used, so people
+must {\it think} they are useful, right? The only explanation I can provide is that in fact people routinely ``misinterpret" the statement
+``$[0.04,3.96]$ is a 95\% CI for $\theta$" as meaning that (\ref{eqn:theta}) does in fact hold.
+So now let us consider: are there conditions under which this ``misinterpretation" is in fact correct?
 
 
 %\subsection*{Example extended: allowing for uncertain frequencies}
@@ -231,22 +315,22 @@ to evidence for the null, and other times it can correspond to evidence against 
 
 %To show how big a problem this can be, imagine that $n=100$, and that we see no copies of $A$ in the savannah sample, and just one in the forest sample ($\nsA = 0, \nfA=1$). Now the maximum likelihood estimates of $\fsA$ and $\ffA$ are $0$ and $0.01$ respectively, and plugging these into (\ref{final}) gives $p(H_s) = 0$. That is, we would conclude that the tusk was {\it certainly}, with no room for doubt, from a forest elephant, and not a savannah one. Furthermore we would draw this conclusion whatever the prior probabilities $\pis$ and $\pif$ (as long as $\pif \neq 0$), so even if we were {\it a priori} very confident that the tusk arose from a savanna elephant we would reverse this confidence based on the genetic data. Such a conclusion goes against the common sense intuition that, in this case, the amount of information obtained about the tusk origin from the genetic data is rather limited.
 
-%Now let us see how we can take a Bayesian approach to this problem. Now the unknowns include not only $S$, but also $\fsA$ and $\ffA$, and the data $\data$ 
-%include not only that the tusk has allele $A$ (an event we now denote $\ta$), but also the observation of $\nsA$ and $\nfA$ copies of $A$ in $n$ savanna and forest elephants. Thus we write $\data=(\ta,\nsA,\nfA)$.
+%Now let us see how we can take a Bayesian approach to this problem. Now the unknowns include not only $S$, but also $\fsA$ and $\ffA$, and the data $x$ 
+%include not only that the tusk has allele $A$ (an event we now denote $\ta$), but also the observation of $\nsA$ and $\nfA$ copies of $A$ in $n$ savanna and forest elephants. Thus we write $x=(\ta,\nsA,\nfA)$.
 
 %Since $\fsA$ and $\ffA$ are unknown, we must specify a prior distribution for
 %them. A convenient choice here is the Beta distribution (for reasons we will go into in future classes). To follow this example all you need to know is that the Beta distribution with parameters $\alpha, \beta$, written $\be(\alpha,\beta)$, is a distribution on $[0,1]$ with density 
 %$p(f) \propto f^\alpha-1 (1-f)^{\beta-1}$, and expectation $\alpha/(\alpha+\beta)$. It may help to note that $\alpha=\beta=1$ is the uniform distribution on $[0,1]$ (see Wikipedia for more on the beta distribution). We assume that $S$ is {\it a priori} independent of $\fsA$ and $\ffA$.
 
-%Now consider computing $p(\data | \Hs)$ and $p(\data | \Hf)$ in \ref{}.
+%Now consider computing $p(x | \Hs)$ and $p(x | \Hf)$ in \ref{}.
 %We have
 %\begin{align}
-%p(\data | \Hs) &= p(\ta,\nsA,\nfA | \Hs) \\
+%p(x | \Hs) &= p(\ta,\nsA,\nfA | \Hs) \\
 %& = p(\ta | \nsA, \nfA, \Hs) p(\nsA,\nfA | \Hs)
 %\intertext{and similarly}
-%p(\data | \Hf) & = p(\ta | \nsA, \nfA, \Hf) p(\nsA,\nfA | \Hf).
+%p(x | \Hf) & = p(\ta | \nsA, \nfA, \Hf) p(\nsA,\nfA | \Hf).
 %\end{align}
-%Since $S$ is assumed independent of  $\fsA$ and $\ffA$, $p(\nsA,\nfA | \Hs) = p(\nsA,\nfA | \Hf)$ and these terms will cancel in the ratio $p(\data|\Hs)/p(\data|\Hf)$.
+%Since $S$ is assumed independent of  $\fsA$ and $\ffA$, $p(\nsA,\nfA | \Hs) = p(\nsA,\nfA | \Hf)$ and these terms will cancel in the ratio $p(x|\Hs)/p(x|\Hf)$.
 %Therefore we are left to compute $p(\ta | \nsA, \nfA, \Hs)$, from
 %\begin{align}
 %p(\ta | \nsA, \nfA, \Hs) &= \int p(\ta, \fsA | \nsA, \nfA, \Hs) d\fsA \\
