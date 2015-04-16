@@ -26,24 +26,56 @@
 
 \section{Prior Distributions}
 
-There are several different approaches to specification of prior distributions. We can identify at least three different types of specification:
+There are broadly two different formal approaches to specification of prior distributions:
 \begin{enumerate}
-\item Subjective specification: the prior is chosen by making a serious attempt to quantify a state of knowledge prior to performing the experiment. This is perhaps the ``purest" form of Bayesian analysis.
-This approach is most often used when the
+\item Subjective specification: the prior is chosen by making a serious attempt to quantify a state of knowledge prior to performing the experiment. This is perhaps the ``purest" form of Bayesian analysis. This approach is most often used when the
 prior actually contains non-trivial information that helps inform the analysis.
-\item Semi-subjective specification (this is my own term; I think these kinds of priors are widely used, but it isn't a concept that is talked about much)
-: here the prior isn't actually claimed to reflect the full state of knowledge prior to the experiment, but is chosen to have the property that the resulting {\it posterior} is nonetheless expected to be a very good approximation to what would have been obtained if a full subjective analysis had been undertaken. We saw an example of this in Savage's potato: using a very flat prior on the potato weight is not a sensible reflection of the ``true" prior state of knowledge, but -- as Savage argues -- it will result in a similar posterior, provided that the ``true" prior is approximately flat in the area with appreciable likelihood (and nowhere else much larger). Data-dependent priors (a prior distribution that has been chosen
-after ``peeking" at the data) {\it can} fall into this category, although not always.
-\item Objective specification: the prior is chosen to satisfy some objective criterion. For example, the prior is chosen so that the conclusions of the analysis (i.e. posterior distributions of quantities of interest) will be invariant to choice of parameterization, or to the scale of measurement of the data. Or the prior could be chosen so that
-(perhaps asymptotically) the resulting posterior has good frequentist properties, such as the correct frequentist coverage for 95\% CIs.
+\item Objective specification: the prior is chosen to satisfy some objective criterion. 
+Examples of criterion that are sometimes used are:
+\begin{enumerate}
+\item the conclusions of the analysis (i.e. posterior distributions of quantities of interest) should be invariant to scale of measurement (e.g. multiplying all data by a constant
+as would happen if we switched from inches to centimeters). 
+\item more generally, the conclusions of the analysis should be invariant to choice of parameterization. (Jeffrey's priors are the most common example.)
+\item  the resulting posterior should have good frequentist properties, such as the correct (asymptotic) frequentist coverage for 95\% CIs. (``matching priors").
 \end{enumerate}
-In all three cases some consideration may be
+\end{enumerate}
+In both cases some consideration may be
 given to computational convenience. For example,
 one might take a subjective approach, but restricting
 oneself to conjugate priors.
 
-Note that these approaches are not mutually exclusive. For example, I might use an Objective specification for parameters where the conclusions are expected to be relatively robust to prior specification (or where I think that they also serve as a semi-subjective prior), but a subjective prior for priors that are
-going to substantively affect conclusions.
+Usually in science the word ``subjective" is viewed as bad or suspicious, and ``objective" is viewed as good. But in this case it is far from as simple as this.
+It might be fair to say that it is a subjective question whether it is better to use subjective or objective priors. And it would certainly be fair
+to say there are many different objective priors, so which one you might use would be a subjective choice. Ultimately both approaches
+can be useful, and indeed they are not mutually exclusive. For example, I might use an Objective specification for parameters about which I do not
+have much subjective information, and subjective priors for parameters where I have specific and easily-quantified prior information I want to capture.
+
+Although these are the two types of prior that have been studied and written about, in practical applications people often use priors that are not really either
+subjective or objective. That is no serious attempt has been made to capture prior knowledge, but neither are they formally chosen to satisfy a stated objective criterion.
+Indeed in realistic situations involving more than a few parameters it can be essentially impossible to perform an analysis that is truly subjective (because
+of the difficulty of accurately quantifying ones prior beliefs) or objective
+ (objective priors are only well developed for a relatively simple range of examples, such as inference for a normal mean...).
+
+This may sound pretty bad, but in practice this generally works out fine in situations where i) the data are reasonably informative about the parameter in question, and ii) the prior information
+available is relatively weak. In such cases the posterior is relatively insensitive to the prior chosen, and will closely approximate
+what would have been obtained if one had done a serious and careful subjective analysis. 
+%the prior isn't actually claimed to reflect the full state of knowledge prior to the experiment, but is chosen to have the property that the resulting {\it posterior} is nonetheless expected to be a very good approximation to what would have been obtained if a full subjective analysis had been undertaken. 
+We saw an example of this in Savage's potato: using a very flat prior on the potato weight is not a sensible reflection of the ``true" prior state of knowledge, but -- as Savage argues -- it will result in a similar posterior, provided that the ``true" prior is approximately flat in the area with appreciable likelihood (and nowhere else much larger). 
+
+In practice, the main challenge in prior specification is avoiding specifying a prior that is both i) unrealistic and ii) has a severe effect on the inference.
+This is sometimes harder than expected. 
+
+Note also there are many other terms people use for priors, some of which may be useful, others may not.
+\begin{enumerate}
+\item ``non-informative" priors. This isn't a useful term. No prior is ``non-informative". It isn't clear what it means. 
+\item ``flat" priors. This usually means $p(\theta)$ is a constant, but you might as well say that explicitly.
+\item ``diffuse" priors - this is a qualitative description, usually used to indicate that no serious attempt was made to
+quantify subjective information, and usually implying that the author believes the results will be relatively insensitive to this choice.
+\item reference prior: a specific type of objective prior due to Bernardo and co-workers.
+\item Data-dependent priors: a prior distribution that has been chosen
+after ``peeking" at the data. This sounds like a bad thing, and it can be. Sometimes it works out OK. You have to be careful!
+\end{enumerate}
+
 
 What about performing analyses using more than one prior? Strict subjective Bayesians could argue that one should simply do the analysis with
 the prior distribution that reflects your prior knowledge/uncertainty.
@@ -52,8 +84,8 @@ ask whether individuals with different prior beliefs will come to different conc
 where it is plausible that different individuals might have quite different prior beliefs it seems reasonable to report results of multiple analyses using different priors.
 
 A question for thought/discussion:
-Suppose that an Objective prior specification procedure resulted in a prior that was not
-either subjective or semi-subjective. Would you be happy to use it anyway? What would the resulting posterior distributions mean?
+Suppose that an Objective prior specification procedure resulted in a posterior distribution that was
+inconsistent with your prior information. Would you be happy to use it anyway? What would the resulting posterior distributions mean?
 What does a 95\% credible interval computed from an ``objective prior" mean? (For a subjective
 prior, it has a relatively straightforward interpretation as representing a certain state of uncertainty in the parameter after viewing data.)
 
