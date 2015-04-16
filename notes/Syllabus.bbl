@@ -1,0 +1,46 @@
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{1}
+
+\bibitem{berger:1985}
+J.O. Berger, \emph{Statistical decision theory and {Bayesian} analysis},
+  Springer, 1985.
+
+\bibitem{berger1987testing}
+J.O. Berger and T.~Sellke, \emph{Testing a point null hypothesis: the
+  irreconcilability of p values and evidence}, Journal of the American
+  Statistical Association (1987), 112--122.
+
+\bibitem{berger1988likelihood}
+J.O. Berger and R.L. Wolpert, \emph{The likelihood principle}, 1988.
+
+\bibitem{bernardo94}
+J~M Bernardo and A~F~M Smith, \emph{{Bayesian} theory}, Wiley, Chichester,
+  1994.
+
+\bibitem{edwards1963bayesian}
+W.~Edwards, H.~Lindman, and L.J. Savage, \emph{{Bayesian} statistical inference
+  for psychological research.}, Psychological Review \textbf{70} (1963), no.~3,
+  193.
+
+\bibitem{lindley:2006}
+D.V. Lindley, \emph{Understanding uncertainty}, John Wiley and Sons, 2006.
+
+\bibitem{savage1970reading}
+L.J. Savage, \emph{Reading suggestions for the foundations of statistics}, The
+  American Statistician \textbf{24} (1970), no.~4, 23--27.
+
+\bibitem{savage1972foundations}
+\bysame, \emph{The foundations of statistics}, Dover Pubns, 1972.
+
+\bibitem{sellke2001calibration}
+T.~Sellke, MJ~Bayarri, and J.O. Berger, \emph{Calibration of $p$ values for
+  testing precise null hypotheses}, The American Statistician \textbf{55}
+  (2001), no.~1, 62--71.
+
+\end{thebibliography}

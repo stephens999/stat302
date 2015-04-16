@@ -32,6 +32,43 @@ Exercises 3.
 \bigskip
 
 \begin{enumerate}
+\item Jim Berger introduced the following medical diagnosis problem. Let $D$ denote the event that a patient has the disease. Consider a patient sampled from a population where the disease prevalence is $p_0$, so $p_0 = \Pr(D)$. Consider a diagnostic test which can be positive ($P$) or negative ($N$).
+Let $p_1:= \Pr(P| D)$ and $p_2:=\Pr(P | not D)$. Let $\theta$ denote the probability that the patient has the disease given that the test comes out positive $\theta:=\Pr(D|P)$.
+\begin{enumerate}
+\item Show that 
+\begin{equation} \label{eqn:theta}
+\theta = \frac{p_0p_1}{p_0p_1 + (1-p_0)p_2}.
+\end{equation}
+\item Berger considers the situation that the $p_i$ are unknown, but estimated from (independent) 
+data $X_i \sim Bin(n_i,p_i)$. Assume a $Beta(a,a)$ prior for $p_i$. Implement an R function that peforms Berger's following procedure for sampling from the posterior of $\theta$ given $n_1,n_2,n_3,X_1,X_2,X_3$ and $a$, and uses it to return an equal-tailed $100(1-\alpha) \%$ Credible Interval (CI) for $\theta$.
+\begin{enumerate}
+\item sample $p_i$ from its posterior given $X_1,X_2,X_3,a$.
+\item compute $\theta$ from (\ref{eqn:theta}).
+\item repeat this lots of times and use upper and lower percentiles of generated $\theta$ to produce the CI.
+\end{enumerate}
+\item Use your procedure with $a=0.5$ to try to replicate Berger's Table 1. 
+\begin{table}[h!]
+\begin{center}
+\begin{tabular}{c|c|c}
+$n_0=n_1=n_2$ & $(x_0,x_1,x_2)$ & 95\% CI \\ \hline
+20 & (2,18,2) & (0.107,0.872)  \\
+20 & (10,18,0) & (0.857,1.000) \\
+80 & (20,60,20) & (0.346,0.658) \\
+80 & (40,72,8) & (0.808,0.952)
+\end{tabular}
+\end{center}
+\caption{Berger's Table 1}
+\end{table}
+\item Assess sensitivity to $a$ by producing the same table with $a=1,2$. 
+\item Berger claims that the credible intervals from this procedure, with $a=0.5$, also have good frequentist coverage properties.
+\begin{enumerate}
+\item Write a function that uses simulation to check frequentist coverage for any given
+$n$ and $p$ vectors. Show results for $n_0=n_1=n_2=20$ and 
+several (at least three) different values for $(p_0,p_1,p_2)$. 
+\item Use your function to compare frequentist coverage properties for $a=1,2$ with $a=0.5$. 
+\item Explore how coverage is affected if  $p_i$ is at or near the boundaries (0,1)? 
+\end{enumerate}
+\end{enumerate}
 
 \item The Dirichlet distribution is a generalization of the Beta distribution.  
 A $k$-tuple $(\t_1,\t_2,\ldots,\t_k)$ is said to have a Dirichlet distribution with parameters $(\a_1,\a_2,\ldots,\a_k)$ if its (joint) probability density function is
@@ -48,6 +85,20 @@ Assume that the prior distribution for $\t=(\t_1,\dots,\t_k)$ is Dirichlet$(\a_1
 \end{enumerate} 
 \end{enumerate}
 
+\item Suppose $x$ has a Poisson distribution with unknown mean $\t$.
+
+Determine the conjugate prior, and associated posterior distribution, for $\t$.
+
+Determine the Jeffreys prior $\pi^J$ for $\t$, and discuss whether the ``scale invariant'' prior $\pi_0(\t) = 1/\t$ might be preferable as a noninformative prior.
+Compare the posteriors obtained, in each case, for observations $x=x_1$ vs $x=cx_1$ (for some constant $c$).
+
+
+\item If ${\bf X}=(X_1,X_2,\ldots, X_k)$ has a
+multinomial distribution with parameters $n$ (fixed and known) and ${\bf p}=(p_1, \ldots,
+p_{k-1})$ (which is unknown), find the Jeffreys prior for $\bf p$. 
+
+
+
 \item Using the above results on the Dirichlet, we now return to the exercise in \verb|exercises/seeb/train_test.R|. In that exercise you were told, after step 1, to ``Assume for the remainder of this exercise that these allele frequencies from the training set are the ``true" frequencies in each population." Some of you may have noticed that zeros in allele
 counts in the training set then create problems, and perhaps solved this problem by adding pseudo counts (in which case you have already
 made a good start on this exercise). In this exercise you are now asked to revisit the exercise using a more complete Bayesian procedure, 
@@ -61,9 +112,9 @@ You should consider $\alpha=0.5$ and $\alpha=1$, as well as a ``very small" and 
 \item Derive the likelihood for $\alpha$ given the training set data, $L(\alpha) :=\Pr(\train | \alpha)$. Implement a method to compute
 the likelihood for any give $\alpha$, and use numerical methods to obtain the maximum likelihood estimate for $\alpha$
 for these training data.
-\item Compute the error rate (step 3) using the maximum likelihood estimate of $\alpha$ (effectively this is the ``Empirical Bayes" approach), and compare it with the other values you obtained.
+\item Compute the error rate (step 3) using the maximum likelihood estimate of $\alpha$ (effectively this is what is known as the ``Empirical Bayes" approach, which we will study later), and compare it with the other values you obtained.
 \item The Empirical Bayes approach could be criticized for failing to fully reflect uncertainty in $\alpha$. An alternative would be to put a prior distribution on $\alpha$, and perform 
-fully Bayesian inference, integrating over the uncertainty in $\alpha$. Perform this analysis, using a uniform discrete prior on $\alpha \in \{0.025,0.05,0.1,0.2,0.4,0.8,1.6,3.2,6.4\}$. Again, compare the error rate for this ``fully Bayes" analysis with the other approaches. 
+fully Bayesian inference, ``integrating over the uncertainty" in $\alpha$. Perform this analysis, using a uniform discrete prior on $\alpha \in \{0.025,0.05,0.1,0.2,0.4,0.8,1.6,3.2,6.4\}$. Again, compare the error rate for this ``fully Bayes" analysis with the other approaches. 
 \end{enumerate}
  [Note that the above approaches, consider classifying test data one at a time given {\it only the information from the training data}.
  In practice, if we had access to multiple test samples (of unknown origin) we should also use any information they
@@ -72,63 +123,51 @@ compute
 $$\Pr(\text{sample $j$ came from population $k$} | \text{All test data genotypes}, \text{Training data genotypes and populations of origin},\alpha).$$ However, this full analysis is beyond us for now.]
 
 
-%\item Suppose $x$ has a Poisson distribution with unknown mean $\t$.
-%
-%Determine the conjugate prior, and associated posterior distribution, for $\t$.
-%
-%Determine the Jeffreys prior $\pi^J$ for $\t$, and discuss whether the ``scale invariant'' prior $\pi_0(\t) = 1/\t$ might be preferable as a noninformative prior.
-%Compare the posteriors obtained, in each case, for observations $x=x_1$ vs $x=cx_1$ (for some constant $c$).
+
+%\item
+% Read the chapter by Krebs entitled ``Independence, Exchangeability,
+%and de Finetti's Theorem''.   Do exercise 1 at the end.
 %
 %
-%\item If ${\bf X}=(X_1,X_2,\ldots, X_k)$ has a
-%multinomial distribution with parameters $n$ (fixed and known) and ${\bf p}=(p_1, \ldots,
-%p_{k-1})$ (which is unknown), find the Jeffreys prior for $\bf p$. 
 %
-
-\item
- Read the chapter by Krebs entitled ``Independence, Exchangeability,
-and de Finetti's Theorem''.   Do exercise 1 at the end.
-
-
-
-\item  Consider throwing a thumb tack repeatedly. Find a thumb tack, but {\it do not throw it yet}. With heads and tails as described in Krebs' chapter (tail means point uppermost), what is your prior for $\t$, the long run proportion of heads?  
-
-Sketch a graph of your prior.
-
-The appropriate conjugate prior here is the family of Beta distributions.  Choose one, or a mixture of two, Beta distributions which (roughly) approximate your prior.  (Don't waste time trying to get a very good approximation.)  In the remainder of the question I will refer to this as your approximate prior.
-
-Sketch (or plot) a graph of your approximate prior.
-
-Toss your tack 100 times under similar conditions and record the results.
-
-Using your approximate prior as the prior, calculate and then sketch the posterior after $n=$ 1, 10, 50, and 100 tosses.  
-
-What is your predictive probability, based on the first $n$ tosses, that the $(n+1)$st toss would result in a tail, for these values of $n$?
-
-My prior is an equal mixture of the Beta(2,4) and the Beta(4,2) distributions.
-Using my prior as the prior, calculate and then sketch the posterior after $n=$ 1, 10, 50, and 100 tosses.  
-
-What is the predictive probability, based on the first $n$ tosses, that the $(n+1)$st toss would result in a tail, for these values of $n$?
-
-Comment.
-
-
-
-
-\item  Verify the claim in lectures that an exchangeable sequence $X_1, X_2$,
- with
-$$
-\P(X_1=1, X_2=0) = \P(X_1=0, X_2=1) = \frac{1}{2},
-$$
-cannot be embedded in an exchangeable sequence of length three.
-
-
-\item   Show that if  $X_1, X_2, \ldots$ is an infinite exchangeable
-sequence of 0-1 valued random quantities, then for any pair $i,j$,
-Cov$(X_i, X_j) \ge 0$.  
-
-In fact this result is true for any infinite exchangeable sequence. 
-Prove this also.
+%\item  Consider throwing a thumb tack repeatedly. Find a thumb tack, but {\it do not throw it yet}. With heads and tails as described in Krebs' chapter (tail means point uppermost), what is your prior for $\t$, the long run proportion of heads?  
+%
+%Sketch a graph of your prior.
+%
+%The appropriate conjugate prior here is the family of Beta distributions.  Choose one, or a mixture of two, Beta distributions which (roughly) approximate your prior.  (Don't waste time trying to get a very good approximation.)  In the remainder of the question I will refer to this as your approximate prior.
+%
+%Sketch (or plot) a graph of your approximate prior.
+%
+%Toss your tack 100 times under similar conditions and record the results.
+%
+%Using your approximate prior as the prior, calculate and then sketch the posterior after $n=$ 1, 10, 50, and 100 tosses.  
+%
+%What is your predictive probability, based on the first $n$ tosses, that the $(n+1)$st toss would result in a tail, for these values of $n$?
+%
+%My prior is an equal mixture of the Beta(2,4) and the Beta(4,2) distributions.
+%Using my prior as the prior, calculate and then sketch the posterior after $n=$ 1, 10, 50, and 100 tosses.  
+%
+%What is the predictive probability, based on the first $n$ tosses, that the $(n+1)$st toss would result in a tail, for these values of $n$?
+%
+%Comment.
+%
+%
+%
+%
+%\item  Verify the claim in lectures that an exchangeable sequence $X_1, X_2$,
+% with
+%$$
+%\P(X_1=1, X_2=0) = \P(X_1=0, X_2=1) = \frac{1}{2},
+%$$
+%cannot be embedded in an exchangeable sequence of length three.
+%
+%
+%\item   Show that if  $X_1, X_2, \ldots$ is an infinite exchangeable
+%sequence of 0-1 valued random quantities, then for any pair $i,j$,
+%Cov$(X_i, X_j) \ge 0$.  
+%
+%In fact this result is true for any infinite exchangeable sequence. 
+%Prove this also.
 
 %\item  If  $X_1, X_2, \ldots, X_n$ is a finite exchangeable sequence of 0-1
 %valued random quantities, obtain a lower bound for Cov$(X_i, X_j)$, for
