@@ -26,7 +26,10 @@
 
 \section{Prior Distributions}
 
-There are broadly two different formal approaches to specification of prior distributions:
+Formally there are two different ways to think about how to specify the prior distribution, which we might call ``subjective prior specification",
+and ``objective prior specification". Both of these approaches are, in some sense ``rigorous" ways of thinking about prior specification. 
+In {\it practice} statisticians are not always as rigorous as this when specifying priors - and for the good reason that both approaches, in their purest forms
+are hard to apply in practice! Before saying more about, let's summarize the approaches:
 \begin{enumerate}
 \item Subjective specification: the prior is chosen by making a serious attempt to quantify a state of knowledge prior to performing the experiment. This is perhaps the ``purest" form of Bayesian analysis. This approach is most often used when the
 prior actually contains non-trivial information that helps inform the analysis.
@@ -50,7 +53,8 @@ to say there are many different objective priors, so which one you might use wou
 can be useful, and indeed they are not mutually exclusive. For example, I might use an Objective specification for parameters about which I do not
 have much subjective information, and subjective priors for parameters where I have specific and easily-quantified prior information I want to capture.
 
-Although these are the two types of prior that have been studied and written about, in practical applications people often use priors that are not really either
+Although these are the two types of prior that have been studied and written about, as noted above in practical applications it is common to 
+use priors that are not really either
 subjective or objective. That is no serious attempt has been made to capture prior knowledge, but neither are they formally chosen to satisfy a stated objective criterion.
 Indeed in realistic situations involving more than a few parameters it can be essentially impossible to perform an analysis that is truly subjective (because
 of the difficulty of accurately quantifying ones prior beliefs) or objective
@@ -137,8 +141,8 @@ may encounter in practice.
   \item At a C/G single nucleotide polymorphism (SNP), there are three possible genotypes (``classes") for each individual: CC,CG and GG. 
  Consider specifying a prior distribution for the  frequencies $f=\fvec$ for a sample of individuals from China.
  \begin{itemize}
- \item Someone who knew nothing more about this might start with a uniform prior on $f$ (subject to the constraint that $f_{CC}+f_{CG}+f_{GG}=1$). Indeed, even someone who knows quite a bit more might use this prior if they had lots of data from which they were about to compute a posterior, and figured that it was not worth worrying too much about more careful prior specification. (In the first case one might view this as a subjective prior; in the second a ``semi-subjective" prior).
- \item Someone who knows a bit about population genetics might decide to use the assumption of ``Hardy--Weinberg Equilibrium" (HWE), which is effectively the assumption that the two alleles carried by each individual are independent draws from some distribution. Thus, if $f_C$ denotes the overall frequency of $C$ in the population, then $f=(f_C^2, 2f_C(1-f_C),(1-f_C)^2)$. This assumption effectively reduces the vector parameter $f$ to a single parameter $f_C$, so
+ \item Someone who knew nothing more about this might start with a uniform prior on $f$ (subject to the constraint that $f_{CC}+f_{CG}+f_{GG}=1$). Indeed, even someone who knows quite a bit more might use this prior if they had lots of data from which they were about to compute a posterior, and figured that it was not worth worrying too much about more careful prior specification. 
+  \item Someone who knows a bit about population genetics might decide to use the assumption of ``Hardy--Weinberg Equilibrium" (HWE), which is effectively the assumption that the two alleles carried by each individual are independent draws from some distribution. Thus, if $f_C$ denotes the overall frequency of $C$ in the population, then $f=(f_C^2, 2f_C(1-f_C),(1-f_C)^2)$. This assumption effectively reduces the vector parameter $f$ to a single parameter $f_C$, so
  putting a prior on $f$ can now be achieved by putting
  a prior on $f_C$. Perhaps we might choose a uniform prior on $[0,1)$ for $f_C$.
   \item Although HWE is a pretty reasonable assumption for many natural populations, there are many reasons that there might be small (or even perhaps large)
@@ -398,15 +402,16 @@ $p(\theta | x) \propto \exp(-(\theta-x)^2/2)$, which implies that $\theta | x \s
   procedures with attractive frequentist properties.  In fact, many
   classical procedures and estimators correspond to Bayesian analysis
   with particular improper priors.
-\item Improper priors can never be ``subjective" priors, but they can be ``semi-subjective" (e.g. Savage's potato). That is, the posterior that arises from an improper prior may be viewed as a good approximation of a
-  ``proper'' analyses.
+\item Improper priors can never be ``subjective" priors. This is because they are not a distribution and so cannot be interpreted as
+using probability to represent uncertainty. Nonetheless, the posterior that arises from an improper prior may, in some cases, be a good approximation of a
+  ``proper'' subjective analyses. We saw an example of this with Savage's potato.
 \end{enumerate}
 
 So is it OK to use an improper prior? A strict subjectivist  might argue that it is never OK, because it cannot represent your prior uncertainty.
-Certainly improper priors {\it can} lead to paradoxes and inconsistencies, which proper priors never do
+In further support of this, they might point out, quite correctly, that improper priors {\it can} lead to paradoxes and inconsistencies, which proper priors never do
 (because they obey the axioms of probability).
  However, in many cases an improper prior produces a posterior that is a good approximation to the posterior that one would have got with a carefully-constructed
-subjective proper prior. In these cases (as in the semi-subjective prior above) I would argue it is OK. However, it is wise to be careful before using an improper prior. {\it In particular you should check that your posterior distribution is proper, as this is not always the case!}
+subjective proper prior. In these cases I would argue it is OK. However, it is wise to be careful before using an improper prior. {\it In particular you should check that your posterior distribution is proper, as this is not always the case!}
 
 
 \ni\underline{Example:} The problem with improper priors for mixtures
@@ -476,7 +481,7 @@ weak evidence against $H_0$, but at this point this is not news to us!
 
 \subsection{Bartlett's paradox, and problems with non-informative priors and Model choice}
 
-In the discussion of Lindley's paradox by Bartlett (1957), he points out that Lindley missed a term $1/|I|$ in his prior specification where $|I|$ denotes
+In the discussion of Lindley's paradox by Bartlett (1957), Bartlett points out that Lindley missed a term $1/|I|$ in his prior specification where $|I|$ denotes
 the length of the interval $I$. (Uniform on $I$ has density $1/|I|$).
 Since this missing term might be considered constant in $n$, it does not affect Lindley's limiting argument on $n$. However, Bartlett then goes on
 to point out another issue, which is that you might like to let $I$ be big,
