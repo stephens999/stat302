@@ -36,20 +36,32 @@ Exercises 4.
 Let $i=1,\dots,n$ index individuals and $j=1,\dots,m$ index genes (or pixels in an image if you prefer). Assume we have
 measurements on each individual at each gene for ``treatments" $k=0,1$. Let $Y_{ijk}$ denote the
 measurement on individual $i$, gene $j$, treatment $k$, and let $D_{ij}$ denote the difference between the measurements
-in the two treatments: $D_{ij}:= Y_{ij0}-Y_{ij1}$. We will assume that $D$ is sufficient for all our inferences,
-and that $D_{ij} \sim N(\beta_j, \sigma_j^2)$. Thus $\beta_j$ is the ``treatment effect" at gene $j$. For each gene $j$ we wish to test
+in the two treatments: $D_{ij}:= Y_{ij0}-Y_{ij1}$. We will assume that $D$ is sufficient for all our inferences, and so you can forget about $Y$ now and work
+only with $D$: I just wanted you to understand where $D$ might come from in principle.
+
+We will assume a model for $D$:
+\begin{equation} \label{eqn:D}
+D_{ij} | \beta, \sigma \sim N(\beta_j, \sigma_j^2)
+\end{equation}
+where $\beta=(\beta_1,\dots,\beta_m)$ is a vector of ``treatment effect"s, where
+$\beta_j$ is the effect at gene $j$, and $\sigma=(\sigma_1,\dots,\sigma_m)$ is a vector of 
+standard deviation parameters. 
+For each gene $j$ we wish to test
 the null $H_j: \beta_j=0$ (that is, that there is no treatment effect). For simplicity you can assume that $\sigma_j=1$ is known for all $j$. You can also assume that $n=10$ and $m=1,000$.
 
 Assume that the true effects
 $\beta_j$ are independent, and identically distributed, with 
-\begin{equation}
+\begin{equation} \label{eqn:B}
 \beta_j \sim \pi_0 \delta_0 + (1-\pi_0) N(0,\sigma^2_b).
 \end{equation}
 where $\delta_0$ denotes a point mass on zero.
 That is, $\beta_j=0$ with probability $\pi_0$, and $\beta_j\sim  N(0,\sigma^2_b)$ with probability $1-\pi_0$.
 
 \begin{enumerate}[i)]
-\item Write an R function to simulate data $D$ under this model, for user-specified $\pi_0$ and $\sigma_b$. The function
+\item Explain how (\ref{eqn:D}) and (\ref{eqn:B}) together define a hierarchical model for the data and treatment effects at each gene.
+Given $\pi_0 ,\sigma_b$, are the $\beta_j$ exchangeable? What about unconditional on $\pi_0,\sigma_b$?
+What about the data matrix $D_{ij}$ - which aspects of this matrix are exchangeable, if any? Explain your reasoning.
+\item Write an R function to simulate data $D$ under this hierarchical model, for user-specified $\pi_0$ and $\sigma_b$. The function
 should take $\pi_0$ and $\sigma_b$ as input, and return a list, with elements $D$ (a matrix) and $\beta$ (a vector).
 \item Write an R function to compute a $p$ value $p_j$ for each column of the data matrix $D$, testing $H_0:\beta_j=0$.  
 This function should take as input the data matrix $D$ and output a vector of $p$ values. You can use any reasonable two-sided test, but state which test
@@ -98,36 +110,60 @@ the estimated $\pi_0$ from {\tt qvalue}. Comment on the results.
 \end{enumerate}
 
 
-\item The library {\tt ashr} (for installation instructions, see the README at \url{www.github.com/stephens999/ash}) 
-implements an empirical Bayes approach to the above problem. In contrast to the BH procedure, and {\tt qvalue},
-instead of
-working with the $p$ values for each test, it works with a vector of estimates of the elements of $\beta$ ($\hat\beta$), and their corresponding standard errors ($s$).
-In outline, the method first estimates the distribution, $g(\cdot; \pi)$, of $\beta_j$ from the data, where $\pi$ are hyper parameters to be estimated by maximum likelihood (this is
-why it is ``Empirical Bayes"). Then, given the mle $\hat\pi$, it computes the posterior probability of $H_j$, $\Pr(H_j | \hat\beta_j, s_j, \hat\pi)$, and
-other posterior quantities of interest (like the posterior mean for $\beta_j$). It returns a lot of things, but for this exercise all you need to know is that it returns a vector of $q$ values (same interpretation as those from {\tt qvalue}).
-If {\tt betahat} is a vector of the estimates, and {\tt s} is a vector of the standard errors, then you can apply {\tt ash}, and obtain the $q$ values, as follows:
-\begin{verbatim}
-res.ash = ash(betahat,s, method="fdr")
-res.ash$qvalue
-\end{verbatim}
-\begin{enumerate}
-\item Write a function that computes, from data $D$, a vector of estimates of $\beta$ ({\tt betahat}) and their corresponding (estimated) standard errors ({\tt s}).
-Note that under the null, {\tt betahat/s} will have a normal distribution, so \verb|betahat^2/s^2|
-has a chi-squared distribution
-so you can compute a vector of $p$ values using 
-\begin{verbatim}
-zscore = betahat/s
-pval = pchisq(zscore^2,df=1,lower.tail=F)
-\end{verbatim}
-For one simulated data set plot a graph of the $p$ values you get this way against the $p$ values you used for the BH procedure to check that they are highly correlated.
 
-\item Repeat the simulation study from questions 1 and 2, showing estimated FDR vs $\alpha$ level, using the {\tt ash} $q$-values. Compare results with
-BH and {\tt qvalue}. Do all three methods provide conservative control of FDR? 
-
-\item In addition to control of FDR, it is also of interest to compare methods in terms of {\it how many discoveries} they make (say when
-controlling the FDR at $\alpha=0.05$).
-Take one of the simulation scenarios and compare the methods on how many discoveries they make at FDR=0.05.
+\item Now consider implementing an Empirical Bayes approach to this problem. To do so, given data $D$ we will need two steps:
+\begin{enumerate}[A]
+\item Estimate the hyper parameters $\pi_0,\sigma_b$ in (\ref{eqn:B}) by maximum likelihood. Call the estimates $\hat\pi_0, \hat\sigma_b$.
+\item Compute the posterior distribution $p(\beta_j | D, \hat\pi_0,\hat\sigma_b)$ for each $j$.
 \end{enumerate}
+This question takes you through these two steps.
+\begin{enumerate}[i)]
+\item Define $\bar{D}_j = (1/n) \sum_i D_{ij}$. Show that the vector $\bar{D}:=(\bar{D}_1,\dots,\bar{D}_m)$ is sufficient for $\beta$. 
+That is, $p(D|\beta) \propto p(\bar{D} | \beta)$ where the constant of proportionality does not depend on $\beta$. [This means that,
+as far as inference for $\beta$ is concerned,  the likelihood $p(D| \beta)$ is equivalent to the likelihood $p(\bar{D} | \beta)$, so from now on you can treat $\bar{D}$ as
+your data instead of $D$.] 
+\item Derive an expression for the log-likelihood $l(\pi_0,\sigma_b) :=\log(p(\bar{D} | \pi_0,\sigma_b))$. [Hint: note that the $\bar{D_j}$ are independent given $\pi_0,\sigma_b$]
+\item Write an R function to compute the log-likelihood $l(\pi_0,\sigma_b)$, or alternatively $l(\theta_1,\theta_2)$ where 
+$\theta_1 = \log(\pi_0/(1-\pi_0)), \theta_2 = \log(\sigma_b)$. [The motivation for this reparameterization is that $\theta_1,\theta_2$ can take
+any value on the real line.] Try using the R function optimize (or another method if you prefer)
+to maximize the likelihood over $\pi_0,\sigma_b$ (or $\theta_1,\theta_2$).
+[You may or may not find that this works... it is a somewhat tricky numerical problem. The reparameterization may help. Alternatively if you know about the EM algorithm
+you can try that.]
+\item Derive the posterior distribution $\beta_j | D,\pi_0,\sigma_b$. Hint: this posterior should be a mixture of a point mass at zero and a normal distribution. 
+It may help to first derive $p(\beta_j = 0 | D, \pi_0, \sigma_b)$, and then $p(\beta_j | D, \pi_0,\sigma_b, \beta_j \neq 0)$.
+\item Implement a method that computes $p(\beta_j = 0 | D, \hat\pi_0, \hat\sigma_b)$. Implement another method that takes these probabilities and rejects those tests $j$ for which this probability is $<\alpha$. Add this method to your simulation study and see how it performs. (If you are unable to get the optimization for $\pi,\sigma_b$ to work then
+you can ``cheat" in this step and use the true value of $\pi,\sigma_b$.)
+\end{enumerate}
+%\item The library {\tt ashr} (for installation instructions, see the README at \url{www.github.com/stephens999/ashr}) 
+%implements an empirical Bayes approach to the above problem. In contrast to the BH procedure, and {\tt qvalue},
+%instead of
+%working with the $p$ values for each test, it works with a vector of estimates of the elements of $\beta$ ($\hat\beta$), and their corresponding standard errors ($s$).
+%In outline, the method first estimates the distribution, $g(\cdot; \pi)$, of $\beta_j$ from the data, where $\pi$ are hyper parameters to be estimated by maximum likelihood (this is
+%why it is ``Empirical Bayes"). Then, given the mle $\hat\pi$, it computes the posterior probability of $H_j$, $\Pr(H_j | \hat\beta_j, s_j, \hat\pi)$, and
+%other posterior quantities of interest (like the posterior mean for $\beta_j$). It returns a lot of things, but for this exercise all you need to know is that it returns a vector of $q$ values (same interpretation as those from {\tt qvalue}).
+%If {\tt betahat} is a vector of the estimates, and {\tt s} is a vector of the standard errors, then you can apply {\tt ash}, and obtain the $q$ values, as follows:
+%\begin{verbatim}
+%res.ash = ash(betahat,s, method="fdr")
+%res.ash$qvalue
+%\end{verbatim}
+%\begin{enumerate}
+%\item Write a function that computes, from data $D$, a vector of estimates of $\beta$ ({\tt betahat}) and their corresponding (estimated) standard errors ({\tt s}).
+%Note that under the null, {\tt betahat/s} will have a normal distribution, so \verb|betahat^2/s^2|
+%has a chi-squared distribution
+%so you can compute a vector of $p$ values using 
+%\begin{verbatim}
+%zscore = betahat/s
+%pval = pchisq(zscore^2,df=1,lower.tail=F)
+%\end{verbatim}
+%For one simulated data set plot a graph of the $p$ values you get this way against the $p$ values you used for the BH procedure to check that they are highly correlated.
+%
+%\item Repeat the simulation study from questions 1 and 2, showing estimated FDR vs $\alpha$ level, using the {\tt ash} $q$-values. Compare results with
+%BH and {\tt qvalue}. Do all three methods provide conservative control of FDR? 
+%
+%\item In addition to control of FDR, it is also of interest to compare methods in terms of {\it how many discoveries} they make (say when
+%controlling the FDR at $\alpha=0.05$).
+%Take one of the simulation scenarios and compare the methods on how many discoveries they make at FDR=0.05.
+%\end{enumerate}
 
 %\item Return to the exercise in \verb|exercises/seeb/train_test.R| and  Exercise sheet 3 Q2. Throughout this question you may now fix $\alpha=0.5$ in the prior on the allele frequencies.  The aim here is to use an Empirical Bayes approach to estimate the proportion of individuals that came from each group in a training set, and then apply this to a test set.
 
