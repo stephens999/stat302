@@ -35,6 +35,8 @@ Here we introduce the basic notation.
 \item $L(\theta_0, a): \Theta \times \A \rightarrow R$: loss for performing action $a$ if ``true" value of $\theta$ is $\theta_0$. 
 \item $p(x | \theta)$: density of $X$.
 \item $\pi(\theta)$: (``prior") distribution for $\theta$.
+\item $R(\theta,\delta)$ the Risk function for decision rule $\delta$, being the expected loss (as a function of $\theta$, with expecation over $x$).
+\item $r(\pi, \delta)$ the integrated risk (also known as the ``Bayes Risk"), with respect to a distribution $\pi$ on $\theta$, $r(\pi,\delta) := \int R(\theta,\delta) \pi(d\theta)$.
 \end{itemize}
 
 In statistics we usually want to explicitly consider 
@@ -194,6 +196,22 @@ Ideally we'd like to choose a $\delta$ with a small risk. The problem is
 that risk depends on $\theta$ which is unknown, and risk functions of different $\delta$ will often cross: that is, for two decision rules $\delta_1$ and $\delta_2$, $\delta_1$ may be better for one value of
 $\theta$ and worse for another.
 
+\subsubsection*{Example: type I and type II error probabilities as risk functions}
+
+Suppose we consider the problem of comparing hypotheses $H_0,H_1$. 
+So we can assume $\A= \Theta = \{0,1\}$ with $\theta=j$ denoting that $H_j$ holds,
+and $a=j$ denoting that we select $H_j$.
+
+Define loss $L(\theta,a) = 1(a \neq \theta)$. Then 
+\begin{equation}
+R(\theta,\delta) = E_\theta^X[L(\theta,\delta(X))] = \Pr(\delta(X) \neq \theta | \theta)
+\end{equation}
+so $R(0,\delta)$ is $\Pr(\delta(X) =1 | \theta=0)$ or the probability of type I error.
+Similarly $R(1,\delta)$ is the probability of type II error.
+
+If one test has a smaller type I error {\it and} a smaller type II error than another, then one might
+argue that the first test is better. This leads us to the concept of admissibility.
+
 \subsubsection{Admissibility}
 
 What if one rule is always riskier than another? Then intuitively we would
@@ -205,5 +223,92 @@ a decision rule $\delta_2$ if $R(\theta,\delta_1) \leq R(\theta,\delta_2)$ for a
 
 \medskip
 Definition: A decision rule $\delta$ is {\it admissible} if there is no $R$-better decision rule. Otherwise it is {\it inadmissible}.
+
+
+\subsubsection*{Stein's paradox}
+
+This phenomenon, discovered by Charles Stein in 1956, is one of the most suprising results in statistics.
+
+Let $\theta$ denote a vector of $J$ unknown parameters. Suppose that for each $j$ we have a single observation $X_j$ that is a noisy estimate of $\theta_j$:
+\begin{equation}
+X_j \sim N(\theta_j, \sigma^2).
+\end{equation}
+Assume also that these measurements are independent. In this setting it is intuitive (and common) to use $X_j$ as an estimate of $\theta_j$.
+That is, to use
+\begin{equation}
+\hat{\theta} = \mathbf X.
+\end{equation}
+
+The amazing result is that, for $J \geq 3$, this estimator is inadmissible, under squared loss
+\begin{equation}
+L(\theta,\hat{\theta})  = \sum_{j=1}^J (\theta_j - \hat{\theta}_j)^2.
+\end{equation}
+Interestingly the proof is constructive: there is a simple analytic form for an estimator that is $R$-better.
+For example, James and Stein showed that
+\begin{equation} \label{eqn:js}
+\hat{\theta}_{JS} =  \left( 1 - \frac{(m-2) \sigma^2}{\|{\mathbf X}\|^2} \right) \mathbf X.
+\end{equation}
+is $R$-better than $\hat{\theta}$. In fact it turns out that this estimator is also inadmissible!
+But it can be made admissible by some minor modifications.
+Despite this, I think it would be reasonable to say that nobody actually uses this estimator in practice!
+
+Note that if $(m-2) \sigma^2<\|{\mathbf X}\|^2$ then the estimator (\ref{eqn:js}) simply takes the natural estimator $\mathbf X$ and shrinks it towards the origin 0.
+For this reason this kind of estimator is sometimes called a ``shrinkage estimator". Actually you don't have to shrink towards the origin 0. There
+are analogues of $(\ref{eqn:js})$ that shrink to any value $\nu$, and these are $R$-better than $\hat{\theta}$ for any $\nu$!
+
+Again, JS-type estimators are seldom used in practice. But Bayesian versions of these estimators are perhaps more commonly used.
+The following is a simple exercise. Suppose you assume a prior on $\theta$ in which $\theta_j \sim N(\mu_0, \sigma_0)$ independently for each $\theta_j$. 
+Then the posterior mean of $\theta$ is a shrinkage estimator for $\theta$ (with shrinkage towards the prior mean $\mu_0$). 
+Personally I find the argument for shrinkage based on a prior belief much easier to understand, intuitively, than the argument for shrinkage
+based on admissibility.
+
+
+\subsubsection{Bayes Risk and Bayes Rule}
+
+Admissibility is all very well for comparing situations where one rule is always better than another.
+But what if the risk functions cross (as is more common)? That is, what if one rule is better for some $\theta$, but worse for others?
+One way to compare rules is to average over values for $\theta$, and compare the expected risk. Of course, the result
+will depend on what distribution $\pi$ for $\theta$ you average over. So we define the integrated risk to be  a function of $\pi$:
+\begin{equation}
+r(\pi,\delta) := \int R(\theta,\delta) \pi(d\theta).
+\end{equation}
+Note that this is a frequentist concept in the sense that it asks about average performance of $\delta$ over different data sets.
+(but the different data sets have different values for $\theta$, drawn from $\pi$). However, somewhat confusingly in my opinion,
+$r$ is often referred to as the ``Bayes Risk", and any decision rule $\delta$ minimizing $r$ is referred to as a ``Bayes rule".
+
+As you might guess, if we are Bayesian we might select $\pi$ to be our prior distribution, although we don't have to.
+The fundamental result is the following:
+Let $\delta_B^\pi$ denote the decision rule arising from performing a Bayesian analysis with prior $\pi$, and then
+selecting the action that minimizes the posterior expected loss. Then $\delta_B$ minimizes $r$. (That is, $\delta_B$ is a Bayes rule,
+which gives a post-hoc justification for this terminology.)
+
+See Results 1 and 2 on p159-160 of Berger for more formal statement and proof.
+
+
+\subsubsection{Bayesian methods are Admissible}
+
+It is easy to show that, with mild regularity conditions, Bayesian methods - specifically, choosing
+the action that minimizes the posterior expected loss - are admissible.
+Let's do the finite discrete case ($\theta \in \{\theta_1,\dots,\theta_J\}$) by contradiction
+[Theorem 7 from Berger (p253)]
+
+Assume that $\Theta$ is discrete, say $\Theta = \{\theta_1,\theta_2,\dots\}$, and that the prior
+$\pi$ gives positive probability to each $\theta_i \in \Theta$. Assume also that the Bayes Risk is finite. 
+Then a Bayes rule $\delta_B^\pi$ with respect to $\pi$
+is admissible. 
+
+Proof: Suppose not. Then there exists a $\delta$ such that
+$R(\theta_i,\delta) \leq R(\theta_j,\delta_B^\pi)$ for all $i$, with strict inequality for some $i=k$ say.
+Hence
+\begin{equation}
+r(\pi,\delta) = \sum_i R(\theta_i, \delta) \pi(\theta_i) < \sum_i R(\theta_i,\delta_B^\pi) \pi(\theta_i) = r(\pi,\delta_B^\pi),
+\end{equation}
+the inequality being strict due to the conditions that the Bayes Risk is finite and the prior places positive probability on all $\theta_i$. 
+But this contradicts the fact that $\delta_B^\pi$ is a Bayes rule.
+
+
+
+
+
 
 \end{document}
