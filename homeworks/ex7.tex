@@ -1,4 +1,4 @@
-\documentstyle[12pt]{article}
+\documentclass[12pt]{article}
 \def\P{\mbox{P}}
 \def\G{\Gamma}
 \def\t{\theta}
@@ -9,6 +9,7 @@
 \parindent=0in
 %\parskip=5mm
 \pagestyle{empty}
+\usepackage{enumerate}
 
 \begin{document}
 
@@ -38,6 +39,26 @@ Exercises 5}
 \end{enumerate}
 
 
+\item Suppose your final exam is a multiple choice exam, and you have to assign, for each
+answer $A,B,C$ and $D$ a probability that it is correct. That is the ``action" is a probability vector
+$(q_A,q_B,q_C,q_D)$ of non-negative numbers summing to 1. The unknown quantity $\theta$ that
+affects your response is which answer is actually correct. That is $\Theta = \{A, B, C, D\}$. 
+
+Consider the following three loss functions:
+\begin{enumerate}[i)]
+\item (Brier score) $L(\theta;q) = \sum_{i \in \Theta} (q_i - I(\theta=i))^2$
+\item (``log loss")  $L(\theta;q) = -\log(q_\theta)$.
+\item $L(\theta;q) = 1-q_\theta$.
+\end{enumerate}
+
+Suppose that after reading the question and answers you have decided that
+answers $A$ to $D$ have, for you,  (posterior) probabilities $(p_A,p_B,p_C,p_D)$. 
+Then under loss functions i) and ii) your posterior expected loss would be minimized by reporting $q=p$,
+that is, they are ``proper scoring rules". 
+However, under loss function iii) your posterior expected loss would be minimized by a $q$ other than $p$.
+
+Exercise: show that i), and ii) are proper scoring rules, but iii) is not. Find the optimal $q$ (as a function of $p$) for iii)
+
 
 \item Consider two forecasters, who are predicting whether it will rain tomorrow. Each gives their probability that it will rain tomorrow, and these predictions are later compared against the actual observation of whether or not it rains. In a particular 10-day period the probabilities given by each forecaster are: 
 \begin{verbatim}
@@ -49,10 +70,10 @@ and the actual observations were
 1 1 0 0 1 1 1 0 1 0
 \end{verbatim}
 where 1 indicates rain, and 0 indicates no rain.
-Based on these data, who do you assess to be the better forecaster, and why? Provide analyses for both the Brier score loss function and the log-loss function discussed in class.
+Based on these data, who do you assess to be the better forecaster, and why? Provide analyses for both the Brier score loss function and the log-loss function.
 
 \item (continuation of 3. above) Now suppose that you were forecaster 1 in the above example, and you were invited to participate in a forecasting competition, where they are going to score your forecasts using the Loss
-$L_1(i,p) = 1-p_i$, where $p_i$ is the probability that you assign to outcome $i$ ($i=0,1$). a) Show that $L_1$ is not a proper scoring rule. b) For the 10-day period considered in 3 above, what would you have {\it reported} to the competition as your probabilities for rain on each day, in order to minimize your expected loss $L_1$? c) For these reported probabilities what would your average loss $L_1$ have been for this 10-day period? Compare this with the loss you would have achieved if you had instead reported your actual probabilities from 3. above. 
+$L_1(i,p) = 1-p_i$, where $p_i$ is the probability that you assign to outcome $i$ ($i=0,1$). a) For the 10-day period considered in 3 above, what would you have {\it reported} to the competition as your probabilities for rain on each day, in order to minimize your expected loss $L_1$? b) For these reported probabilities what would your average loss $L_1$ have been for this 10-day period? Compare this with the loss you would have achieved if you had instead reported your actual probabilities from 3. above. 
 
 
 \item Suppose $x$ is Poisson with mean $\t$ and that it is desired to estimate $\t$ under the loss $L(\t,d) = (\t - d)^2/\t$.  
