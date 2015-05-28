@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
 \def \baselinestretch{1.2}
 \usepackage{amsmath}
+\usepackage{enumerate}
 \def\ni{\noindent}
 \def\A{\mathcal A}
 \def\X{\mathcal X}
@@ -35,6 +36,7 @@ Here we introduce the basic notation.
 \item $L(\theta_0, a): \Theta \times \A \rightarrow R$: loss for performing action $a$ if ``true" value of $\theta$ is $\theta_0$. 
 \item $p(x | \theta)$: density of $X$.
 \item $\pi(\theta)$: (``prior") distribution for $\theta$.
+\item $\delta: \X \rightarrow \A$ a decision rule that maps data to actions.
 \item $R(\theta,\delta)$ the Risk function for decision rule $\delta$, being the expected loss (as a function of $\theta$, with expecation over $x$).
 \item $r(\pi, \delta)$ the integrated risk (also known as the ``Bayes Risk"), with respect to a distribution $\pi$ on $\theta$, $r(\pi,\delta) := \int R(\theta,\delta) \pi(d\theta)$.
 \end{itemize}
@@ -49,8 +51,44 @@ Note that statistical inference is one special case of
 a decision problem. Suppose we want to estimate a parameter $\theta$.
 The ``action" we want to take is to report our estimate. 
 Thus the action space consists of the possible estimates we might report,
-and so $\A=\Theta$.
+and so $\A=\Theta$. In this case the ``action" is usually to report an estimate, which is often denoted $\hat\theta$.
+So the loss function becomes a function $L(\theta,\hat\theta)$.
 
+Decision theory plays an important role in economic theory as well as statistical theory. In economics,
+the problem is usually framed in terms of {\it utility} function rather than a {\it loss} function. You can think of utility as the negation of a loss,
+ so $U(\theta_0,a) = -L(\theta_0,a)$. You might also think of the loss function as a ``cost function".
+   
+\subsubsection{Example: taking umbrella to work}
+
+You are trying to decide whether or not to bring an umbrella to work with you.
+It is not raining now, but you are concerned that it might rain during your walk home.
+ You don't really like to carry your umbrella if you don't need it, but on the other hand if it rains
+ in the evening you would be glad you had taken it for your walk home.
+ 
+ The action space is $\A=\{\text{take umbrella},\text{don't take umbrella}\}$. The
+ unknown quantity affecting your decision is whether it will rain in the evening.
+ So $\Theta=\{ \text{rain}, \text{no rain}\}$.
+ You might also have data $x$ to be the weather forecast.
+ 
+ Your loss function $L$ tells you how sad you will be if certain action-$\theta$ combinations.
+ For example, we might assume that your loss looks like this:
+ 
+ \begin{table}[h!]
+ \center
+ \begin{tabular}{c|cc} 
+ $\theta \backslash a$ & umbrella & no umbrella  \\ \hline 
+ no rain & 1 & 0 \\
+ rain & 2 & 10 \\
+ \end{tabular}  \label{tab:L}
+ \caption{Example loss function for taking umbrella to work problem} 
+ \end{table}
+ 
+Here the units of loss are arbitrary, but this captures the idea that the worst
+case is if it rains and you have no umbrella. Having your umbrella with you when it rains
+saves you much of that sadness, although you might still be a bit sad that it rains (your feet might get wet!). And
+you have a mild inconvenience if you take your umbrella and it does not rain.
+
+ 
 \subsection{Choosing an action: the conditional Bayesian Principle}
 
 Here we just state the principle, which should seem natural.
@@ -58,14 +96,29 @@ Then we will see some examples before taking another look
 at motivation for the principle.
 
 This principle says you should ``Choose action $a$ to minimize the posterior expected loss, which is given by
-$$\int L(\theta, a) p(\theta | x) d\theta.$$
+\begin{equation}
+\text{posterior expected loss}= \int L(\theta, a) p(\theta | x) d\theta
+\end{equation}
+Note that the action that minimizes this will depend on $x$, so this defines a decision rule $\delta(\cdot)$ that
+maps data to actions. This decision rule also depends on the prior $\pi$ so you might write $\delta^\pi(\cdot)$.
 
 Note that this principle tells us how we (rational decision makers)
 ``should" behave, and is
 not always a good description of how people actually behave
 in practice!
 
-\subsection{Examples}
+
+\subsubsection{Example: umbrella problem}
+
+Suppose that after looking at the weather forecast your posterior probability of it raining during your
+walk home is $p$. Then (under the loss function in Table \ref{tab:L}) your expected loss if you do or do not take an umbrella is
+\begin{gather}
+EL(\text{umbrella}) = 2p + 1(1-p) = 1+p \\
+EL(\text{no umbrella}) = 10p + 0(1-p) = 10p.
+\end{gather}
+So by the conditional Bayesian principle you should take the umbrella if $1+p<10p$, or in other words if $p>1/9$.
+
+\subsection{More Examples}
 
 \bigskip
 \begin{enumerate}
@@ -112,6 +165,8 @@ So you buy the insurance. (Note: Of course, in most cases the people lending you
 insist you insure it!)
 
 \item {\it Classification with 2 classes (e.g. hypothesis testing, $H_0$ vs $H_1$).} Let $c_{i|j}$ denote the loss for choosing $H_i$ if $H_j$ is true.
+So $c_{1|0}$ is the cost of rejecting $H_0$ if $H_0$ is true, or in other words the cost of a type I error. 
+And $c_{0|1}$ is the cost of a type II error.
 Assume that if you make the right choice then you lose zero:
 $c_{0|0}=c_{1|1}=0$.
 
@@ -119,15 +174,15 @@ The action space and the space of unknowns is the same: we
 don't know which hypothesis is true, and we wish to select one.
  Thus $\Theta=\A=\{H_0,H_1\}$.
 
-Posterior expected loss($H_0$) = $p(H_1 | x) c_{1|0}$
+Posterior expected loss($H_0$) = $p(H_1 | x) c_{0|1}$
 
-Posterior expected loss($H_1$) = $p(H_0 | x) c_{0|1}$
+Posterior expected loss($H_1$) = $p(H_0 | x) c_{1|0}$
 
-Choose $H_1$ if $p(H_1 | x) c_{1|0} > p(H_0 | x) c_{0|1}$.
-That is if $p(H_1 | x) > p(H_0 | x) c_{0|1}/c_{1|0}$.
+Choose $H_1$ if $p(H_1 | x) c_{0|1} > p(H_0 | x) c_{1|0}$.
+That is if $p(H_1 | x) > p(H_0 | x) c_{1|0}/c_{0|1}$.
 
 If costs are equal, then threshold is 0.5.
-If cost of wrongly rejecting $H_0$ is higher 
+If cost of type I error is higher than cost of type II error
 then threshold is higher.
 
 
@@ -159,7 +214,7 @@ quadratic loss, which penalizes big mistakes quite harshly:
 $$L(g; \hat{g} ) = (g - \hat{g})^2.$$
 
 Now you want to choose $\hat{g}$ to minimize your expected loss
-$$E[L(\hat{g};g)] = \sum_g p_g (g-\hat{g})^2.$$
+$$E[L(g;\hat{g})] = \sum_g p_g (g-\hat{g})^2.$$
 Differentiating with respect to $\hat{g}$, and setting the derivative to zero, yields
 $\hat{g} = \sum_g p_g g$. That is, you estimate the genotype by the mean, averaging over the
 uncertainty.
@@ -169,14 +224,42 @@ only to this example, or to discrete outcomes. That is, reporting a mode of a di
 the point estimate is to implicitly adopt 0-1 loss; reporting the mean as a point estimate
 is to implicitly adopt quadratic loss.
 
-\item {\it (Proper scoring rules). Assume now that you are asked to report the probability that
-the genotypes are 0, 1 or 2. Naively it would appear to make sense to report the probabilities
-$p_0, p_1$ and $p_2$. Consider a formal decision-theoretic approach to this problem, with
-the following loss functions: i) $L(\hat{p}; g) = 1-\hat{p}_g$; ii) $L(\hat{p};g) = \sum_{i=0}^2 (\hat{p}_i - I(g=i))^2$;
-iii) $L(\hat{p};g) = -\log(\hat{p}_g)$.}
+\item {\it (Forecasting: Proper scoring rules).} Proper scoring rules arise when you are asked
+to forecast the probability of an event. 
 
-Note: loss functions that lead to your reporting your actual probability distribution are referred
-to as "proper scoring rules". Which of the above are proper scoring rules? 
+Suppose your final exam is a multiple choice exam, and you have to assign, for each
+answer $A,B,C$ and $D$ a probability that it is correct. That is the ``action" is a probability vector
+$(q_A,q_B,q_C,q_D)$ of non-negative numbers summing to 1. The unknown quantity $\theta$ that
+affects your response is which answer is actually correct. That is $\Theta = \{A, B, C, D\}$. 
+What loss function is approriate for this task?
+
+Here are two loss functions that make some sense:
+\begin{enumerate}[i)]
+\item (Brier score) $L(\theta;q) = \sum_{i \in \Theta} (q_i - I(\theta=i))^2$
+\item (``log loss")  $L(\theta;q) = -\log(q_\theta)$.
+\end{enumerate}
+Note that the Brier score measures the distance between the vector $q$ and the unit vector that corresponds to $\theta$ (e.g. (1,0,0,0) 
+if $\theta=A$). The log loss is intuitive in that you lose more if you assign small probability to the correct answer.
+(Note that you lose $\infty$ if you assign 0 probability to the correct answer!)
+
+Here is another loss function that might seem to make sense, but actually is not recommended,
+for reasons we will come to in a moment:
+\begin{enumerate}[iii)]
+\item $L(\theta;q) = 1-q_\theta$.
+\end{enumerate}
+The reason that i) and ii) are recommended over iii) is that they are {\it proper scoring rules}.
+The meaning of this is as follows. Suppose that after reading the question and answers you have decided that
+answers $A$ to $D$ have, for you,  (posterior) probabilities $(p_A,p_B,p_C,p_D)$. 
+Then under loss functions i) and ii) your posterior expected loss would be minimized by reporting $q=p$.
+That is, these loss functions would tell you to ``tell the truth" about your probabilities on $A,B,C$ and $D$.
+
+However, under loss function iii) your posterior expected loss would be minimized by a $q$ other than $p$.
+
+Exercise: show that i), and ii) are proper scoring rules, but iii) is not. Find the optimal $q$ (as a function of $p$) for iii).
+
+The bottom line: if you are ever in the position of organizing a ``forecasting competition" where you have to assess
+how good a probabilistic forecast is by comparing it with what actually happened, then you should use a proper scoring rule
+so that competitors are not  incentivized to ``lie" and report something other than their actual probabilities to win the competition.
 \end{enumerate}
 
 \subsection{Frequentist decision theory, Risk and Admissibility}
