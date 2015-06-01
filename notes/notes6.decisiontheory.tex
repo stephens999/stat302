@@ -307,6 +307,12 @@ a decision rule $\delta_2$ if $R(\theta,\delta_1) \leq R(\theta,\delta_2)$ for a
 \medskip
 Definition: A decision rule $\delta$ is {\it admissible} if there is no $R$-better decision rule. Otherwise it is {\it inadmissible}.
 
+\subsubsection{Example (Berger, p10, example 4)}
+
+Assume $X \sim N(\theta,1)$ and we want to estimate $\theta$ under loss $L(\theta,a) = (\theta-a)^2$. Consider the decision rules $\delta_\theta(x) =cx$.
+Show that the rules $\delta_c$ are inadmissible for $c>1$.
+
+in fact the rules are admissible for $0 \leq c \leq 1$ although this is harder to show. The fact that $\delta_0$ is admissible shows that ``admissible does not imply sensible or useful"!
 
 \subsubsection*{Stein's paradox}
 
